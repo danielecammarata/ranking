@@ -17,7 +17,8 @@ const mongoSchema = new Schema({
   },
   name: String,
   points: Number,
-  avatarUrl: String
+  avatarUrl: String,
+  active: Boolean
 })
 
 class UserClass {
@@ -27,7 +28,8 @@ class UserClass {
       'name',
       'points',
       'avatarUrl',
-      'slug'
+      'slug',
+      'active'
     ]
   }
 
@@ -57,7 +59,8 @@ class UserClass {
     const newUser = await this.create({
       name,
       avatarUrl,
-      slug
+      slug,
+      active
     })
 
     return pick(newUser, UserClass.publicFields())
