@@ -19,7 +19,7 @@ Index.getInitialProps = async function getInitialProps() {
   const data = await getUsersList()
 
   return {
-    users: data
+    users: data.users
   }
 }
 

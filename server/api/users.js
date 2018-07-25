@@ -3,39 +3,12 @@ const express = require('express')
 
 const router = express.Router()
 
-// router.get('/books', async (req, res) => {
-//   try {
-//     const books = await Book.list();
-//     res.json(books);
-//   } catch (err) {
-//     res.json({ error: err.message || err.toString() });
-//   }
-// })
+const User = require('../models/User')
 
-router.get('/get', (req, res) => {
+router.get('/get', async (req, res) => {
   try {
-    const users = [
-      {
-        id: 1,
-        name: 'Mucci',
-        points: 1200
-      },
-      {
-        id: 2,
-        name: 'Moioli',
-        points: 1700
-      },
-      {
-        id: 3,
-        name: 'Slow',
-        points: 950
-      },
-      {
-        id: 4,
-        name: 'Boss',
-        points: 2500
-      }
-    ]
+    const users = await User.list()
+
     res.json(users);
   } catch (err) {
     res.json({ error: err.message || err.toString() });

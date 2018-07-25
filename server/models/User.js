@@ -33,6 +33,14 @@ class UserClass {
     ]
   }
 
+  static async list({ offset = 0, limit = 10 } = {}) {
+    const users = await this.find({})
+      .sort({ points: 1 })
+      .skip(offset)
+      .limit(limit)
+    return { users }
+  }
+
   static search(query) {
     return this.find(
       {
