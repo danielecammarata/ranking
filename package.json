@@ -1,0 +1,28 @@
+{
+  "name": "ranking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "nodemon server/index.js --watch server",
+    "build": "next build",
+    "start": "NODE_ENV=production node server/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material-ui/core": "^1.4.1",
+    "arpad": "^1.0.2",
+    "express": "^4.16.3",
+    "isomorphic-unfetch": "^2.1.0",
+    "lodash": "^4.17.10",
+    "mongoose": "^5.2.5",
+    "next": "^6.1.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
+  },
+  "devDependencies": {
+    "jest": "^23.2.0",
+    "nodemon": "^1.17.5"
+  }
+}
