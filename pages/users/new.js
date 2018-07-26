@@ -25,7 +25,7 @@ class AddUser extends React.Component {
       avatarUrl: this.state.avatarUrl
     })
   
-    // this.setState({ users, userAdded: true })
+    this.setState({ users, userAdded: true })
   }
 
   handleChange = name => event => {
