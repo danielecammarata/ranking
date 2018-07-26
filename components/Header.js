@@ -38,6 +38,9 @@ const Header = () => (
           <Link href="/users/new">
             <a style={linkStyle}>New User</a>
           </Link>
+          <Link href="/about">
+            <a style={linkStyle}>About</a>
+          </Link>
         </Grid>
       </Grid>
     </Toolbar>
