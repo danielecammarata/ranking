@@ -1,6 +1,12 @@
-import fetch from 'isomorphic-unfetch'
+import Divider from '@material-ui/core/Divider'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Typography from '@material-ui/core/Typography'
+
 import Layout from '../../components/Layout.js'
 import { getUsersList, deleteUser } from '../../lib/api/users'
+import { styleH1, styleCard, styleCardContainer, styleCardContent, styleBigAvatar } from '../../lib/SharedStyles'
 
 class IndexUser extends React.Component {
   constructor(props) {
@@ -28,14 +34,31 @@ class IndexUser extends React.Component {
     this.setState({ users: localUserList, userDeleted: true })
   }
 
+// https://static.nexilia.it/bitchyf/2018/05/cristiano-malgioglio-danzando-800x500.jpg
+
   render() {
     return (
       <Layout>
-        <h1>Players</h1>
+        <h1 style={styleH1}>Players</h1>
+        <Divider />
         <ul>
           {this.state.users && this.state.users.map(user => (
             <li key={user.slug}>
-              <p>{user.name} | {user.points}</p><button variant="raised" onClick={(e) => this.removeUser(user, e)}>X</button>
+              <Card style={styleCard}>
+                <div style={styleCardContainer}>
+                  <CardContent style={styleCardContent}>
+                    <Typography variant="headline">{user.name}</Typography>
+                    <Typography variant="subheading" color="textSecondary">A.K.A.</Typography>
+                    <Typography variant="subheading" color="textSecondary">Points: {user.points}</Typography>
+                  </CardContent>
+                </div>
+                <CardMedia
+                  style={styleBigAvatar}
+                  image={user.avatarUrl}
+                  title={user.name}
+                />
+              </Card>
+              {/* <button variant="raised" onClick={(e) => this.removeUser(user, e)}>X</button> */}
             </li>
           ))}
         </ul>
