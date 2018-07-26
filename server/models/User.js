@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const pick = require('lodash/pick')
-const generateSlug = require('../utils/slugify')
 var uuid = require('uuid');
 const { Schema } = mongoose
 
