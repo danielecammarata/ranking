@@ -4,6 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 
 import getContext from '../lib/context'
 import Header from './Header'
+import Footer from './Footer'
 
 class Layout extends React.Component {
   constructor(props, context) {
@@ -21,7 +22,10 @@ class Layout extends React.Component {
         <CssBaseline />
         <div>
           <Header />
-          {this.props.children}
+          <div  style={{ padding: '10px 5%', fontSize: '15px', minHeight: 'calc(100vh - 128px)' }}>
+            {this.props.children}
+          </div>
+          <Footer />
         </div>
       </MuiThemeProvider>
     );
