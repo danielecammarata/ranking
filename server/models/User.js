@@ -7,8 +7,7 @@ const { Schema } = mongoose
 const mongoSchema = new Schema({
   slug: {
     type: String,
-    required: true,
-    unique: true,
+    required: true
   },
   name: String,
   points: Number,
@@ -28,7 +27,7 @@ class UserClass {
     ]
   }
 
-  static async list({ offset = 0, limit = 10 } = {}) {
+  static async list({ offset = 0, limit = 100 } = {}) {
     const users = await this.find({})
       .sort({ points: 1 })
       .skip(offset)
