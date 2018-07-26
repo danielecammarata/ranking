@@ -30,9 +30,10 @@ router.post('/add', (req, res) => {
         name: 'Mucci',
         slug: 'tits',
         points: 2,
+        avatarUrl: 'http://1.citynews-today.stgy.ovh/~media/original-hi/45879200115095/tacchino-2.jpg',
         active: true
       }
-  var newUser = new UserClass(userData)
+  var newUser = new User(userData)
   newUser.save(function (err) {
     if (err) return res.json({ error: err.message || err.toString() })
     res.json(newUser)

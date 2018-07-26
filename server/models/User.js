@@ -5,11 +5,6 @@ const generateSlug = require('../utils/slugify')
 const { Schema } = mongoose
 
 const mongoSchema = new Schema({
-  userId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    unique: true
-  },
   slug: {
     type: String,
     required: true,

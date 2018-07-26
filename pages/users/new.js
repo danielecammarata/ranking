@@ -14,8 +14,8 @@ class AddUser extends React.Component {
 
   async componentDidMount() {
     try {
-      const users = await getUsersList()
-      this.setState({ users })
+      const data = await getUsersList()
+      this.setState({ users: data.users })
     } catch (err) {
       console.log(err)
     }
