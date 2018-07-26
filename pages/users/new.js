@@ -1,4 +1,5 @@
 import React from 'react'
+import Router from 'next/router'
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
@@ -24,6 +25,8 @@ class AddUser extends React.Component {
       name: this.state.name,
       avatarUrl: this.state.avatarUrl
     })
+
+    Router.push('/users')
   
     this.setState({ users, userAdded: true })
   }
