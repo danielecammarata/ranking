@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 const pick = require('lodash/pick')
 const generateSlug = require('../utils/slugify')
-
+var uuid = require('uuid');
 const { Schema } = mongoose
 
 const mongoSchema = new Schema({
   slug: {
     type: String,
-    required: true
+    unique: true
   },
   name: String,
   points: Number,
@@ -46,6 +46,10 @@ class UserClass {
     )
   }
 
+  static generateSlug() {
+    return uuid.v1()
+  }
+
   static async addModifyUser({ userId, name, avatarUrl }) {
     const user = await this.findOne({ userId }).select(UserClass.publicFields().join(' '))
 
@@ -56,7 +60,7 @@ class UserClass {
       return user
     }
 
-    const slug = await generateSlug(this, name)
+    const slug = uuid.v1()
 
     const newUser = await this.create({
       name,

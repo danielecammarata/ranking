@@ -17,10 +17,10 @@ router.get('/get', async (req, res) => {
 
 router.post('/add', (req, res) => {
   const { name, avatarUrl } = req.body
-
+  const slug = User.generateSlug()
   const userData = {
     name,
-    slug: 'tits',
+    slug,
     points: 1200,
     avatarUrl,
     active: true
@@ -37,8 +37,6 @@ router.delete('/delete/:userId', (req, res) => {
   const query = { _id: id }
   User.findOneAndUpdate(query, { active: false }, {}, function (err, rs) {
     if (err) return res.json({ error: err.message || err.toString() })
-    console.log(err)
-    console.log(rs)
     res.json(rs)
   })
 })
