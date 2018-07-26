@@ -7,10 +7,10 @@ const User = require('../models/User')
 
 router.get('/get', async (req, res) => {
   try {
-    const users = await User.list()
-
+    const users = await User.find({ active:true })
     res.json(users);
   } catch (err) {
+    console.log(err)
     res.json({ error: err.message || err.toString() });
   }
 })
@@ -38,6 +38,18 @@ router.post('/add', (req, res) => {
     if (err) return res.json({ error: err.message || err.toString() })
     res.json(newUser)
   })
+})
+
+router.delete('/delete/:userId', (req, res) => {
+  const id = req.params.userId
+  const query = { _id: id }
+  User.findOneAndUpdate(query, { active: false }, {}, function (err, rs) {
+    if (err) return res.json({ error: err.message || err.toString() })
+    console.log(err)
+    console.log(rs)
+    res.json(rs)
+  })
+})
   // try {
   //   const users = [
   //     {
@@ -70,6 +82,6 @@ router.post('/add', (req, res) => {
   // } catch (err) {
   //   res.json({ error: err.message || err.toString() });
   // }
-})
+
 
 module.exports = router
