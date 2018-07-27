@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button'
 import Layout from '../../components/Layout.js'
 import { addNewUser } from '../../lib/api/users'
 import { styleH1, styleForm, styleTextField, styleFormTitle, styleFormButton } from '../../lib/SharedStyles'
-import { newUser } from '../../lib/Layouts'
+// import { newUser } from '../../lib/Layouts'
 
 class AddUser extends React.Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class AddUser extends React.Component {
   render() {
     return (
       <Layout>
-        <div style={newUser}>
+        <div>
           <h1 style={styleFormTitle}>ADD NEW USER</h1>
           <form 
             autoComplete="off"
