@@ -6,6 +6,7 @@ import CardMedia from '@material-ui/core/CardMedia'
 import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
 import Layout from '../../components/Layout.js'
+import { styleLedBox, styleLedRed } from '../../lib/LedStyles.js'
 import { styleH1, styleCard, styleCardContainer, styleCardContent, styleBigAvatar } from '../../lib/SharedStyles'
 
 import GridList from '@material-ui/core/GridList'

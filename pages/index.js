@@ -1,10 +1,10 @@
-import Head from 'next/head'
+import Head from '../../../../Library/Caches/typescript/2.9/node_modules/@types/next/head'
 import Grid from '@material-ui/core/Grid'
 import Layout from '../components/Layout.js'
 
 import {
   styleH1,
-} from '../lib/SharedStyles'
+} from '../lib/SharedStyles.js'
 
 export default () => (
   <Layout>

@@ -7,7 +7,10 @@ const User = require('../models/User')
 
 router.get('/get', async (req, res) => {
   try {
-    if (process.env.offline) {
+    console.log('.............')
+    console.log(process.env)
+    console.log('.............')
+    if (process.env.offline !== 'false') {
       res.json(
         [{
           _id: 'sadksahdas',
