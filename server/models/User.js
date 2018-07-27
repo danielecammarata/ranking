@@ -6,6 +6,7 @@ const { Schema } = mongoose
 const mongoSchema = new Schema({
   slug: {
     type: String,
+    required: true,
     unique: true
   },
   name: String,
