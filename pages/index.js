@@ -1,4 +1,4 @@
-import Head from '../../../../Library/Caches/typescript/2.9/node_modules/@types/next/head'
+import Head from 'next/head'
 import Grid from '@material-ui/core/Grid'
 import Layout from '../components/Layout.js'
 
