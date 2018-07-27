@@ -1,13 +1,13 @@
 import React from 'react'
-import Router from 'next/router'
+import Router from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/next/router'
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
 
 import Layout from '../../components/Layout.js'
-import { addNewUser } from '../../lib/api/users'
-import { styleH1, styleForm, styleTextField, styleFormTitle, styleFormButton } from '../../lib/SharedStyles'
-import { newUser } from '../../lib/Layouts'
+import { addNewUser } from '../../lib/api/users.js'
+import { styleH1, styleForm, styleTextField, styleFormTitle, styleFormButton } from '../../lib/SharedStyles.js'
+import { newUser } from '../../lib/Layouts.js'
 
 class AddUser extends React.Component {
   constructor(props) {
