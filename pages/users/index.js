@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Divider from '@material-ui/core/Divider'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -44,21 +45,23 @@ class IndexUser extends React.Component {
         <ul>
           {this.state.users && this.state.users.map(user => (
             <li key={user.slug}>
-              <Card style={styleCard}>
-                <div style={styleCardContainer}>
-                  <CardContent style={styleCardContent}>
-                    <Typography variant="headline">{user.name}</Typography>
-                    <Typography variant="subheading" color="textSecondary">A.K.A.</Typography>
-                    <Typography variant="subheading" color="textSecondary">Points: {user.points}</Typography>
-                  </CardContent>
-                </div>
-                <CardMedia
-                  style={styleBigAvatar}
-                  image={user.avatarUrl}
-                  title={user.name}
-                />
-              </Card>
+              <Link as={`/users/${user.slug}`} href={`/users/update/?slug=${user.slug}`}>
+                <Card style={styleCard}>
+                  <div style={styleCardContainer}>
+                    <CardContent style={styleCardContent}>
+                      <Typography variant="headline">{user.name}</Typography>
+                      <Typography variant="subheading" color="textSecondary">A.K.A.</Typography>
+                      <Typography variant="subheading" color="textSecondary">Points: {user.points}</Typography>
+                    </CardContent>
+                  </div>
+                  <CardMedia
+                    style={styleBigAvatar}
+                    image={user.avatarUrl}
+                    title={user.name}
+                  />
+                </Card>
               {/* <button variant="raised" onClick={(e) => this.removeUser(user, e)}>X</button> */}
+              </Link>
             </li>
           ))}
         </ul>
