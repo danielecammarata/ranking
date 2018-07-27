@@ -32,11 +32,17 @@ const Header = () => (
           <Link href="/matches/new">
             <a style={linkStyle}>New Match</a>
           </Link>
+          <Link href="/matches/live">
+            <a style={linkStyle}>Live Match</a>
+          </Link>
           <Link href="/users">
             <a style={linkStyle}>Users</a>
           </Link>
           <Link href="/users/new">
             <a style={linkStyle}>New User</a>
+          </Link>
+          <Link href="/about">
+            <a style={linkStyle}>About</a>
           </Link>
         </Grid>
       </Grid>

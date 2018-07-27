@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rankify should calculate the ranking for the away team winning 1`] = `
+Object {
+  "teamAway": Object {
+    "defense": Object {
+      "points": 1623,
+    },
+    "score": 6,
+    "striker": Object {
+      "points": 1823,
+    },
+  },
+  "teamHome": Object {
+    "defense": Object {
+      "points": 1191,
+    },
+    "score": 4,
+    "striker": Object {
+      "points": 2495,
+    },
+  },
+}
+`;
+
+exports[`rankify should calculate the ranking for the home team winning 1`] = `
+Object {
+  "teamAway": Object {
+    "defense": Object {
+      "points": 1577,
+    },
+    "score": 4,
+    "striker": Object {
+      "points": 1777,
+    },
+  },
+  "teamHome": Object {
+    "defense": Object {
+      "points": 1209,
+    },
+    "score": 6,
+    "striker": Object {
+      "points": 2505,
+    },
+  },
+}
+`;
