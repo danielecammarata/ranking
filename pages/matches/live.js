@@ -6,6 +6,7 @@ import CardMedia from '@material-ui/core/CardMedia'
 import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
 import Layout from '../../components/Layout.js'
+import Avatars from '../../lib/Avatars.js'
 import { styleLedBox, styleLedRed } from '../../lib/LedStyles.js'
 import { styleH1, styleCard, styleCardContainer, styleCardContent, styleBigAvatar } from '../../lib/SharedStyles'
 
@@ -123,25 +124,11 @@ class LiveMatch extends React.Component {
           justifyContent: 'space-around',
           overflow: 'hidden'
         }}>
-          <GridList cellHeight={180} style={{
-            width: 500,
+          <GridList style={{
             position: 'relative'
           }}>
             {/* HOME TEAM */}
-            <Avatar
-              style={{
-                width: '45px',
-                height: '45px',
-                padding: 0,
-                position: 'absolute',
-                top: '25%',
-                left: '50%',
-                zIndex: '2',
-                marginTop: '-28px',
-                marginLeft: '-22.5px',
-                backgroundColor: 'orange'
-              }}
-            >
+            <Avatar style={Avatars}>
               {'' + this.state.homeTeam.score}
             </Avatar>
 

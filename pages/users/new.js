@@ -1,5 +1,5 @@
 import React from 'react'
-import Router from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/next/router'
+import Router from 'next/router'
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
