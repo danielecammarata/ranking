@@ -2,10 +2,11 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
-
 import Downshift from 'downshift'
 import Paper from '@material-ui/core/Paper'
 import MenuItem from '@material-ui/core/MenuItem'
+
+import Router from 'next/router'
 
 import Layout from '../../components/Layout.js'
 import { getUsersList} from '../../lib/api/users'
@@ -71,13 +72,14 @@ class AddMatch extends React.Component {
     })
   
     this.setState({ matchAdded: true })
+    Router.push('/matches')
   }
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    })
-  }
+//   handleChange = name => event => {
+//     this.setState({
+//       [name]: event.target.value,
+//     })
+//   }
     getSuggestions(inputValue) {
         let count = 0
 
