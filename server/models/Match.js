@@ -10,26 +10,22 @@ const mongoSchema = new Schema({
   teamHome: {
     defender: {
       type: Schema.Types.ObjectId,
-      required: true,
-      unique: true
+      required: true
     },
     striker: {
       type: Schema.Types.ObjectId,
-      required: true,
-      unique: true
+      required: true
     },
     score: Number
   },
   teamAway: {
     defender: {
       type: Schema.Types.ObjectId,
-      required: true,
-      unique: true
+      required: true
     },
     striker: {
       type: Schema.Types.ObjectId,
-      required: true,
-      unique: true
+      required: true
     },
     score: Number
   },
@@ -37,7 +33,7 @@ const mongoSchema = new Schema({
   slug: {
     type: String,
     required: true,
-    unique: true,
+    unique: true
   },
   createdAt: {
     type: Date,
