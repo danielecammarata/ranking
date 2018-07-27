@@ -21,8 +21,8 @@
     "lodash": "^4.17.10",
     "mongoose": "^5.2.5",
     "next": "^6.1.1",
+    "downshift": "",
     "react": "^16.4.1",
-    "react-autocomplete": "^1.8.1",
     "react-dom": "^16.4.1",
     "uuid": "^3.0.0"
   },
