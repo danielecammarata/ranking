@@ -22,7 +22,7 @@ class Layout extends React.Component {
         <CssBaseline />
         <div>
           <Header />
-          <div  style={{ padding: '10px 5%', fontSize: '15px', minHeight: 'calc(100vh - 128px)' }}>
+          <div style={{ fontSize: '15px', minHeight: 'calc(100vh - 128px)' }}>
             {this.props.children}
           </div>
           <Footer />
