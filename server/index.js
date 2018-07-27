@@ -14,8 +14,10 @@ const MONGO_URL = dev ? process.env.MONGO_URL_TEST : process.env.MONGO_URL
 process.env.offline = false
 
 mongoose.connect(MONGO_URL, {}, err => {
-  console.error(err)
-  process.env.offline = true
+  if(err) {
+    console.error(err)
+    process.env.offline = true
+  }
 })
 
 const app = next({ dev })

@@ -1,18 +1,19 @@
 
 const mongoose = require('mongoose')
 const pick = require('lodash/pick')
-const generateSlug = require('../utils/slugify')
+var uuid = require('uuid');
+
 
 const { Schema } = mongoose
 
 const mongoSchema = new Schema({
   teamHome: {
-    player1: {
+    defender: {
       type: Schema.Types.ObjectId,
       required: true,
       unique: true
     },
-    player2: {
+    striker: {
       type: Schema.Types.ObjectId,
       required: true,
       unique: true
@@ -20,12 +21,12 @@ const mongoSchema = new Schema({
     score: Number
   },
   teamAway: {
-    player1: {
+    defender: {
       type: Schema.Types.ObjectId,
       required: true,
       unique: true
     },
-    player2: {
+    striker: {
       type: Schema.Types.ObjectId,
       required: true,
       unique: true
@@ -59,19 +60,19 @@ class MatchClass {
     if (!teamHome) {
       throw new Error('Data for the Home Team is required')
     }
-    if (!teamHome.player1) {
+    if (!teamHome.defender) {
       throw new Error('Player 1 for Home Team is required')
     }
-    if (!teamHome.player2) {
+    if (!teamHome.striker) {
       throw new Error('Player 2 for Home Team is required')
     }
     if (!teamAway) {
       throw new Error('Data for the Away Team is required')
     }
-    if (!teamAway.player1) {
+    if (!teamAway.defender) {
       throw new Error('Player 1 for Away Team is required')
     }
-    if (!teamAway.player1) {
+    if (!teamAway.striker) {
       throw new Error('Player 2 for Away Team is required')
     }
     if (!teamHome.score || !teamAway.score) {
@@ -89,6 +90,10 @@ class MatchClass {
       badges,
       slug
     })
+  }
+
+  static generateSlug() {
+    return uuid.v1()
   }
 
 }

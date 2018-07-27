@@ -41,7 +41,7 @@ class AddUser extends React.Component {
   render() {
     return (
       <Layout>
-        <div style={newUser}>
+        <div>
           <h1 style={styleFormTitle}>ADD NEW USER</h1>
           <form 
             autoComplete="off"

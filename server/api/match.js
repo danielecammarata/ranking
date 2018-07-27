@@ -3,6 +3,8 @@ const express = require('express')
 
 const router = express.Router()
 
+const Match = require('../models/Match')
+
 // router.get('/books', async (req, res) => {
 //   try {
 //     const books = await Book.list();
@@ -45,35 +47,23 @@ router.get('/get', (req, res) => {
 //     res.json({ error: err.message || err.toString() });
 //   }
 // })
-
 router.post('/add', (req, res) => {
-  try {
-    const users = [
-      {
-        name: 'Mucci',
-        points: 1200
-      },
-      {
-        name: 'Moioli',
-        points: 1700
-      },
-      {
-        name: 'Slow',
-        points: 950
-      },
-      {
-        name: 'Boss',
-        points: 2500
-      },
-      {
-        name: 'Gabo',
-        points: 1200
-      }
-    ]
-    res.json(users);
-  } catch (err) {
-    res.json({ error: err.message || err.toString() });
+  const { teamAway, teamHome } = req.body
+  const slug = Match.generateSlug()
+  const createdAt = new Date().toISOString()
+  const badges = []
+  const matchData = {
+    teamHome,
+    teamAway,
+    badges,
+    slug,
+    createdAt
   }
+  const newMatch = new Match(matchData)
+  newMatch.save(function (err) {
+    if (err) return res.json({ error: err.message || err.toString() })
+    res.json(newMatch)
+  })
 })
 
 module.exports = router
