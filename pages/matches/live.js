@@ -7,10 +7,9 @@ import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
 import Layout from '../../components/Layout.js'
 import Avatars from '../../lib/Avatars.js'
-import { styleAwayActualScore, stylePlayer, stylePlayerAka, stylePlayerPosition, stylePlayerRoleD, stylePlayerRoleS, stylePlayerDivider1, stylePlayerDivider2, stylePlayerScore, stylePlayerBarAway, stylePlayerBarHome, stylePlayerName, styleTimer, styleTimerButton, styleTimerIcon, styleAddScoreButton, styleRemoveScoreButton, styleAddScoreIcon, styleRemoveScoreIcon } from '../../lib/LiveMatch'
+import { styleAwayActualScore, styleHomeActualScoreDef, stylePlayerTileAway, stylePlayerTileHome, styleHomeActualScoreStr, styleAwayActualScoreDef, styleAwayActualScoreStr, styleHomeActualScore, stylePlayer, stylePlayerAka, stylePlayerPosition, stylePlayerRoleD, stylePlayerRoleS, stylePlayerDivider1, stylePlayerDivider2, stylePlayerScore, stylePlayerBarAway, stylePlayerBarHome, stylePlayerName, styleTimer, styleTimerButton, styleTimerIcon, styleAddScoreButton, styleRemoveScoreButton } from '../../lib/LiveMatch'
 import { styleLedBox, styleLedRed } from '../../lib/LedStyles.js'
 import { styleH1, styleCard, styleCardContainer, styleCardContent, styleBigAvatar } from '../../lib/SharedStyles'
-
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
 import GridListTileBar from '@material-ui/core/GridListTileBar'
@@ -133,12 +132,29 @@ class LiveMatch extends React.Component {
             position: 'relative',
             width: '100%'
           }}>
-            {/* HOME TEAM */}
-            {/* <Avatar style={Avatars}>
-              {'' + this.state.homeTeam.score}
-            </Avatar> */}
 
-            <GridListTile cols="1" rows="2" style={{padding: '10px', height: 'auto', color: 'blue', border: '1px solid #ddd'}}>
+            {/* HOME TEAM */}
+            <div style={styleHomeActualScore}>
+            {'' + this.state.homeTeam.score}
+            </div>
+            <div style={styleHomeActualScoreDef}>
+            {'' + this.state.homeTeam.defender.score}
+            </div>
+            <div style={styleHomeActualScoreStr}>
+            {'' + this.state.homeTeam.striker.score}
+            </div>
+            {/* AWAY TEAM */}
+            <div style={styleAwayActualScore}>
+              {'' + this.state.awayTeam.score}
+            </div>
+            <div style={styleAwayActualScoreDef}>
+              {'' + this.state.awayTeam.defender.score}
+            </div>
+            <div style={styleAwayActualScoreStr}>
+              {'' + this.state.awayTeam.striker.score}
+            </div>
+
+            <GridListTile cols="1" rows="2" style={stylePlayerTileHome}>
               <div style={stylePlayer(this.state.homeTeam.defender.avatarUrl)}>
                 <div style={stylePlayerRoleD}>D</div>
                 <p style={stylePlayerName}>{this.state.homeTeam.defender.name}</p>
@@ -151,24 +167,15 @@ class LiveMatch extends React.Component {
                   <small> pt</small>
                 </p>
               </div>
-              <IconButton style={styleRemoveScoreButton}>
-                  <RemoveIcon style={styleRemoveScoreIcon}
-                  onClick={() => this.removeGoalBy('homeTeam', 'defender')}
-                  />
+              <IconButton style={styleRemoveScoreButton} onClick={() => this.removeGoalBy('homeTeam', 'defender')}>
+                  <RemoveIcon/>
               </IconButton>
-              <IconButton style={styleAddScoreButton}>
-                  <AddIcon style={styleAddScoreIcon}
-                    onClick={() => this.addGoalBy('homeTeam', 'defender')}
-                  />
-              </IconButton>
-              <IconButton>
-                  <Avatar>
-                  {'' + this.state.homeTeam.defender.score}
-                  </Avatar>
+              <IconButton style={styleAddScoreButton} onClick={() => this.addGoalBy('homeTeam', 'defender')}>
+                  <AddIcon/>
               </IconButton>
             </GridListTile>
 
-            <GridListTile cols="1" rows="2" style={{padding: '10px', height: 'auto', color: 'blue', border: '1px solid #ddd'}}>
+            <GridListTile cols="1" rows="2" style={stylePlayerTileHome}>
               <div style={stylePlayer(this.state.homeTeam.striker.avatarUrl)}>
                 <div style={stylePlayerRoleS}>S</div>
                 <p style={stylePlayerName}>{this.state.homeTeam.striker.name}</p>
@@ -180,28 +187,11 @@ class LiveMatch extends React.Component {
                   000{this.state.homeTeam.striker.score}
                   <small> pt</small>
                 </p>
-              </div>
-
-
-              <div style={{position: 'absolute', right: '0', bottom: 0, width: '100%', textAlign: 'right'}}>
-                <IconButton>
-                  <Avatar>
-                  {'' + this.state.homeTeam.striker.score}
-                  </Avatar>
+                <IconButton style={styleRemoveScoreButton} onClick={() => this.removeGoalBy('homeTeam', 'striker')}>
+                    <RemoveIcon/>
                 </IconButton>
-                <IconButton style={{
-                  color: 'rgba(255, 255, 255, 0.54)'
-                }}>
-                  <RemoveIcon
-                  onClick={() => this.removeGoalBy('homeTeam', 'striker')}
-                  />
-                </IconButton>
-                <IconButton style={{
-                  color: 'rgba(255, 255, 255, 0.54)'
-                }}>
-                  <AddIcon
-                  onClick={() => this.addGoalBy('homeTeam', 'striker')}
-                  />
+                <IconButton style={styleAddScoreButton} onClick={() => this.addGoalBy('homeTeam', 'striker')}>
+                    <AddIcon/>
                 </IconButton>
               </div>
             </GridListTile>
@@ -232,13 +222,9 @@ class LiveMatch extends React.Component {
                   onClick={this.resetTimer}
                 />
               </IconButton>
-              {/* AWAY TEAM */}
-              <Avatar>
-                {'' + this.state.awayTeam.score}
-              </Avatar>
             </GridListTile>
 
-            <GridListTile cols="1" rows="2" style={{padding: '10px', height: 'auto', color: 'yellow', border: '1px solid #ddd'}}>
+            <GridListTile cols="1" rows="2" style={stylePlayerTileAway}>
               <div style={stylePlayer(this.state.awayTeam.defender.avatarUrl)}>
                 <div style={stylePlayerRoleD}>D</div>
                 <p style={stylePlayerName}>{this.state.awayTeam.defender.name}</p>
@@ -250,31 +236,16 @@ class LiveMatch extends React.Component {
                   000{this.state.awayTeam.defender.score}
                   <small> pt</small>
                 </p>
-              </div>
-              <div style={{position: 'absolute', left: '0', bottom: 0, width: '100%', textAlign: 'left'}}>
-                <IconButton style={{
-                  color: 'rgba(255, 255, 255, 0.54)'
-                }}>
-                <RemoveIcon
-                onClick={() => this.removeGoalBy('awayTeam', 'defender')}
-                />
+                <IconButton style={styleRemoveScoreButton} onClick={() => this.removeGoalBy('awayTeam', 'defender')}>
+                    <RemoveIcon/>
                 </IconButton>
-                <IconButton style={{
-                  color: 'rgba(255, 255, 255, 0.54)'
-                }}>
-                <AddIcon
-                onClick={() => this.addGoalBy('awayTeam', 'defender')}
-                />
-                </IconButton>
-                <IconButton>
-                <Avatar>
-                {'' + this.state.awayTeam.defender.score}
-                </Avatar>
+                <IconButton style={styleAddScoreButton} onClick={() => this.addGoalBy('awayTeam', 'defender')}>
+                    <AddIcon/>
                 </IconButton>
               </div>
             </GridListTile>
 
-            <GridListTile cols="1"  rows="2" style={{padding: '10px', height: 'auto', color: 'yellow', border: '1px solid #ddd'}}>
+            <GridListTile cols="1"  rows="2" style={stylePlayerTileAway}>
               <div style={stylePlayer(this.state.awayTeam.striker.avatarUrl)}>
                 <div style={stylePlayerRoleS}>S</div>
                 <p style={stylePlayerName}>{this.state.awayTeam.striker.name}</p>
@@ -286,26 +257,11 @@ class LiveMatch extends React.Component {
                   000{this.state.awayTeam.striker.score}
                   <small> pt</small>
                 </p>
-              </div>
-              <div style={{position: 'absolute', left: '0', bottom: 0, width: '100%', textAlign: 'right'}}>
-                <IconButton>
-                <Avatar>
-                {'' + this.state.awayTeam.striker.score}
-                </Avatar>
+                <IconButton style={styleRemoveScoreButton} onClick={() => this.removeGoalBy('awayTeam', 'striker')}>
+                    <RemoveIcon/>
                 </IconButton>
-                <IconButton style={{
-                  color: 'rgba(255, 255, 255, 0.54)'
-                }}>
-                <RemoveIcon
-                onClick={() => this.removeGoalBy('awayTeam', 'striker')}
-                />
-                </IconButton>
-                <IconButton style={{
-                  color: 'rgba(255, 255, 255, 0.54)'
-                }}>
-                <AddIcon
-                onClick={() => this.addGoalBy('awayTeam', 'striker')}
-                />
+                <IconButton style={styleAddScoreButton} onClick={() => this.addGoalBy('awayTeam', 'striker')}>
+                    <AddIcon/>
                 </IconButton>
               </div>
             </GridListTile>
