@@ -129,6 +129,7 @@ class LiveMatch extends React.Component {
           overflow: 'hidden'
         }}>
           <GridList style={{
+            maxWidth: '680px',
             position: 'relative',
             width: '100%'
           }}>
