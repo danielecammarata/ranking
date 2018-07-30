@@ -71,7 +71,7 @@ class Layout extends React.Component {
             toggleDrawer={this.offCanvasHandler}
             open={this.state.isOffCanvasOpen}
           />
-          <div style={{ fontSize: '15px', minHeight: 'calc(100vh - 128px)' }}>
+          <div style={{ fontSize: '15px', minHeight: 'calc(100vh - 64px)', paddingTop: '80px' }}>
             {this.props.children}
           </div>
           <Footer/>

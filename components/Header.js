@@ -23,9 +23,7 @@ const styles = {
   menuButton: {
     color: indigo[700],
     display: 'inline-block',
-    float: 'right',
     textDecoration: 'none',
-    justifySelf: 'flex-end',
     '&:visited': {
       color: indigo[700]
     },
