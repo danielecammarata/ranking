@@ -1,9 +1,8 @@
-import Layout from '../components/Layout.js'
-import MetaHead from '../components/MetaHead.js'
+import Layout from '../components/Layout'
+import withTitle from '../components/hoc/WithTitle'
 
-export default () => (
+export default withTitle('About | Scoreza')(() => (
   <Layout>
-    {MetaHead('about')}
     <p>This is the about page</p>
   </Layout>
-)
+))

@@ -1,15 +1,13 @@
-import Head from 'next/head'
 import Grid from '@material-ui/core/Grid'
-import Layout from '../components/Layout.js'
-import MetaHead from '../components/MetaHead.js'
+import Layout from '../components/Layout'
+import withTitle from '../components/hoc/WithTitle'
 
 import {
   styleH1,
 } from '../lib/SharedStyles.js'
 
-export default () => (
+export default withTitle('Home | Scoreza')(() => (
   <Layout>
-    {MetaHead('home')}
     <div style={{ padding: '10px 8%', fontSize: '15px' }}>
       <Grid container direction="row" justify="space-around" align="flex-start">
         <Grid item sm={12} xs={12} style={{ textAlign: 'center' }}>
@@ -19,4 +17,4 @@ export default () => (
       </Grid>
     </div>
   </Layout>
-)
+))
