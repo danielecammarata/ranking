@@ -7,7 +7,7 @@ const Footer = () => (
   <div>
     <Toolbar style={styleToolbar}>
       <Grid container direction="row" justify="space-around" alignItems="center">
-        <span>© 2018 Scoreza</span>
+        <span>© 2018 Scoreza - Eat less play more</span>
         <a
           style={{ padding: '0px 20px' }}
           href="https://github.com/danielecammarata/ranking"
