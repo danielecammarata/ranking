@@ -6,6 +6,8 @@ import CardMedia from '@material-ui/core/CardMedia'
 import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
 import Layout from '../../components/Layout.js'
+import Avatars from '../../lib/Avatars.js'
+import { stylePlayer, stylePlayerBarAway, stylePlayerBarHome, stylePlayerNameAway, stylePlayerNameHome, styleTimer, styleTimerButton, styleTimerIcon, styleAddScoreButton, styleRemoveScoreButton, styleAddScoreIcon, styleRemoveScoreIcon } from '../../lib/LiveMatch'
 import { styleLedBox, styleLedRed } from '../../lib/LedStyles.js'
 import { styleH1, styleCard, styleCardContainer, styleCardContent, styleBigAvatar } from '../../lib/SharedStyles'
 
@@ -31,12 +33,14 @@ class LiveMatch extends React.Component {
       homeTeam: {
         defender: {
           name: 'darington',
-          avatarUrl: 'https://nick-intl.mtvnimages.com/uri/mgid:file:gsp:scenic:/international/nick-dev/images/series/blaze-and-the-monster-machines/character-art/darington-character-art.png?height=0&width=480&matte=true&crop=false',
+        //   avatarUrl: 'https://nick-intl.mtvnimages.com/uri/mgid:file:gsp:scenic:/international/nick-dev/images/series/blaze-and-the-monster-machines/character-art/darington-character-art.png?height=0&width=480&matte=true&crop=false',
+          avatarUrl: 'https://ungif.apps.railslabs.com/ungif?url=http://i63.tinypic.com/2d9b7mr.jpg&size=115x115',
           score: 0
         },
         striker: {
           name: 'stripes',
-          avatarUrl: 'http://www.stickpng.com/assets/images/5a5a5ed914d8c4188e0b0837.png',
+        //   avatarUrl: 'http://www.stickpng.com/assets/images/5a5a5ed914d8c4188e0b0837.png',
+          avatarUrl: 'https://ungif.apps.railslabs.com/ungif?url=http://i63.tinypic.com/whchhf.jpg&size=115x115',
           score: 0
         },
         score: 0
@@ -44,12 +48,14 @@ class LiveMatch extends React.Component {
       awayTeam: {
         defender: {
           name: 'zeg',
-          avatarUrl: 'http://www.stickpng.com/assets/images/5a5a5ee114d8c4188e0b0838.png',
+        //   avatarUrl: 'http://www.stickpng.com/assets/images/5a5a5ee114d8c4188e0b0838.png',
+          avatarUrl: 'https://ungif.apps.railslabs.com/ungif?url=https://preview.ibb.co/bB70j5/IMG_0193.jpg&size=115x115',
           score: 0
         },
         striker: {
           name: 'blaze',
-          avatarUrl: 'http://www.stickpng.com/assets/images/5a5a5eed14d8c4188e0b0839.png',
+        //   avatarUrl: 'http://www.stickpng.com/assets/images/5a5a5eed14d8c4188e0b0839.png',
+          avatarUrl: 'https://ungif.apps.railslabs.com/ungif?url=https://s3.amazonaws.com/uploads.hipchat.com/22279/1927309/HnDbJMu9i69oopB/upload.png&size=115x115',
           score: 0
         },
         score: 0
@@ -123,81 +129,58 @@ class LiveMatch extends React.Component {
           justifyContent: 'space-around',
           overflow: 'hidden'
         }}>
-          <GridList cellHeight={180} style={{
-            width: 500,
-            position: 'relative'
+          <GridList style={{
+            position: 'relative',
+            width: '100%'
           }}>
             {/* HOME TEAM */}
-            <Avatar
-              style={{
-                width: '45px',
-                height: '45px',
-                padding: 0,
-                position: 'absolute',
-                top: '25%',
-                left: '50%',
-                zIndex: '2',
-                marginTop: '-28px',
-                marginLeft: '-22.5px',
-                backgroundColor: 'orange'
-              }}
-            >
+            {/* <Avatar style={Avatars}>
               {'' + this.state.homeTeam.score}
-            </Avatar>
+            </Avatar> */}
 
-            <GridListTile cols="1" rows="1">
-              <img
-                alt={this.state.homeTeam.defender.name}
-                src={this.state.homeTeam.defender.avatarUrl}
-              />
+            <GridListTile cols="1" rows="1" style={stylePlayer(this.state.homeTeam.defender.avatarUrl)}>
+              <p style={stylePlayerNameHome}>{this.state.homeTeam.defender.name}</p>
               <GridListTileBar
-                title={this.state.homeTeam.defender.name}
+                style={stylePlayerBarHome}
                 actionIcon={
-                  <div>
-                  <IconButton style={{
-                    color: 'rgba(255, 255, 255, 0.54)'
-                  }}>
-                    <RemoveIcon
-                      onClick={() => this.removeGoalBy('homeTeam', 'defender')}
-                    />
-                  </IconButton>
-                  <IconButton>
-                    <Avatar>
-                      {'' + this.state.homeTeam.defender.score}
-                    </Avatar>
-                  </IconButton>
-                  <IconButton style={{
-                    color: 'rgba(255, 255, 255, 0.54)'
-                  }}>
-                    <AddIcon
-                      onClick={() => this.addGoalBy('homeTeam', 'defender')}
-                    />
-                  </IconButton>
+                  <div style={{position: 'absolute', left: '0', bottom: 0, width: '100%', textAlign: 'left'}}>
+                    <IconButton style={styleRemoveScoreButton}>
+                        <RemoveIcon style={styleRemoveScoreIcon}
+                        onClick={() => this.removeGoalBy('homeTeam', 'defender')}
+                        />
+                    </IconButton>
+                    <IconButton style={styleAddScoreButton}>
+                        <AddIcon style={styleAddScoreIcon}
+                          onClick={() => this.addGoalBy('homeTeam', 'defender')}
+                        />
+                    </IconButton>
+                    <IconButton>
+                        <Avatar>
+                        {'' + this.state.homeTeam.defender.score}
+                        </Avatar>
+                    </IconButton>
                   </div>
                 }
               />
             </GridListTile>
 
-            <GridListTile cols="1" rows="1">
-              <img
-                alt={this.state.homeTeam.striker.name}
-                src={this.state.homeTeam.striker.avatarUrl}
-              />
+            <GridListTile cols="1" rows="1" style={stylePlayer(this.state.homeTeam.striker.avatarUrl)}>
+              <p style={stylePlayerNameHome}>{this.state.homeTeam.striker.name}</p>
               <GridListTileBar
-                title={this.state.homeTeam.striker.name}
+                style={stylePlayerBarHome}
                 actionIcon={
-                  <div>
+                  <div style={{position: 'absolute', right: '0', bottom: 0, width: '100%', textAlign: 'right'}}>
+                    <IconButton>
+                      <Avatar>
+                        {'' + this.state.homeTeam.striker.score}
+                      </Avatar>
+                    </IconButton>
                     <IconButton style={{
                       color: 'rgba(255, 255, 255, 0.54)'
                     }}>
                       <RemoveIcon
                         onClick={() => this.removeGoalBy('homeTeam', 'striker')}
                       />
-                    </IconButton>
-                    <IconButton>
-                      <Avatar>
-                        {'' + this.state.homeTeam.striker.score}
-                      </Avatar>
                     </IconButton>
                     <IconButton style={{
                       color: 'rgba(255, 255, 255, 0.54)'
@@ -210,41 +193,30 @@ class LiveMatch extends React.Component {
                 }
               />
             </GridListTile>
+            
             <GridListTile cols={2} style={{ height: 'auto' }}>
-              <IconButton style={{
-                color: '#000'
-              }}>
-                <TimerIcon />
-              </IconButton>
-              <div style={{
-                display: 'inline-block',
-                width: '65px',
-                border: '1px solid',
-                textAlign: 'center',
-                height: '30px',
-                lineHeight: '30px',
-                borderRadius: '8px'
-              }}>
+              <div style={styleTimer}>
+                <IconButton style={styleTimerButton}>
+                    <TimerIcon style={{fontSize: '30px', marginLeft: '-10px', marginTop: '-5px'}} />
+                </IconButton>
                 {this.state.timer}
               </div>
-              <IconButton style={{
-                color: '#000'
-              }}>
-                <PlayIcon
-                  onClick={this.activateTimer}
-                />
-              </IconButton>
-              <IconButton style={{
-                color: '#000'
-              }}>
-                <PauseIcon
+              <div style={{clear: 'both', float: 'none'}}></div>
+              <IconButton style={styleTimerButton}>
+                <PauseIcon 
+                  style={styleTimerIcon}
                   onClick={this.pauseTimer}
                 />
               </IconButton>
-              <IconButton style={{
-                color: '#000'
-              }}>
-                <ReplayIcon
+              <IconButton style={styleTimerButton}>
+                <PlayIcon 
+                  style={styleTimerIcon}
+                  onClick={this.activateTimer}
+                />
+              </IconButton>
+              <IconButton style={styleTimerButton}>
+                <ReplayIcon 
+                  style={styleTimerIcon}
                   onClick={this.resetTimer}
                 />
               </IconButton>
@@ -267,15 +239,12 @@ class LiveMatch extends React.Component {
             >
               {'' + this.state.awayTeam.score}
             </Avatar>
-            <GridListTile cols="1" rows="1">
-              <img
-                alt={this.state.awayTeam.defender.name}
-                src={this.state.awayTeam.defender.avatarUrl}
-              />
+            <GridListTile cols="1" rows="1" style={stylePlayer(this.state.awayTeam.defender.avatarUrl)}>
+              <p style={stylePlayerNameAway}>{this.state.awayTeam.defender.name}</p>
               <GridListTileBar
-                title={this.state.awayTeam.defender.name}
+                style={stylePlayerBarAway}
                 actionIcon={
-                  <div>
+                  <div style={{position: 'absolute', left: '0', bottom: 0, width: '100%', textAlign: 'left'}}>
                     <IconButton style={{
                       color: 'rgba(255, 255, 255, 0.54)'
                     }}>
@@ -283,43 +252,40 @@ class LiveMatch extends React.Component {
                         onClick={() => this.removeGoalBy('awayTeam', 'defender')}
                       />
                     </IconButton>
-                    <IconButton>
-                      <Avatar>
-                        {'' + this.state.awayTeam.defender.score}
-                      </Avatar>
-                    </IconButton>
                     <IconButton style={{
-                      color: 'rgba(255, 255, 255, 0.54)'
+                        color: 'rgba(255, 255, 255, 0.54)'
                     }}>
                       <AddIcon
                         onClick={() => this.addGoalBy('awayTeam', 'defender')}
-                      />
+                        />
+                    </IconButton>
+                    <IconButton>
+                        <Avatar>
+                        {'' + this.state.awayTeam.defender.score}
+                        </Avatar>
                     </IconButton>
                   </div>
                 }
               />
             </GridListTile>
 
-            <GridListTile cols="1" rows="1">
-              <img
-                alt={this.state.awayTeam.striker.name}
-                src={this.state.awayTeam.striker.avatarUrl}
-              />
+            <GridListTile cols="1" rows="1" style={stylePlayer(this.state.awayTeam.striker.avatarUrl)}>
+              <p style={stylePlayerNameAway}>{this.state.awayTeam.striker.name}</p>
               <GridListTileBar
-                title={this.state.awayTeam.striker.name}
+                style={stylePlayerBarAway}
                 actionIcon={
-                  <div>
+                  <div style={{position: 'absolute', left: '0', bottom: 0, width: '100%', textAlign: 'right'}}>
+                    <IconButton>
+                      <Avatar>
+                        {'' + this.state.awayTeam.striker.score}
+                      </Avatar>
+                    </IconButton>
                     <IconButton style={{
                       color: 'rgba(255, 255, 255, 0.54)'
                     }}>
                       <RemoveIcon
                         onClick={() => this.removeGoalBy('awayTeam', 'striker')}
                       />
-                    </IconButton>
-                    <IconButton>
-                      <Avatar>
-                        {'' + this.state.awayTeam.striker.score}
-                      </Avatar>
                     </IconButton>
                     <IconButton style={{
                       color: 'rgba(255, 255, 255, 0.54)'
