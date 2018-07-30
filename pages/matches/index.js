@@ -14,9 +14,10 @@ const Index = (props) => (
       {props.matches.map(match => (
         <li key={match.slug}>
           <div>
-            <p>{match.teamHome.defender.name} - {match.teamHome.striker.name}</p>
+            <p>{match.teamHome.defender.name} + {match.teamHome.striker.name}</p>
             <span>VS</span>
-            <p>{match.teamAway.defender.name} - {match.teamAway.striker.name}</p>
+            <p>{match.teamAway.defender.name} + {match.teamAway.striker.name}</p>
+            <p>{match.teamHome.score} - {match.teamAway.score}</p>
             {convertDate(match.createdAt)}
           </div>
         </li>
