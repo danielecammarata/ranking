@@ -69,22 +69,8 @@ class Layout extends React.Component {
           <Header handler={this.offCanvasHandler}/>
           <MiniDrawer
             toggleDrawer={this.offCanvasHandler}
-            open={this.state.drawerOpen}
+            open={this.state.isOffCanvasOpen}
           />
-          <Toolbar style={styleToolbar}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.toggleDrawer(true)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Link href="/">
-              <a className={classes.logo}>
-                <img src={`${getRootUrl()}/img/logo.png`} alt="logo" />
-              </a>
-            </Link>
-          </Toolbar>
           <div style={{ fontSize: '15px', minHeight: 'calc(100vh - 128px)' }}>
             {this.props.children}
           </div>

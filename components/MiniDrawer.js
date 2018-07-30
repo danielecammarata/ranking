@@ -42,12 +42,12 @@ class TemporaryDrawer extends React.Component {
 
     return (
       <div>
-        <Drawer open={open} onClose={this.props.toggleDrawer(false)}>
+        <Drawer open={open} onClose={this.props.toggleDrawer}>
           <div
             tabIndex={0}
             role="button"
-            onClick={this.props.toggleDrawer(false)}
-            onKeyDown={this.props.toggleDrawer(false)}
+            onClick={this.props.toggleDrawer}
+            onKeyDown={this.props.toggleDrawer}
           >
             {sideList}
           </div>
