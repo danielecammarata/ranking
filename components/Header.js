@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Toolbar from '@material-ui/core/Toolbar'
 import Grid from '@material-ui/core/Grid'
 
+import getRootUrl from '../lib/api/getRootUrl'
 import { styleToolbar, styleRaisedButton } from '../lib/SharedStyles'
 
 const linkStyle = {
@@ -22,7 +23,9 @@ const Header = () => (
       <Grid container direction="row" justify="space-around" alignItems="center">
         <Grid item sm={6} xs={1} style={{ textAlign: 'left' }}>
           <Link href="/">
-            <a style={linkStyle}>RunKing</a>
+            <a style={linkStyle}>
+              <img src={`${getRootUrl()}/img/logo.png`} alt="logo" />
+            </a>
           </Link>
         </Grid>
         <Grid item sm={4} xs={9} style={{ textAlign: 'right' }}>
