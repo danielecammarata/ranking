@@ -1,74 +1,51 @@
 import Link from 'next/link'
 import Toolbar from '@material-ui/core/Toolbar'
-import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
 import getRootUrl from '../lib/api/getRootUrl'
 import { styleToolbar } from '../lib/SharedStyles'
+import IconButton from '@material-ui/core/IconButton'
+import MenuIcon from '@material-ui/icons/Menu'
 import indigo from '@material-ui/core/colors/indigo'
 
 const styles = {
-  logo: {
-    marginRight: 15,
-    textDecoration: 'none',
-    '&:hover': {
-      opacity: 1
-    }
+  root: {
+    flexGrow: 1
   },
-  link: {
-    color: indigo[700],
-    marginRight: 15,
+  logo: {
+    background: `url(${getRootUrl()}/img/logo.png) no-repeat center center`,
+    backgroundSize: 'cover',
+    display: 'inline-block',
+    height: '100%',
     textDecoration: 'none',
+    flexBasis: 200,
+  },
+  menuButton: {
+    color: indigo[700],
+    display: 'inline-block',
+    float: 'right',
+    textDecoration: 'none',
+    justifySelf: 'flex-end',
     '&:visited': {
-      color: indigo[900]
+      color: indigo[700]
     },
     '&:hover': {
-      color: indigo[500]
+      color: indigo[700]
     }
   }
 }
 
-const Header = ({classes}) => (
-  <div
-    style={{
-      overflow: 'hidden',
-      position: 'relative',
-      display: 'block',
-      top: '0px',
-      transition: 'top 0.5s ease-in',
-    }}
-  >
+const Header = ({classes, handler}) => (
+  <AppBar position="fixed">
     <Toolbar style={styleToolbar}>
-      <Grid container direction="row" justify="space-around" alignItems="center">
-        <Grid item sm={6} xs={1} style={{ textAlign: 'left' }}>
-          <Link href="/">
-            <a className={classes.logo}>
-              <img src={`${getRootUrl()}/img/logo.png`} alt="logo" />
-            </a>
-          </Link>
-        </Grid>
-        <Grid item sm={4} xs={9} style={{ textAlign: 'right' }}>
-          <Link href="/matches">
-            <a className={classes.link}>Matches</a>
-          </Link>
-          <Link href="/matches/new">
-            <a className={classes.link}>New Match</a>
-          </Link>
-          <Link href="/matches/live">
-            <a className={classes.link}>Live Match</a>
-          </Link>
-          <Link href="/users">
-            <a className={classes.link}>Users</a>
-          </Link>
-          <Link href="/users/new">
-            <a className={classes.link}>New User</a>
-          </Link>
-          <Link href="/about">
-            <a className={classes.link}>About</a>
-          </Link>
-        </Grid>
-      </Grid>
+      <Link href="/">
+        <a title='ScoreZa' className={classes.logo} />
+      </Link>
+      <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={handler}>
+        <MenuIcon />
+      </IconButton>
     </Toolbar>
-  </div>
+  </AppBar>
 )
 
 export default withStyles(styles)(Header)

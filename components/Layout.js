@@ -9,31 +9,39 @@ import Header from './Header'
 import Footer from './Footer'
 
 class Layout extends React.Component {
-  constructor(props, context) {
+  constructor (props, context) {
     super(props, context)
     this.pageContext = this.props.pageContext || getContext()
+    this.state = {
+      isOffCanvasOpen: false
+    }
+    this.offCanvasHandler = this.offCanvasHandler.bind(this)
   }
 
   pageContext = null
 
-  render() {
+  offCanvasHandler () {
+    this.setState({isOffCanvasOpen: !this.state.isOffCanvasOpen})
+  }
+
+  render () {
     return (
       <MuiThemeProvider
         theme={this.pageContext.theme}
       >
-        <CssBaseline />
+        <CssBaseline/>
         <div>
           <Head>
-            <link rel="shortcut icon" href={`${getRootUrl()}/scoreza.png`} type="image/png" />
+            <link rel="shortcut icon" href={`${getRootUrl()}/scoreza.png`} type="image/png"/>
           </Head>
-          <Header />
-          <div style={{ fontSize: '15px', minHeight: 'calc(100vh - 128px)' }}>
+          <Header handler={this.offCanvasHandler}/>
+          <div style={{fontSize: '15px', minHeight: 'calc(100vh - 128px)'}}>
             {this.props.children}
           </div>
-          <Footer />
+          <Footer/>
         </div>
       </MuiThemeProvider>
-    );
+    )
   }
 }
 
