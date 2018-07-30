@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import { mainDrawerListItems, bottomDrawerListItems } from './tileData';
@@ -42,7 +41,7 @@ class TemporaryDrawer extends React.Component {
 
     return (
       <div>
-        <Drawer open={open} onClose={this.props.toggleDrawer}>
+        <Drawer open={open} anchor="right"  onClose={this.props.toggleDrawer}>
           <div
             tabIndex={0}
             role="button"
