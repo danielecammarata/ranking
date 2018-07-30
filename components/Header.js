@@ -7,6 +7,13 @@ import { styleToolbar } from '../lib/SharedStyles'
 import indigo from '@material-ui/core/colors/indigo'
 
 const styles = {
+  logo: {
+    marginRight: 15,
+    textDecoration: 'none',
+    '&:hover': {
+      opacity: 1
+    }
+  },
   link: {
     color: indigo[700],
     marginRight: 15,
@@ -15,14 +22,9 @@ const styles = {
       color: indigo[900]
     },
     '&:hover': {
-      color: indigo[500],
+      color: indigo[500]
     }
   }
-}
-
-const linkStyle = {
-  marginRight: 15,
-  textDecoration: 'none'
 }
 
 const Header = ({classes}) => (
@@ -39,7 +41,7 @@ const Header = ({classes}) => (
       <Grid container direction="row" justify="space-around" alignItems="center">
         <Grid item sm={6} xs={1} style={{ textAlign: 'left' }}>
           <Link href="/">
-            <a style={linkStyle}>
+            <a className={classes.logo}>
               <img src={`${getRootUrl()}/img/logo.png`} alt="logo" />
             </a>
           </Link>
