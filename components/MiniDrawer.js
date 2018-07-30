@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import { mainDrawerListItems, bottomDrawerListItems } from './tileData';
+import {  mainDrawerUser, mainDrawerInfo, mainDrawerMatch } from './tileData';
 import indigo from '@material-ui/core/colors/indigo'
 
 const styles = {
@@ -33,9 +33,11 @@ class TemporaryDrawer extends React.Component {
 
     const sideList = (
       <div className={classes.list}>
-        <List>{mainDrawerListItems}</List>
+        <List>{mainDrawerMatch}</List>
         <Divider />
-        <List>{bottomDrawerListItems}</List>
+        <List>{mainDrawerUser}</List>
+        <Divider />
+        <List>{mainDrawerInfo}</List>
       </div>
     );
 
