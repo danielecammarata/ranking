@@ -38,36 +38,37 @@ const styles = {
 }
 
 class Layout extends React.Component {
-  constructor(props, context) {
+  constructor (props, context) {
     super(props, context)
     this.pageContext = this.props.pageContext || getContext()
+    this.state = {
+      isOffCanvasOpen: false
+    }
+    this.offCanvasHandler = this.offCanvasHandler.bind(this)
   }
 
   pageContext = null
 
-  state = {
-    drawerOpen: false
+  offCanvasHandler () {
+    this.setState({isOffCanvasOpen: !this.state.isOffCanvasOpen})
   }
 
-  toggleDrawer = (open) => () => {
-    this.setState({
-      drawerOpen: open
-    })
-  }
 
   render() {
     const { classes } = this.props
+
     return (
       <MuiThemeProvider
         theme={this.pageContext.theme}
       >
-        <CssBaseline />
+        <CssBaseline/>
         <div>
           <Head>
-            <link rel="shortcut icon" href={`${getRootUrl()}/scoreza.png`} type="image/png" />
+            <link rel="shortcut icon" href={`${getRootUrl()}/scoreza.png`} type="image/png"/>
           </Head>
+          <Header handler={this.offCanvasHandler}/>
           <MiniDrawer
-            toggleDrawer={this.toggleDrawer}
+            toggleDrawer={this.offCanvasHandler}
             open={this.state.drawerOpen}
           />
           <Toolbar style={styleToolbar}>
@@ -87,10 +88,10 @@ class Layout extends React.Component {
           <div style={{ fontSize: '15px', minHeight: 'calc(100vh - 128px)' }}>
             {this.props.children}
           </div>
-          <Footer />
+          <Footer/>
         </div>
       </MuiThemeProvider>
-    );
+    )
   }
 }
 
