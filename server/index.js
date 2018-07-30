@@ -7,7 +7,7 @@ require('dotenv').config()
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 8000
-const ROOT_URL = dev ? `http://localhost:${port}` : 'https://builderbook.org'
+const ROOT_URL = dev ? `http://localhost:${port}` : 'https://scoreza.herokuapp.com'
 
 const MONGO_URL = dev ? process.env.MONGO_URL_TEST : process.env.MONGO_URL
 
@@ -25,6 +25,8 @@ const handle = app.getRequestHandler()
 
 app.prepare().then(() => {
   const server = express()
+
+  server.use(express.static('public'))
 
   server.use(express.json())
   

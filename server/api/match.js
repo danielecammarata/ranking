@@ -4,49 +4,45 @@ const express = require('express')
 const router = express.Router()
 
 const Match = require('../models/Match')
+const User = require('../models/User')
 
-// router.get('/books', async (req, res) => {
-//   try {
-//     const books = await Book.list();
-//     res.json(books);
-//   } catch (err) {
-//     res.json({ error: err.message || err.toString() });
-//   }
-// })
-
-router.get('/get', (req, res) => {
+router.get('/get', async (req, res) => {
   try {
-    const matches = [
-      {
-        id: 1,
-        date: '2018/07/25',
-        homeTeam: {
-          userId: 1,
-          userId: 2,
-          score: 6
-        },
-        awayTeam: {
-          userId: 3,
-          userId: 4,
-          score: 4
-        }
-      }
-    ]
-    res.json(matches);
+    if (process.env.offline !== 'false') {
+      res.json(
+        [{
+          id: 1,
+          date: '2018/07/25',
+          homeTeam: {
+            defender: 1,
+            striker: 2,
+            score: 6
+          },
+          awayTeam: {
+            defender: 1,
+            striker: 2,
+            score: 4
+          }
+        }]
+      )
+    }
+    
+    Match.find()
+      .populate([
+        {path: 'teamHome.defender', model: 'User'}, 
+        {path: 'teamHome.striker', model: 'User'}, 
+        {path: 'teamAway.defender', model: 'User'}, 
+        {path: 'teamAway.striker', model: 'User'}
+      ])
+      .sort({ createdAt: -1 })
+      .exec((err, rs) => {
+          res.json(rs)
+      })    
   } catch (err) {
     res.json({ error: err.message || err.toString() });
   }
 })
 
-// router.post('/books/add', async (req, res) => {
-//   try {
-//     const book = await Book.add(Object.assign({ userId: req.user.id }, req.body));
-//     res.json(book);
-//   } catch (err) {
-//     logger.error(err);
-//     res.json({ error: err.message || err.toString() });
-//   }
-// })
 router.post('/add', (req, res) => {
   const { teamAway, teamHome } = req.body
   const slug = Match.generateSlug()
