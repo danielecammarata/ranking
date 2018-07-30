@@ -16,14 +16,15 @@
     "@material-ui/icons": "^2.0.0",
     "arpad": "^1.0.2",
     "dotenv": "^6.0.0",
+    "downshift": "",
     "express": "^4.16.3",
     "isomorphic-unfetch": "^2.1.0",
     "lodash": "^4.17.10",
     "mongoose": "^5.2.5",
     "next": "^6.1.1",
-    "downshift": "",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-jss": "^8.6.1",
     "uuid": "^3.0.0"
   },
   "devDependencies": {
