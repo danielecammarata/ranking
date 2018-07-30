@@ -2,7 +2,7 @@
 const mongoose = require('mongoose')
 const pick = require('lodash/pick')
 var uuid = require('uuid');
-
+const User = require('./User')
 
 const { Schema } = mongoose
 
@@ -10,26 +10,26 @@ const mongoSchema = new Schema({
   teamHome: {
     defender: {
       type: Schema.Types.ObjectId,
-      required: true,
-      unique: true
+      ref: 'User',
+      required: true
     },
     striker: {
       type: Schema.Types.ObjectId,
-      required: true,
-      unique: true
+      ref: 'User',
+      required: true
     },
     score: Number
   },
   teamAway: {
     defender: {
       type: Schema.Types.ObjectId,
-      required: true,
-      unique: true
+      ref: 'User',
+      required: true
     },
     striker: {
       type: Schema.Types.ObjectId,
-      required: true,
-      unique: true
+      ref: 'User',
+      required: true
     },
     score: Number
   },
@@ -37,7 +37,7 @@ const mongoSchema = new Schema({
   slug: {
     type: String,
     required: true,
-    unique: true,
+    unique: true
   },
   createdAt: {
     type: Date,
@@ -48,10 +48,12 @@ const mongoSchema = new Schema({
 class MatchClass {
   static async list({ offset = 0, limit = 10 } = {}) {
     const matches = await this.find({})
+      .populate('teamHome.defender')
       .sort({ createdAt: -1 })
       .skip(offset)
-      .limit(limit);
-    return { matches };
+      .limit(limit)
+      .exec()
+    return { matches }
   }
 
   static async addMatch({

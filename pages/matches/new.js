@@ -2,8 +2,11 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
+import Downshift from 'downshift'
+import Paper from '@material-ui/core/Paper'
+import MenuItem from '@material-ui/core/MenuItem'
 
-import Autocomplete from 'react-autocomplete'
+import Router from 'next/router'
 
 import Layout from '../../components/Layout.js'
 import { getUsersList} from '../../lib/api/users'
@@ -69,13 +72,65 @@ class AddMatch extends React.Component {
     })
   
     this.setState({ matchAdded: true })
+    Router.push('/matches')
   }
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    })
-  }
+//   handleChange = name => event => {
+//     this.setState({
+//       [name]: event.target.value,
+//     })
+//   }
+    getSuggestions(inputValue) {
+        let count = 0
+
+        return this.state.players.filter(suggestion => {
+            const keep =
+            (!inputValue || suggestion.name.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1) &&
+            count < 5;
+
+            if (keep) {
+            count += 1
+            }
+
+            return keep
+        });
+    }
+
+    renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem }) {
+        const isHighlighted = highlightedIndex === index
+        const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1
+
+        return (
+            <MenuItem
+            {...itemProps}
+            key={suggestion.name}
+            selected={isHighlighted}
+            data={suggestion}
+            component="div"
+            style={{
+                fontWeight: isSelected ? 500 : 400,
+            }}
+            >
+            {suggestion.name}
+            </MenuItem>
+        )
+    }
+
+    renderInput(inputProps) {
+    const { InputProps, classes, ref, ...other } = inputProps
+
+    return (
+        <TextField
+        InputProps={{
+            inputRef: ref,
+            classes: {
+            },
+            ...InputProps,
+        }}
+        {...other}
+        />
+    )
+    }
 
   render() {
     return (
@@ -94,7 +149,7 @@ class AddMatch extends React.Component {
                 <h3>Defender</h3>
                 <img src={this.state.teamHome.defender.avatarUrl} alt={this.state.teamHome.defender.name} />
                 <p>{this.state.teamHome.defender.name}</p>
-                <Autocomplete 
+                {/* <Autocomplete 
                     getItemValue={(player) => player.name}
                     value={this.state.search}
                     items={this.state.players.filter((item) => item.name !== this.state.teamHome.defender.name)}
@@ -119,13 +174,77 @@ class AddMatch extends React.Component {
                             <p>{item.name}</p>
                         </div>
                     )}
-                />
+                /> */}
+                <Downshift
+                onSelect={(item, stateAndHelpers) => {
+                        const selection = this.state.players.filter((player) => player.name === item).shift()
+                        const defender = Object.assign({}, this.state.teamHome, {defender: selection} )
+                        this.setState({ teamHome: defender})
+                    }}
+                >
+                    {({ getInputProps, getItemProps, isOpen, inputValue, selectedItem, highlightedIndex }) => (
+                    <div>
+                        {this.renderInput({
+                        fullWidth: true,
+                        InputProps: getInputProps({
+                            placeholder: 'Search a User',
+                            id: 'integration-downshift-simple',
+                        }),
+                        })}
+                        {isOpen ? (
+                        <Paper square>
+                            {this.getSuggestions(inputValue).map((suggestion, index) =>
+                            this.renderSuggestion({
+                                suggestion,
+                                index,
+                                itemProps: getItemProps({ item: suggestion.name }),
+                                highlightedIndex,
+                                selectedItem,
+                            }),
+                            )}
+                        </Paper>
+                        ) : null}
+                    </div>
+                    )}
+                </Downshift>
             </div>
             <div id="teamHomeStriker">
                 <h3>Striker</h3>
                 <img src={this.state.teamHome.striker.avatarUrl} alt={this.state.teamHome.striker.name} />
                 <p>{this.state.teamHome.striker.name}</p>
-                <Autocomplete 
+                <Downshift
+                onSelect={(item, stateAndHelpers) => {
+                        const selection = this.state.players.filter((player) => player.name === item).shift()
+                        const striker = Object.assign({}, this.state.teamHome, {striker: selection} )
+                        this.setState({ teamHome: striker})
+                    }}
+                >
+                    {({ getInputProps, getItemProps, isOpen, inputValue, selectedItem, highlightedIndex }) => (
+                    <div>
+                        {this.renderInput({
+                        fullWidth: true,
+                        InputProps: getInputProps({
+                            placeholder: 'Search a User',
+                            id: 'integration-downshift-simple',
+                        }),
+                        })}
+                        {isOpen ? (
+                        <Paper square>
+                            {this.getSuggestions(inputValue).map((suggestion, index) =>
+                            this.renderSuggestion({
+                                suggestion,
+                                index,
+                                itemProps: getItemProps({ item: suggestion.name }),
+                                highlightedIndex,
+                                selectedItem,
+                            }),
+                            )}
+                        </Paper>
+                        ) : null}
+                    </div>
+                    )}
+                </Downshift>
+                {/* <Autocomplete 
                     getItemValue={(player) => player.name}
                     value={this.state.search}
                     items={this.state.players.filter((item) => item.name !== this.state.teamHome.striker.name)}
@@ -150,7 +269,7 @@ class AddMatch extends React.Component {
                             <p>{item.name}</p>
                         </div>
                     )}
-                />
+                /> */}
             </div>
             <TextField
                 style={styleTextField}
@@ -168,7 +287,7 @@ class AddMatch extends React.Component {
                 <h3>Defender</h3>
                 <img src={this.state.teamAway.defender.avatarUrl} alt={this.state.teamAway.defender.name} />
                 <p>{this.state.teamAway.defender.name}</p>
-                <Autocomplete 
+                {/* <Autocomplete 
                     getItemValue={(player) => player.name}
                     value={this.state.search}
                     items={this.state.players.filter((item) => item.name !== this.state.teamAway.defender.name)}
@@ -193,13 +312,45 @@ class AddMatch extends React.Component {
                             <p>{item.name}</p>
                         </div>
                     )}
-                />
+                /> */}
+                <Downshift
+                onSelect={(item, stateAndHelpers) => {
+                        const selection = this.state.players.filter((player) => player.name === item).shift()
+                        const defender = Object.assign({}, this.state.teamAway, {defender: selection} )
+                        this.setState({ teamAway: defender})
+                    }}
+                >
+                    {({ getInputProps, getItemProps, isOpen, inputValue, selectedItem, highlightedIndex }) => (
+                    <div>
+                        {this.renderInput({
+                        fullWidth: true,
+                        InputProps: getInputProps({
+                            placeholder: 'Search a User',
+                            id: 'integration-downshift-simple',
+                        }),
+                        })}
+                        {isOpen ? (
+                        <Paper square>
+                            {this.getSuggestions(inputValue).map((suggestion, index) =>
+                            this.renderSuggestion({
+                                suggestion,
+                                index,
+                                itemProps: getItemProps({ item: suggestion.name }),
+                                highlightedIndex,
+                                selectedItem,
+                            }),
+                            )}
+                        </Paper>
+                        ) : null}
+                    </div>
+                    )}
+                </Downshift>
             </div>
             <div id="teamAwayStriker">
                 <h3>Striker</h3>
                 <img src={this.state.teamAway.striker.avatarUrl} alt={this.state.teamAway.striker.name} />
                 <p>{this.state.teamAway.striker.name}</p>
-                <Autocomplete 
+                {/* <Autocomplete 
                     getItemValue={(player) => player.name}
                     value={this.state.search}
                     items={this.state.players.filter((item) => item.name !== this.state.teamAway.striker.name)}
@@ -224,7 +375,39 @@ class AddMatch extends React.Component {
                             <p>{item.name}</p>
                         </div>
                     )}
-                />
+                /> */}
+                <Downshift
+                onSelect={(item, stateAndHelpers) => {
+                        const selection = this.state.players.filter((player) => player.name === item).shift()
+                        const striker = Object.assign({}, this.state.teamAway, {striker: selection} )
+                        this.setState({ teamAway: striker})
+                    }}
+                >
+                    {({ getInputProps, getItemProps, isOpen, inputValue, selectedItem, highlightedIndex }) => (
+                    <div>
+                        {this.renderInput({
+                        fullWidth: true,
+                        InputProps: getInputProps({
+                            placeholder: 'Search a User',
+                            id: 'integration-downshift-simple',
+                        }),
+                        })}
+                        {isOpen ? (
+                        <Paper square>
+                            {this.getSuggestions(inputValue).map((suggestion, index) =>
+                            this.renderSuggestion({
+                                suggestion,
+                                index,
+                                itemProps: getItemProps({ item: suggestion.name }),
+                                highlightedIndex,
+                                selectedItem,
+                            }),
+                            )}
+                        </Paper>
+                        ) : null}
+                    </div>
+                    )}
+                </Downshift>
             </div>
             <TextField
                 style={styleTextField}

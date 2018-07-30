@@ -3,3 +3,12 @@ node_modules/
 mongodb-data/
 .next/
 *.log
+
+# OS
+.DS_Store
+
+# IntelliJ project files
+*.iml
+*.iws
+*.ipr
+.idea/

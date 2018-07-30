@@ -1,53 +1,49 @@
 import Link from 'next/link'
 import Toolbar from '@material-ui/core/Toolbar'
-import Grid from '@material-ui/core/Grid'
+import { withStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import getRootUrl from '../lib/api/getRootUrl'
+import { styleToolbar } from '../lib/SharedStyles'
+import IconButton from '@material-ui/core/IconButton'
+import MenuIcon from '@material-ui/icons/Menu'
+import indigo from '@material-ui/core/colors/indigo'
 
-import { styleToolbar, styleRaisedButton } from '../lib/SharedStyles'
-
-const linkStyle = {
-  marginRight: 15
+const styles = {
+  root: {
+    flexGrow: 1
+  },
+  logo: {
+    background: `url(${getRootUrl()}/img/logo.png) no-repeat center center`,
+    backgroundSize: 'cover',
+    display: 'inline-block',
+    height: '100%',
+    textDecoration: 'none',
+    flexBasis: 200,
+  },
+  menuButton: {
+    color: indigo[700],
+    display: 'inline-block',
+    textDecoration: 'none',
+    '&:visited': {
+      color: indigo[700]
+    },
+    '&:hover': {
+      color: indigo[700]
+    }
+  }
 }
 
-const Header = () => (
-  <div
-    style={{
-      overflow: 'hidden',
-      position: 'relative',
-      display: 'block',
-      top: '0px',
-      transition: 'top 0.5s ease-in',
-    }}
-  >
+const Header = ({classes, handler}) => (
+  <AppBar position="fixed">
     <Toolbar style={styleToolbar}>
-      <Grid container direction="row" justify="space-around" alignItems="center">
-        <Grid item sm={6} xs={1} style={{ textAlign: 'left' }}>
-          <Link href="/">
-            <a style={linkStyle}>RunKing</a>
-          </Link>
-        </Grid>
-        <Grid item sm={4} xs={9} style={{ textAlign: 'right' }}>
-          <Link href="/matches">
-            <a style={linkStyle}>Matches</a>
-          </Link>
-          <Link href="/matches/new">
-            <a style={linkStyle}>New Match</a>
-          </Link>
-          <Link href="/matches/live">
-            <a style={linkStyle}>Live Match</a>
-          </Link>
-          <Link href="/users">
-            <a style={linkStyle}>Users</a>
-          </Link>
-          <Link href="/users/new">
-            <a style={linkStyle}>New User</a>
-          </Link>
-          <Link href="/about">
-            <a style={linkStyle}>About</a>
-          </Link>
-        </Grid>
-      </Grid>
+      <Link href="/">
+        <a title='ScoreZa' className={classes.logo} />
+      </Link>
+      <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={handler}>
+        <MenuIcon />
+      </IconButton>
     </Toolbar>
-  </div>
+  </AppBar>
 )
 
-export default Header
+export default withStyles(styles)(Header)
