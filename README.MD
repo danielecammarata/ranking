@@ -6,5 +6,20 @@
 * ELO Rating System: [Arpad](https://github.com/tlhunter/node-arpad)
 
 ### To start developing
-* yarn
-* yarn dev
+```bash
+  $ yarn
+  $ yarn dev
+```
+
+### If you have docker-compose installed (only on dev environment)
+To start the development environment
+```bash
+  $ docker-compose up
+```
+
+To shutdown the development environment
+```bash
+  $ CTRL + C
+  $ docker-compose down
+```
+
