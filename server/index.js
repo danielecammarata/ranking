@@ -33,7 +33,7 @@ app.prepare().then(() => {
         next();
       } else {
         // request was via http, so redirect to https
-        res.redirect('https://' + req.headers.host + req.url);
+        res.redirect('https://scoreza.herokuapp.com' + req.url);
       }
     })
   }
