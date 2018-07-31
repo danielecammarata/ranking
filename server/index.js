@@ -32,6 +32,9 @@ app.prepare().then(() => {
   
   api(server)
   
+  server.get('/users/:slug', (req, res) => {
+    return app.render(req, res, `/users/update`, { slug: req.params.slug })
+  })
   // give all Nextjs's request to Nextjs server
   server.get('*', (req, res) => {
     handle(req, res)

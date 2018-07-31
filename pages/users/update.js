@@ -1,6 +1,5 @@
 import React from 'react'
 import Router from 'next/router'
-import { withRouter } from 'next/router'
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
@@ -11,10 +10,11 @@ import { styleH1, styleForm, styleTextField, styleRaisedButton } from '../../lib
 
 class UpdateUser extends React.Component {
   constructor(props) {
+    console.log(props)
     super(props)
     this.state = {
-      slug: props.router.query.slug,
-      name: props.router.query.slug,
+      slug: props.url.query.slug,
+      name: props.url.query.slug,
       avatarUrl: props.avatarUrl
     }
   }
@@ -35,7 +35,7 @@ class UpdateUser extends React.Component {
     event.preventDefault()
 
     const users = await updateUser({
-      id: this.props.id,
+      slug: this.state.slug,
       name: this.state.name,
       avatarUrl: this.state.avatarUrl
     })
@@ -90,4 +90,4 @@ class UpdateUser extends React.Component {
   }
 }
 
-export default withRouter(UpdateUser)
+export default UpdateUser
