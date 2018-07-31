@@ -6,7 +6,8 @@ const router = express.Router()
 const Match = require('../models/Match')
 const User = require('../models/User')
 
-router.get('/get', async (req, res) => {
+router.get('/get/:offset/:limit/', async (req, res) => {
+  const { offset = 0, limit = 2 } = req.params
   try {
     if (process.env.offline !== 'false') {
       res.json(
@@ -35,6 +36,8 @@ router.get('/get', async (req, res) => {
         {path: 'teamAway.striker', model: 'User'}
       ])
       .sort({ createdAt: -1 })
+      .skip(parseInt(offset))
+      .limit(parseInt(limit))
       .exec((err, rs) => {
           res.json(rs)
       })    
