@@ -34,6 +34,14 @@ const styles = {
     '&:hover': {
       color: indigo[500]
     }
+  },
+  main: {
+    backgroundColor: 'rgba(255, 255, 255, 0.75)',
+    margin: '0 auto',
+    maxWidth: '480px',
+    minHeight: 'calc(100vh - 128px)',
+    padding: '30px 20px',
+    position: 'relative'
   }
 }
 
@@ -53,9 +61,8 @@ class Layout extends React.Component {
     this.setState({isOffCanvasOpen: !this.state.isOffCanvasOpen})
   }
 
-
-  render() {
-    const { classes } = this.props
+  render () {
+    const {classes} = this.props
 
     return (
       <MuiThemeProvider
@@ -71,8 +78,10 @@ class Layout extends React.Component {
             toggleDrawer={this.offCanvasHandler}
             open={this.state.isOffCanvasOpen}
           />
-          <div style={{ fontSize: '15px', minHeight: 'calc(100vh - 64px)', paddingTop: '80px' }}>
-            {this.props.children}
+          <div style={{fontSize: '15px', paddingTop: '64px'}}>
+            <main className={classes.main}>
+              {this.props.children}
+            </main>
           </div>
           <Footer/>
         </div>

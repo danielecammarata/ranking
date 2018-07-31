@@ -13,8 +13,36 @@ router.get('/get/:slug', async (req, res) => {
         {
           _id: 'sadksahdas',
           slug: 'mucci',
+          name: 'Gabo',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        },
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
           name: 'Mucci',
-          avatarUrl: 'https://myavatar/something',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        },
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
+          name: 'Moiolish',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        },
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
+          name: 'The Boss',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        },
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
+          name: 'giamma',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
           points: 1200
         }
       )
@@ -81,38 +109,5 @@ router.delete('/delete/:userId', (req, res) => {
     res.json(rs)
   })
 })
-  // try {
-  //   const users = [
-  //     {
-  //       id: 1,
-  //       name: 'Mucci',
-  //       points: 1200
-  //     },
-  //     {
-  //       id: 2,
-  //       name: 'Moioli',
-  //       points: 1700
-  //     },
-  //     {
-  //       id: 3,
-  //       name: 'Slow',
-  //       points: 950
-  //     },
-  //     {
-  //       id: 4,
-  //       name: 'Boss',
-  //       points: 2500
-  //     },
-  //     {
-  //       id: 5,
-  //       name: 'Gabo',
-  //       points: 1200
-  //     }
-  //   ]
-  //   res.json(users);
-  // } catch (err) {
-  //   res.json({ error: err.message || err.toString() });
-  // }
-
 
 module.exports = router
