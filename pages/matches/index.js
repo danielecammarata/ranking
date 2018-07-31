@@ -23,7 +23,7 @@ class IndexMatch extends React.Component {
       if(this.state.matches.length <= 0){
         const data = await getMatchesList(0, 1)
         this.setState({ matches: data })
-      }      
+      }
     } catch (err) {
       console.log(err)
     }
@@ -59,7 +59,6 @@ class IndexMatch extends React.Component {
             <img style={{float:'left', height:'calc(25vw * 3 / 4)', width: '50%'}} src={match.teamHome.striker.avatarUrl} alt={match.teamHome.striker.name} />
             <img style={{float:'left', height:'calc(25vw * 3 / 4)', width: '50%'}} src={match.teamAway.defender.avatarUrl} alt={match.teamAway.defender.name} />
             <img style={{float:'left', height:'calc(25vw * 3 / 4)', width: '50%'}} src={match.teamAway.striker.avatarUrl} alt={match.teamAway.striker.name} />
-            <img/>
             <GridListTileBar
               title={<span>{match.teamHome.defender.name}, {match.teamHome.striker.name} {match.teamHome.score} - {match.teamAway.score} {match.teamAway.defender.name}, {match.teamAway.striker.name}</span>}
               subtitle={<span>{this.convertDate(match.createdAt)}</span>}
