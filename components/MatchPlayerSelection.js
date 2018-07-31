@@ -161,9 +161,9 @@ class MatchPlayerSelection extends React.Component {
           onError={() => this.src=`${getRootUrl()}/img/user_placeholder.jpg`}
         />
         {name &&
-        <GridListTileBar
-          title={name}
-        />
+          <GridListTileBar
+            title={name}
+          />
         }
         <Button
           style={{

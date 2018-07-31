@@ -41,18 +41,11 @@ const styles = theme => ({
 })
 
 class MatchPlayerHeader extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      score: 0,
-      defenderScore: 0,
-      strikerScore: 0
-    }
-  }
-
   handleScoreChange = (event, state) => {
-    console.log(event.target.value, state)
-    this.setState({[state]: event.target.value})
+    this.props.onScoreChange({
+      selector: `${this.props.selector}${state}`,
+      value: parseInt(event.target.value)
+    })
   }
 
   render () {
@@ -75,7 +68,7 @@ class MatchPlayerHeader extends React.Component {
                   <TextField
                     id="teamgolas"
                     className={classes.text}
-                    onChange={(ev) => this.handleScoreChange(ev, 'score')}
+                    onChange={(ev) => this.handleScoreChange(ev, '')}
                   />
                 </Grid>
                 <Grid item className={classes.iconContainer} item xs={1}>
@@ -87,7 +80,7 @@ class MatchPlayerHeader extends React.Component {
                   <TextField
                     id="teamgolasdef"
                     className={classes.text}
-                    onChange={ev => this.handleScoreChange(ev, 'defenderScore')}
+                    onChange={ev => this.handleScoreChange(ev, 'Defender')}
                   />
                 </Grid>
                 <Grid item className={classes.iconContainer} item xs={1}>
@@ -99,7 +92,7 @@ class MatchPlayerHeader extends React.Component {
                   <TextField
                     id="teamgolassr"
                     className={classes.text}
-                    onChange={ev => this.handleScoreChange(ev, 'strikerScore')}
+                    onChange={ev => this.handleScoreChange(ev, 'Striker')}
                   />
                 </Grid>
               </React.Fragment>

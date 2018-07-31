@@ -69,11 +69,19 @@ class AddMatch extends React.Component {
         },
 
         enableScore: false,
-        homeGoals: 0,
-        awayGoals: 0,
+        homeGoals: NaN,
+        homeGoalsDefender: NaN,
+        homeGoalsStriker: NaN,
+        awayGoals: NaN,
+        awayGoalsDefender: NaN,
+        awayGoalsStriker: NaN,
+        homeDefender: {},
         homeDefenderSelected: false,
+        homeStriker: {},
         homeStrikerSelected: false,
+        awayDefender: {},
         awayDefenderSelected: false,
+        awayStriker: {},
         awayStrikerSelected: false,
         badges: []
     }
@@ -103,7 +111,47 @@ class AddMatch extends React.Component {
   onPlayerSelection = (player, selector) => {
     console.log(player)
     console.log(selector)
-    this.setState({[selector]: true})
+    this.setState({
+      [selector]: true,
+      [selector.replace('Selected', '')]: player
+    })
+  }
+
+  onScoreChange = params => {
+    const {value, selector} = params
+
+    this.setState({[selector]: value})
+  }
+
+  onSave = async () => {
+    const badges = []
+    if (this.state.homeGoals === 0 || this.state.awayGoals === 0) {
+      badges.push('cappotto')
+    }
+    const match = {
+      teamHome: {
+        defender: {
+          _id: this.state.homeDefender._id
+        },
+        striker: {
+          _id: this.state.homeStriker._id
+        },
+        score: this.state.homeGoals
+      },
+      teamAway: {
+        defender: {
+          _id: this.state.awayDefender._id
+        },
+        striker: {
+          _id: this.state.awayStriker._id
+        },
+        score: this.state.awayGoals
+      },
+      badges: badges
+    }
+    await addNewMatch(match)
+
+    Router.push('/matches')
   }
 
   render() {
@@ -125,6 +173,8 @@ class AddMatch extends React.Component {
           >
             <MatchPlayerHeader
               enableScore={this.state.homeDefenderSelected && this.state.homeStrikerSelected}
+              onScoreChange={this.onScoreChange}
+              selector={'homeGoals'}
               teamLabel={'Team Home'}
             />
             <MatchPlayerSelection
@@ -141,6 +191,8 @@ class AddMatch extends React.Component {
             />
             <MatchPlayerHeader
               enableScore={this.state.awayDefenderSelected && this.state.awayStrikerSelected}
+              onScoreChange={this.onScoreChange}
+              selector={'awayGoals'}
               teamLabel={'Team Away'}
             />
             <MatchPlayerSelection
@@ -155,15 +207,20 @@ class AddMatch extends React.Component {
               role={'striker'}
               onPlayerSelection={this.onPlayerSelection}
             />
-            { this.state.homeDefenderSelected && this.state.homeStrikerSelected && this.state.awayDefenderSelected && this.state.awayStrikerSelected &&
-              <GridListTile cols={2} style={{ height: 'auto', width: '100%' }}>
-                <Button variant="contained" color="primary">
+            {/* { this.state.homeDefenderSelected && this.state.homeStrikerSelected && this.state.awayDefenderSelected && this.state.awayStrikerSelected && */}
+            {((this.state.homeGoals > 5 && (this.state.homeGoals - this.state.awayGoals) > 1) ||
+             (this.state.awayGoals > 5 && (this.state.awayGoals - this.state.homeGoals) > 1)) &&
+              <GridListTile cols={2} style={{ height: 'auto', width: '100%', textAlign: 'center' }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={this.onSave}
+                >
                   Save
                 </Button>
               </GridListTile>
             }
           </GridList>
-
         </div>
       </Layout>
     )
