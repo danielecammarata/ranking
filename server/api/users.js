@@ -12,7 +12,36 @@ router.get('/get', async (req, res) => {
         [{
           _id: 'sadksahdas',
           slug: 'mucci',
+          name: 'Gabo',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        },
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
           name: 'Mucci',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        },
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
+          name: 'Moiolish',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        },
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
+          name: 'The Boss',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        },
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
+          name: 'giamma',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
           points: 1200
         }]
       )
