@@ -53,7 +53,7 @@ class MatchPlayerHeader extends React.Component {
     return (
       <GridListTile cols={2} style={{ height: 'auto', width: '100%' }}>
         <ListSubheader component="div">
-          <Grid container spacing={10}>
+          <Grid container spacing={16}>
             <Grid item item xs={5}>
               {teamLabel}
             </Grid>

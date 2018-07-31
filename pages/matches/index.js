@@ -35,7 +35,7 @@ class IndexMatch extends React.Component {
       if(this.state.matches.length <= 0){
         const data = await getMatchesList(0, elementPerPage)
         this.setState({ matches: data })
-      }      
+      }
     } catch (err) {
       console.log(err)
     }

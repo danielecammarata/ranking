@@ -22,74 +22,73 @@ import Router from 'next/router'
 import Layout from '../../components/Layout.js'
 import PlayerDialogSelect from '../../components/PlayerDialogSelect.js'
 import getRootUrl from '../../lib/api/getRootUrl'
-import { getUsersList} from '../../lib/api/users'
+import { getUsersList } from '../../lib/api/users'
 import { addNewMatch } from '../../lib/api/match'
 import { styleH1, styleForm, styleTextField, styleRaisedButton } from '../../lib/SharedStyles'
 
 import MatchPlayerSelection from '../../components/MatchPlayerSelection'
 import MatchPlayerHeader from '../../components/MatchPlayerHeader'
 
-
 class AddMatch extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
-        search: '',
-        players: [],
-        matchAdded: false,
-        teamHome: {
-            defender: {
-              showNames: false,
-              selected: false,
-              avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
-              name: ''
-            },
-            striker: {
-              showNames: false,
-              selected: false,
-              avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
-              name: ''
-            },
-            score: 0
+      search: '',
+      players: [],
+      matchAdded: false,
+      teamHome: {
+        defender: {
+          showNames: false,
+          selected: false,
+          avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
+          name: ''
         },
-        teamAway: {
-            defender: {
-              showNames: false,
-              selected: false,
-              avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
-              name: ''
-            },
-            striker: {
-              showNames: false,
-              selected: false,
-              avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
-              name: ''
-            },
-            score: 0
+        striker: {
+          showNames: false,
+          selected: false,
+          avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
+          name: ''
         },
+        score: 0
+      },
+      teamAway: {
+        defender: {
+          showNames: false,
+          selected: false,
+          avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
+          name: ''
+        },
+        striker: {
+          showNames: false,
+          selected: false,
+          avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
+          name: ''
+        },
+        score: 0
+      },
 
-        enableScore: false,
-        homeGoals: NaN,
-        homeGoalsDefender: NaN,
-        homeGoalsStriker: NaN,
-        awayGoals: NaN,
-        awayGoalsDefender: NaN,
-        awayGoalsStriker: NaN,
-        homeDefender: {},
-        homeDefenderSelected: false,
-        homeStriker: {},
-        homeStrikerSelected: false,
-        awayDefender: {},
-        awayDefenderSelected: false,
-        awayStriker: {},
-        awayStrikerSelected: false,
-        badges: []
+      enableScore: false,
+      homeGoals: NaN,
+      homeGoalsDefender: NaN,
+      homeGoalsStriker: NaN,
+      awayGoals: NaN,
+      awayGoalsDefender: NaN,
+      awayGoalsStriker: NaN,
+      homeDefender: {},
+      homeDefenderSelected: false,
+      homeStriker: {},
+      homeStrikerSelected: false,
+      awayDefender: {},
+      awayDefenderSelected: false,
+      awayStriker: {},
+      awayStrikerSelected: false,
+      badges: []
     }
 
   }
 
   handleScoreChange = name => event => {
-    const teamObj = Object.assign({}, this.state[name], {score: event.target.value} )
+    const teamObj = Object.assign({}, this.state[name], {score: event.target.value})
     this.setState({
       [name]: teamObj
     })
@@ -104,7 +103,7 @@ class AddMatch extends React.Component {
       badges: []
     })
 
-    this.setState({ matchAdded: true })
+    this.setState({matchAdded: true})
     Router.push('/matches')
   }
 
@@ -154,74 +153,62 @@ class AddMatch extends React.Component {
     Router.push('/matches')
   }
 
-  render() {
+  render () {
     return (
       <Layout>
-        <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-around',
-          overflow: 'hidden'
-        }}>
-          <GridList
-            cols={2}
-            cellHeight={180}
-            style={{
-              position: 'relative',
-              width: '365px'
-            }}
-          >
-            <MatchPlayerHeader
-              enableScore={this.state.homeDefenderSelected && this.state.homeStrikerSelected}
-              onScoreChange={this.onScoreChange}
-              selector={'homeGoals'}
-              teamLabel={'Team Home'}
-            />
-            <MatchPlayerSelection
-              selector={'homeDefenderSelected'}
-              team={'teamHome'}
-              role={'defender'}
-              onPlayerSelection={this.onPlayerSelection}
-            />
-            <MatchPlayerSelection
-              selector={'homeStrikerSelected'}
-              team={'teamHome'}
-              role={'striker'}
-              onPlayerSelection={this.onPlayerSelection}
-            />
-            <MatchPlayerHeader
-              enableScore={this.state.awayDefenderSelected && this.state.awayStrikerSelected}
-              onScoreChange={this.onScoreChange}
-              selector={'awayGoals'}
-              teamLabel={'Team Away'}
-            />
-            <MatchPlayerSelection
-              selector={'awayDefenderSelected'}
-              team={'teamAway'}
-              role={'defender'}
-              onPlayerSelection={this.onPlayerSelection}
-            />
-            <MatchPlayerSelection
-              selector={'awayStrikerSelected'}
-              team={'teamAway'}
-              role={'striker'}
-              onPlayerSelection={this.onPlayerSelection}
-            />
-            {/* { this.state.homeDefenderSelected && this.state.homeStrikerSelected && this.state.awayDefenderSelected && this.state.awayStrikerSelected && */}
-            {((this.state.homeGoals > 5 && (this.state.homeGoals - this.state.awayGoals) > 1) ||
-             (this.state.awayGoals > 5 && (this.state.awayGoals - this.state.homeGoals) > 1)) &&
-              <GridListTile cols={2} style={{ height: 'auto', width: '100%', textAlign: 'center' }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={this.onSave}
-                >
-                  Save
-                </Button>
-              </GridListTile>
-            }
-          </GridList>
-        </div>
+        <GridList
+          cols={2}
+        >
+          <MatchPlayerHeader
+            enableScore={this.state.homeDefenderSelected && this.state.homeStrikerSelected}
+            onScoreChange={this.onScoreChange}
+            selector={'homeGoals'}
+            teamLabel={'Team Home'}
+          />
+          <MatchPlayerSelection
+            selector={'homeDefenderSelected'}
+            team={'teamHome'}
+            role={'defender'}
+            onPlayerSelection={this.onPlayerSelection}
+          />
+          <MatchPlayerSelection
+            selector={'homeStrikerSelected'}
+            team={'teamHome'}
+            role={'striker'}
+            onPlayerSelection={this.onPlayerSelection}
+          />
+          <MatchPlayerHeader
+            enableScore={this.state.awayDefenderSelected && this.state.awayStrikerSelected}
+            onScoreChange={this.onScoreChange}
+            selector={'awayGoals'}
+            teamLabel={'Team Away'}
+          />
+          <MatchPlayerSelection
+            selector={'awayDefenderSelected'}
+            team={'teamAway'}
+            role={'defender'}
+            onPlayerSelection={this.onPlayerSelection}
+          />
+          <MatchPlayerSelection
+            selector={'awayStrikerSelected'}
+            team={'teamAway'}
+            role={'striker'}
+            onPlayerSelection={this.onPlayerSelection}
+          />
+          {/* { this.state.homeDefenderSelected && this.state.homeStrikerSelected && this.state.awayDefenderSelected && this.state.awayStrikerSelected && */}
+          {((this.state.homeGoals > 5 && (this.state.homeGoals - this.state.awayGoals) > 1) ||
+            (this.state.awayGoals > 5 && (this.state.awayGoals - this.state.homeGoals) > 1)) &&
+          <GridListTile cols={2} style={{height: 'auto', width: '100%', textAlign: 'center'}}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.onSave}
+            >
+              Save
+            </Button>
+          </GridListTile>
+          }
+        </GridList>
       </Layout>
     )
   }

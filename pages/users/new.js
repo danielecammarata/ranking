@@ -10,7 +10,7 @@ import { styleH1, styleForm, styleTextField, styleFormTitle, styleFormButton } f
 import { newUser } from '../../lib/Layouts.js'
 
 class AddUser extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       userAdded: false,
@@ -21,15 +21,15 @@ class AddUser extends React.Component {
 
   onSubmit = async (event) => {
     event.preventDefault()
-    
+
     const users = await addNewUser({
       name: this.state.name,
       avatarUrl: this.state.avatarUrl
     })
 
     Router.push('/users')
-  
-    this.setState({ users, userAdded: true })
+
+    this.setState({users, userAdded: true})
   }
 
   handleChange = name => event => {
@@ -38,43 +38,39 @@ class AddUser extends React.Component {
     })
   }
 
-  render() {
+  render () {
     return (
       <Layout>
-        <div>
-          <h1 style={styleFormTitle}>ADD NEW USER</h1>
-          <form 
-            autoComplete="off"
-            style={styleForm}
-            onSubmit={this.onSubmit}
+        <form
+          autoComplete="off"
+          onSubmit={this.onSubmit}
+        >
+          <TextField
+            style={styleTextField}
+            id="name"
+            label="Name"
+            value={this.state.name}
+            onChange={this.handleChange('name')}
+            margin="normal"
+            required
+          />
+          <TextField
+            style={styleTextField}
+            id="avatarUrl"
+            label="Avatar URL"
+            value={this.state.avatarUrl}
+            onChange={this.handleChange('avatarUrl')}
+            margin="normal"
+            required
+          />
+          <Button
+            variant="contained"
+            style={styleFormButton}
+            type="submit"
           >
-            <TextField
-              style={styleTextField}
-              id="name"
-              label="Name"
-              value={this.state.name}
-              onChange={this.handleChange('name')}
-              margin="normal"
-              required
-            />
-            <TextField
-              style={styleTextField}
-              id="avatarUrl"
-              label="Avatar URL"
-              value={this.state.avatarUrl}
-              onChange={this.handleChange('avatarUrl')}
-              margin="normal"
-              required
-            />
-            <Button
-              variant="contained"
-              style={styleFormButton}
-              type="submit"
-            >
-              Add User
-            </Button>
-          </form>
-        </div>
+            Add User
+          </Button>
+        </form>
       </Layout>
     )
   }
