@@ -18,26 +18,24 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Input from '@material-ui/core/Input'
 import FormControl from '@material-ui/core/FormControl'
 
-import List from '@material-ui/core/List';
+import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 
 import Router from 'next/router'
 
 import getRootUrl from '../lib/api/getRootUrl'
-import { getUsersList} from '../lib/api/users'
+import { getUsersList } from '../lib/api/users'
 import { addNewMatch } from '../lib/api/match'
 import { styleH1, styleForm, styleTextField, styleRaisedButton } from '../lib/SharedStyles'
 
 const styles = theme => ({
   tile: {
-    width: '180px',
-    height: '180px',
-    marginRight: '2px'
+    width: '218px',
+    height: '218px',
+    margin: '2px'
   },
-  image: {
 
-  },
   container: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -47,23 +45,28 @@ const styles = theme => ({
     height: '100%',
     width: '100%'
   },
+
   formControl: {
     margin: theme.spacing.unit,
     minWidth: 120
   },
 
-  root: {
-    width: '100%',
-    maxWidth: 180,
+  list: {
     backgroundColor: theme.palette.background.paper,
-    position: 'absolute',
-    top: 0,
+    bottom: 0,
+    left: 0,
     overflow: 'auto',
-    maxHeight: 180,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: '100%',
+    zIndex: 2
   },
+
   listSection: {
     backgroundColor: 'inherit',
   },
+
   ul: {
     backgroundColor: 'inherit',
     cursor: 'pointer'
@@ -71,21 +74,24 @@ const styles = theme => ({
 })
 
 const PinnedSubheaderList = props => {
-  const { classes, playersList, onSelectPlayer } = props
+  const {classes, playersList, onSelectPlayer} = props
 
   return (
-    <List className={classes.root}>
+    <List className={classes.list}>
       {playersList.map(item => (
-        <ListItem
-          key={`item-${item.name}`}
-          className={classes.ul}
-          onClick={() => onSelectPlayer(item)}
-        >
-          <Avatar
-            src={item.avatarUrl}
-          />
-          <ListItemText primary={item.name} />
-        </ListItem>
+        <React.Fragment>
+          <ListItem
+            key={`item-${item.name}`}
+            className={classes.ul}
+            onClick={() => onSelectPlayer(item)}
+          >
+            <Avatar
+              src={item.avatarUrl}
+            />
+            <ListItemText primary={item.name}/>
+          </ListItem>
+          <Divider/>
+        </React.Fragment>
       ))}
     </List>
   )
@@ -106,10 +112,10 @@ class MatchPlayerSelection extends React.Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     try {
       const players = await getUsersList()
-      this.setState({ playersList: players })
+      this.setState({playersList: players})
     } catch (err) {
       console.log(err)
     }
@@ -145,38 +151,40 @@ class MatchPlayerSelection extends React.Component {
     console.log('player status')
   }
 
-  render() {
-    const { avatarUrl, name, showPlayersSelect, selected } = this.state
-    const { classes } = this.props
+  render () {
+    const {avatarUrl, name, showPlayersSelect, selected} = this.state
+    const {classes} = this.props
 
     return (
-      <GridListTile
-        cols={1}
-        rows={1}
-        className={classes.tile}
-      >
-        <img
-          src={avatarUrl}
-          alt={name}
-          onError={() => this.src=`${getRootUrl()}/img/user_placeholder.jpg`}
-        />
-        {name &&
+      <React.Fragment>
+        <GridListTile
+          cols={1}
+          rows={1}
+          className={classes.tile}
+        >
+          <img
+            src={avatarUrl}
+            alt={name}
+            onError={() => this.src = `${getRootUrl()}/img/user_placeholder.jpg`}
+          />
+          {name &&
           <GridListTileBar
             title={name}
           />
-        }
-        <Button
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%'
-          }}
-          onClick={() => this.showPlayersSelect()}
-        >
-            <AddIcon />
-        </Button>
+          }
+          <Button
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%'
+            }}
+            onClick={() => this.showPlayersSelect()}
+          >
+            <AddIcon/>
+          </Button>
+        </GridListTile>
         {
           showPlayersSelect &&
           <PinnedSubheaderList
@@ -185,12 +193,12 @@ class MatchPlayerSelection extends React.Component {
             onSelectPlayer={this.onSelectPlayer}
           />
         }
-      </GridListTile>
+      </React.Fragment>
     )
   }
 }
 
-MatchPlayerSelection.getInitialState = async function getInitialProps() {
+MatchPlayerSelection.getInitialState = async function getInitialProps () {
   try {
     const players = await getUsersList()
     return {
