@@ -16,7 +16,7 @@
     "@material-ui/icons": "^2.0.0",
     "arpad": "^1.0.2",
     "dotenv": "^6.0.0",
-    "downshift": "",
+    "downshift": "^2.0.20",
     "express": "^4.16.3",
     "isomorphic-unfetch": "^2.1.0",
     "lodash": "^4.17.10",
