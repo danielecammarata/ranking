@@ -64,7 +64,7 @@ class IndexMatch extends React.Component {
   render () {
     return <Layout>
     <p>Played matches</p>
-    <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '400px'}}>
+    <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '360px'}}>
       {this.state.matches && this.state.matches.map(match => (
         <GridListTile style={styleMatchTile} key={match.slug}>
           <GridList>
@@ -111,15 +111,15 @@ class IndexMatch extends React.Component {
         </GridListTile>
       ))}
     </GridList>
-    <Button
-        color="primary"
-        disabled={!this.state.loadMoreActive}
-        onClick={this.loadMore}
-        style={styleLoadMoreButton(this.state.loadMoreActive)}
-        type="button"
-        variant="contained"
-      >
-        Load more
+      <Button
+          color="primary"
+          disabled={!this.state.loadMoreActive}
+          onClick={this.loadMore}
+          style={styleLoadMoreButton(this.state.loadMoreActive)}
+          type="button"
+          variant="contained"
+        >
+          Load more
       </Button>
   </Layout>
   }
