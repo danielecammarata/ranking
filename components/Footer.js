@@ -1,24 +1,34 @@
+import { withStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Grid from '@material-ui/core/Grid'
+import GithubIcon from './IconComponents/GithubIcon'
 
 import { styleToolbar } from '../lib/SharedStyles'
 
-const Footer = () => (
+const styles = theme => ({
+  icon: {
+    fontSize: 35
+  }
+})
+
+const Footer = (props) => (
   <div>
     <Toolbar style={styleToolbar}>
       <Grid container direction="row" justify="space-around" alignItems="center">
         <span>© 2018 Scoreza - Eat less play more</span>
         <a
-          style={{ padding: '0px 20px' }}
           href="https://github.com/danielecammarata/ranking"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Github
+          <GithubIcon
+            className={props.classes.icon}
+            color="secondary"
+          />
         </a>
       </Grid>
     </Toolbar>
   </div>
 )
 
-export default Footer
+export default withStyles(styles)(Footer)
