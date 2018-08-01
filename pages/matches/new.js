@@ -133,13 +133,18 @@ class AddMatch extends React.Component {
   }
 
   render () {
+    const showScores =
+      this.state.homeDefender !== defaultPlayer &&
+      this.state.homeStriker !== defaultPlayer &&
+      this.state.awayDefender !== defaultPlayer &&
+      this.state.awayStriker !== defaultPlayer
     return (
       <Layout>
         <GridList
           cols={2}
         >
           <MatchPlayerHeader
-            enableScore={this.state.homeDefenderSelected && this.state.homeStrikerSelected}
+            enableScore={showScores}
             onScoreChange={this.onScoreChange}
             selector={'homeGoals'}
             teamLabel={'Team Home'}
@@ -159,7 +164,7 @@ class AddMatch extends React.Component {
             selectionHandler={this.showPlayersSelect('homeStriker')}
           />
           <MatchPlayerHeader
-            enableScore={this.state.awayDefenderSelected && this.state.awayStrikerSelected}
+            enableScore={showScores}
             onScoreChange={this.onScoreChange}
             selector={'awayGoals'}
             teamLabel={'Team Away'}
