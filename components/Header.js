@@ -37,7 +37,7 @@ const Header = ({classes, handler}) => (
   <AppBar position="fixed">
     <Toolbar style={styleToolbar}>
       <Link href="/">
-        <a title='ScoreZa' className={classes.logo} />
+        <a title='Kalpunde is watching you' className={classes.logo} />
       </Link>
       <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={handler}>
         <MenuIcon />

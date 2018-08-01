@@ -5,6 +5,56 @@ const router = express.Router()
 
 const User = require('../models/User')
 
+router.get('/get/:slug', async (req, res) => {
+  const slug = req.params.slug
+  try {
+    if (process.env.offline !== 'false') {
+      res.json(
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
+          name: 'Gabo',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        },
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
+          name: 'Mucci',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        },
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
+          name: 'Moiolish',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        },
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
+          name: 'The Boss',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        },
+        {
+          _id: 'sadksahdas',
+          slug: 'mucci',
+          name: 'giamma',
+          avatarUrl: 'http://localhost:8000/img/user_placeholder.jpg',
+          points: 1200
+        }
+      )
+    }
+    const users = await User.findOne({ slug })
+    res.json(users);
+  } catch (err) {
+    console.log(err)
+    res.json({ error: err.message || err.toString() });
+  }
+})
+
 router.get('/get', async (req, res) => {
   try {
     if (process.env.offline !== 'false') {
@@ -18,28 +68,6 @@ router.get('/get', async (req, res) => {
       )
     }
     const users = await User.find({ active:true })
-    res.json(users);
-  } catch (err) {
-    console.log(err)
-    res.json({ error: err.message || err.toString() });
-  }
-})
-
-router.get('/get/:slug', async (req, res) => {
-  const slug = req.params.slug
-  try {
-    if (process.env.offline) {
-      res.json(
-        {
-          _id: 'sadksahdas',
-          slug: 'mucci',
-          name: 'Mucci',
-          avatarUrl: 'https://myavatar/something',
-          points: 1200
-        }
-      )
-    }
-    const users = await User.findOne({ slug })
     res.json(users);
   } catch (err) {
     console.log(err)
@@ -65,8 +93,8 @@ router.post('/add', (req, res) => {
 })
 
 router.post('/update', (req, res) => {
-  const { id, name, avatarUrl } = req.body
-  const query = { _id: id }
+  const { slug, name, avatarUrl } = req.body
+  const query = { slug: slug }
   User.findOneAndUpdate(query, { name, avatarUrl }, {}, function (err, rs) {
     if (err) return res.json({ error: err.message || err.toString() })
     res.json(rs)
@@ -81,38 +109,5 @@ router.delete('/delete/:userId', (req, res) => {
     res.json(rs)
   })
 })
-  // try {
-  //   const users = [
-  //     {
-  //       id: 1,
-  //       name: 'Mucci',
-  //       points: 1200
-  //     },
-  //     {
-  //       id: 2,
-  //       name: 'Moioli',
-  //       points: 1700
-  //     },
-  //     {
-  //       id: 3,
-  //       name: 'Slow',
-  //       points: 950
-  //     },
-  //     {
-  //       id: 4,
-  //       name: 'Boss',
-  //       points: 2500
-  //     },
-  //     {
-  //       id: 5,
-  //       name: 'Gabo',
-  //       points: 1200
-  //     }
-  //   ]
-  //   res.json(users);
-  // } catch (err) {
-  //   res.json({ error: err.message || err.toString() });
-  // }
-
 
 module.exports = router
