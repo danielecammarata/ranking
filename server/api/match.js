@@ -6,6 +6,8 @@ const router = express.Router()
 const Match = require('../models/Match')
 const User = require('../models/User')
 
+const rankify = require('../lib/rankify')
+
 router.get('/get/:offset/:limit/', async (req, res) => {
   const { offset = 0, limit = 2 } = req.params
   try {
@@ -27,12 +29,12 @@ router.get('/get/:offset/:limit/', async (req, res) => {
         }]
       )
     }
-    
+
     Match.find()
       .populate([
-        {path: 'teamHome.defender', model: 'User'}, 
-        {path: 'teamHome.striker', model: 'User'}, 
-        {path: 'teamAway.defender', model: 'User'}, 
+        {path: 'teamHome.defender', model: 'User'},
+        {path: 'teamHome.striker', model: 'User'},
+        {path: 'teamAway.defender', model: 'User'},
         {path: 'teamAway.striker', model: 'User'}
       ])
       .sort({ createdAt: -1 })
@@ -40,7 +42,7 @@ router.get('/get/:offset/:limit/', async (req, res) => {
       .limit(parseInt(limit))
       .exec((err, rs) => {
           res.json(rs)
-      })    
+      })
   } catch (err) {
     res.json({ error: err.message || err.toString() });
   }
@@ -51,18 +53,60 @@ router.post('/add', (req, res) => {
   const slug = Match.generateSlug()
   const createdAt = new Date().toISOString()
   const badges = []
+
+  const rank = rankify.calculate({
+    teamHome,
+    teamAway
+  })
   const matchData = {
     teamHome,
     teamAway,
     badges,
     slug,
-    createdAt
+    createdAt,
+    difference: rank.difference
   }
   const newMatch = new Match(matchData)
   newMatch.save(function (err) {
     if (err) return res.json({ error: err.message || err.toString() })
+    // res.json(newMatch)
+    const scoreHD = {
+      id: teamHome.defender._id,
+      score: rank.homeDefense,
+      res
+    }
+    updateUser(scoreHD)
+
+    const scoreHS = {
+      id: teamHome.striker._id,
+      score: rank.homeStriker,
+      res
+    }
+    updateUser(scoreHS)
+
+    const scoreAD = {
+      id: teamAway.defender._id,
+      score: rank.awayDefense,
+      res
+    }
+    updateUser(scoreAD)
+
+    const scoreAS = {
+      id: teamAway.striker._id,
+      score: rank.awayStriker,
+      res
+    }
+    updateUser(scoreAS)
+
     res.json(newMatch)
   })
 })
+
+const updateUser = ({id, score, res}) => {
+  const query = { _id: id }
+  User.findOneAndUpdate(query, { points: score }, {}, function (err, rs) {
+    if (err) return res.json({ error: err.message || err.toString() })
+  })
+}
 
 module.exports = router

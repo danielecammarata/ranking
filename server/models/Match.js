@@ -33,6 +33,7 @@ const mongoSchema = new Schema({
     },
     score: Number
   },
+  difference: Number,
   badges: [],
   slug: {
     type: String,

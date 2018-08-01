@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">92.31% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>21/21</span>
+        <span class='fraction'>12/13</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">92.86% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>6/6</span>
+        <span class='fraction'>13/14</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/2</span>
+        <span class='fraction'>1/1</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">92.31% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>21/21</span>
+        <span class='fraction'>12/13</span>
       </div>
     </div>
     <p class="quiet">
@@ -81,24 +81,9 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -106,18 +91,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -126,42 +118,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const Elo = require('arpad')
 &nbsp;
-const uscf = {
-  default: 32,
-  2100: 24,
-  2400: 16
-}
-const min_score = 100;
-const max_score = 10000
-const elo = new Elo(uscf, min_score, max_score)
-&nbsp;
-const getVariation = (winnerPoints, loserPoints) =&gt; {
-  return elo.expectedScore(winnerPoints, loserPoints)
-}
+const elo = new Elo()
 &nbsp;
 const calculate = ({ teamHome, teamAway }) =&gt; {
   const homeRankPoints = (teamHome.defense.points + teamHome.striker.points) / 2
   const awayRankPoints = (teamAway.defense.points + teamAway.striker.points) / 2
 &nbsp;
-  const variation = teamHome.score &gt; teamAway.score ? getVariation(homeRankPoints, awayRankPoints) : getVariation(awayRankPoints, homeRankPoints)
-  const homeOutcome = teamHome.score &gt; teamAway.score ? 1 : 0
-  const awayOutcome = teamHome.score &gt; teamAway.score ? 0 : 1
-  const homeResut = Object.assign({}, teamHome)
-  const awayResut = Object.assign({}, teamAway)
-  homeResut.defense.points = elo.newRating(variation, homeOutcome, homeResut.defense.points)
-  homeResut.striker.points = elo.newRating(variation, homeOutcome, homeResut.striker.points)
-  awayResut.defense.points = elo.newRating(variation, awayOutcome, awayResut.defense.points)
-  awayResut.striker.points = elo.newRating(variation, awayOutcome, awayResut.striker.points)
+  const hasHomeWin = teamHome.score &gt; teamAway.score
+  const hasCappotto = teamHome.score === 0 || teamAway.score === 0
 &nbsp;
-  return {
-    teamHome: homeResut,
-    teamAway: awayResut
+  let difference = hasHomeWin ?
+    elo.newRatingIfWon(homeRankPoints, awayRankPoints) - homeRankPoints :
+    elo.newRatingIfWon(awayRankPoints, homeRankPoints) - awayRankPoints
+&nbsp;
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (hasCappotto) {
+<span class="cstat-no" title="statement not covered" >    difference++</span>
   }
+&nbsp;
+&nbsp;
+  const newPoints = {
+    homeDefense: hasHomeWin ? teamHome.defense.points + difference : teamHome.defense.points - difference,
+    homeStriker: hasHomeWin ? teamHome.striker.points + difference : teamHome.striker.points - difference,
+    awayDefense: hasHomeWin ? teamAway.defense.points - difference : teamAway.defense.points + difference,
+    awayStriker: hasHomeWin ? teamAway.striker.points - difference : teamAway.striker.points + difference,
+    difference
+  }
+&nbsp;
+  return newPoints
 }
 &nbsp;
 module.exports = {
   calculate,
-  getVariation
+  elo
 }
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -169,7 +157,7 @@ module.exports = {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Jul 26 2018 16:50:34 GMT+0200 (CEST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Aug 01 2018 18:23:01 GMT+0200 (CEST)
 </div>
 </div>
 <script src="prettify.js"></script>

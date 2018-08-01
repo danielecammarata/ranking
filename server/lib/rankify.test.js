@@ -1,12 +1,6 @@
 const rankify = require('./rankify')
 
 describe('rankify', () => {
-  it('should calculate the variation', () => {
-    winnerPoints = 1200
-    loserPoints = 1800
-    expect(rankify.getVariation(winnerPoints, loserPoints)).toEqual(0.030653430031715508)
-  })
-
   it('should calculate the ranking for the home team winning', () => {
     const data = {
       teamAway: {
@@ -29,7 +23,12 @@ describe('rankify', () => {
       }
     }
 
-    expect(rankify.calculate(data)).toMatchSnapshot()
+    const result = rankify.calculate(data)
+
+    console.log(data)
+    console.log(result)
+
+    expect(result).toEqual(100)
   })
 
   it('should calculate the ranking for the away team winning', () => {
@@ -53,7 +52,11 @@ describe('rankify', () => {
         score: 4
       }
     }
+    const result = rankify.calculate(data)
 
-    expect(rankify.calculate(data)).toMatchSnapshot()
+    console.log(data)
+    console.log(result)
+
+    expect(result).toEqual(100)
   })
 })

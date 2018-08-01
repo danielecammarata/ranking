@@ -109,19 +109,23 @@ class AddMatch extends React.Component {
     const match = {
       teamHome: {
         defender: {
-          _id: this.state.homeDefender._id
+          _id: this.state.homeDefender._id,
+          points: this.state.homeDefender.points
         },
         striker: {
-          _id: this.state.homeStriker._id
+          _id: this.state.homeStriker._id,
+          points: this.state.homeStriker.points
         },
         score: this.state.homeGoals
       },
       teamAway: {
         defender: {
-          _id: this.state.awayDefender._id
+          _id: this.state.awayDefender._id,
+          points: this.state.awayDefender.points
         },
         striker: {
-          _id: this.state.awayStriker._id
+          _id: this.state.awayStriker._id,
+          points: this.state.awayStriker.points
         },
         score: this.state.awayGoals
       },
