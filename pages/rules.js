@@ -1,9 +1,8 @@
 import Layout from '../components/Layout.js'
-import MetaHead from '../components/MetaHead.js'
+import withTitle from '../components/hoc/WithTitle'
 
-export default () => (
+export default withTitle('Rules | Scoreza')(() => (
   <Layout>
-    {MetaHead('Rules')}
     <article>
         <h2>கால்பந்து</h2>
       <p>
@@ -109,4 +108,4 @@ export default () => (
       </p>
     </article>
   </Layout>
-)
+))
