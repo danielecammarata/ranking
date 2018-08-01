@@ -1,17 +1,13 @@
-// This file is shared across the demos.
-
 import React from 'react'
 import Link from 'next/link'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
-import DraftsIcon from '@material-ui/icons/Drafts'
 import InfoIcon from '@material-ui/icons/Info'
 import NewMatchIcon from '@material-ui/icons/DirectionsRun'
 import NewUserIcon from '@material-ui/icons/PersonAdd'
 import ListIcon from '@material-ui/icons/List'
-import ReportIcon from '@material-ui/icons/Report'
+import RulesIcon from '@material-ui/icons/DeveloperBoard'
 
 export const mainDrawerUser = (
   <div>
@@ -26,7 +22,7 @@ export const mainDrawerUser = (
     <Link href="/users/new">
       <ListItem button>
         <ListItemIcon>
-          <NewMatchIcon/>
+          <NewUserIcon/>
         </ListItemIcon>
         <ListItemText primary="New user"/>
       </ListItem>
@@ -57,6 +53,14 @@ export const mainDrawerMatch = (
 
 export const mainDrawerInfo = (
   <div>
+    <Link href="/rules">
+      <ListItem button>
+        <ListItemIcon>
+          <RulesIcon/>
+        </ListItemIcon>
+        <ListItemText primary="Rules"/>
+      </ListItem>
+    </Link>
     <Link href="/about">
       <ListItem button>
         <ListItemIcon>
