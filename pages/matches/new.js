@@ -1,90 +1,63 @@
-import React from 'react'
-import TextField from '@material-ui/core/TextField'
-import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
-import Downshift from 'downshift'
-import Paper from '@material-ui/core/Paper'
-import MenuItem from '@material-ui/core/MenuItem'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
-import ListSubheader from '@material-ui/core/ListSubheader'
-import Typography from '@material-ui/core/Typography'
-import AddIcon from '@material-ui/icons/Add'
-import Select from '@material-ui/core/Select'
-
-import Grid from '@material-ui/core/Grid'
-
-import PeopleIcon from '@material-ui/icons/People'
-import PersonIcon from '@material-ui/icons/Person'
-
+import React from 'react'
 import Router from 'next/router'
-
-import Layout from '../../components/Layout.js'
-import PlayerDialogSelect from '../../components/PlayerDialogSelect.js'
 import getRootUrl from '../../lib/api/getRootUrl'
-import { getUsersList } from '../../lib/api/users'
-import { addNewMatch } from '../../lib/api/match'
-import { styleH1, styleForm, styleTextField, styleRaisedButton } from '../../lib/SharedStyles'
-
-import MatchPlayerSelection from '../../components/MatchPlayerSelection'
+import Layout from '../../components/Layout.js'
 import MatchPlayerHeader from '../../components/MatchPlayerHeader'
+import MatchPlayerSelection from '../../components/MatchPlayerSelection'
+import PinnedSubheaderList from '../../components/PinnedSubheaderList'
+import { addNewMatch } from '../../lib/api/match'
+import { getUsersList } from '../../lib/api/users'
+import { styleForm } from '../../lib/SharedStyles'
+
+const defaultPlayer = {
+  _id: 'default',
+  avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
+  name: '',
+  selected: false,
+  showNames: false
+}
 
 class AddMatch extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      search: '',
-      players: [],
-      matchAdded: false,
-      teamHome: {
-        defender: {
-          showNames: false,
-          selected: false,
-          avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
-          name: ''
-        },
-        striker: {
-          showNames: false,
-          selected: false,
-          avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
-          name: ''
-        },
-        score: 0
-      },
-      teamAway: {
-        defender: {
-          showNames: false,
-          selected: false,
-          avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
-          name: ''
-        },
-        striker: {
-          showNames: false,
-          selected: false,
-          avatarUrl: `${getRootUrl()}/img/user_placeholder.jpg`,
-          name: ''
-        },
-        score: 0
-      },
-
-      enableScore: false,
-      homeGoals: NaN,
-      homeGoalsDefender: NaN,
-      homeGoalsStriker: NaN,
+      activeSelection: null,
+      awayDefender: defaultPlayer,
+      awayDefenderSelected: false,
       awayGoals: NaN,
       awayGoalsDefender: NaN,
       awayGoalsStriker: NaN,
-      homeDefender: {},
-      homeDefenderSelected: false,
-      homeStriker: {},
-      homeStrikerSelected: false,
-      awayDefender: {},
-      awayDefenderSelected: false,
-      awayStriker: {},
+      awayStriker: defaultPlayer,
       awayStrikerSelected: false,
-      badges: []
+      badges: [],
+      enableScore: false,
+      homeDefender: defaultPlayer,
+      homeDefenderSelected: false,
+      homeGoals: NaN,
+      homeGoalsDefender: NaN,
+      homeGoalsStriker: NaN,
+      homeStriker: defaultPlayer,
+      homeStrikerSelected: false,
+      matchAdded: false,
+      search: '',
+      showSelectionList: false
     }
 
+    this.onSelectPlayer = this.onSelectPlayer.bind(this)
+  }
+
+  async componentDidMount () {
+    console.log('mount')
+
+    try {
+      const players = await getUsersList()
+      this.setState({playersList: players})
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   handleScoreChange = name => event => {
@@ -107,18 +80,24 @@ class AddMatch extends React.Component {
     Router.push('/matches')
   }
 
-  onPlayerSelection = (player, selector) => {
-    console.log(player)
-    console.log(selector)
+  onSelectPlayer = player => {
+    this.setState(
+      {
+        [`${this.state.activeSelection}`]: player,
+        activeSelection: null,
+        showSelectionList: false
+      })
+  }
+
+  showPlayersSelect = pointer => () => {
     this.setState({
-      [selector]: true,
-      [selector.replace('Selected', '')]: player
+      activeSelection: pointer,
+      showSelectionList: true
     })
   }
 
   onScoreChange = params => {
     const {value, selector} = params
-
     this.setState({[selector]: value})
   }
 
@@ -169,13 +148,15 @@ class AddMatch extends React.Component {
             selector={'homeDefenderSelected'}
             team={'teamHome'}
             role={'defender'}
-            onPlayerSelection={this.onPlayerSelection}
+            player={this.state.homeDefender}
+            selectionHandler={this.showPlayersSelect('homeDefender')}
           />
           <MatchPlayerSelection
             selector={'homeStrikerSelected'}
             team={'teamHome'}
             role={'striker'}
-            onPlayerSelection={this.onPlayerSelection}
+            player={this.state.homeStriker}
+            selectionHandler={this.showPlayersSelect('homeStriker')}
           />
           <MatchPlayerHeader
             enableScore={this.state.awayDefenderSelected && this.state.awayStrikerSelected}
@@ -187,13 +168,16 @@ class AddMatch extends React.Component {
             selector={'awayDefenderSelected'}
             team={'teamAway'}
             role={'defender'}
-            onPlayerSelection={this.onPlayerSelection}
+            pointer={'awayDefender'}
+            player={this.state.awayDefender}
+            selectionHandler={this.showPlayersSelect('awayDefender')}
           />
           <MatchPlayerSelection
             selector={'awayStrikerSelected'}
             team={'teamAway'}
             role={'striker'}
-            onPlayerSelection={this.onPlayerSelection}
+            player={this.state.awayStriker}
+            selectionHandler={this.showPlayersSelect('awayStriker')}
           />
           {/* { this.state.homeDefenderSelected && this.state.homeStrikerSelected && this.state.awayDefenderSelected && this.state.awayStrikerSelected && */}
           {((this.state.homeGoals > 5 && (this.state.homeGoals - this.state.awayGoals) > 1) ||
@@ -209,9 +193,33 @@ class AddMatch extends React.Component {
           </GridListTile>
           }
         </GridList>
+        {
+          this.state.showSelectionList &&
+          this.state.playersList &&
+          <PinnedSubheaderList
+            playersList={this.state.playersList}
+            onSelectPlayer={this.onSelectPlayer}
+          />
+        }
       </Layout>
     )
   }
 }
+
+
+AddMatch.getInitialState = async function getInitialProps () {
+  try {
+    const players = await getUsersList()
+    return {
+      playersList: players
+    }
+  } catch (err) {
+    console.log(err)
+    return {
+      playersList: []
+    }
+  }
+}
+
 
 export default AddMatch
