@@ -9,32 +9,51 @@ const { Schema } = mongoose
 const mongoSchema = new Schema({
   teamHome: {
     defender: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+      },
+      badges: [],
+      score: Number      
     },
     striker: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+      },
+      badges: [],
+      score: Number
     },
     score: Number
   },
   teamAway: {
     defender: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+      },
+      badges: [],
+      score: Number
     },
     striker: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+      },
+      badges: [],
+      score: Number
     },
     score: Number
   },
+<<<<<<< Updated upstream
   difference: Number,
   badges: [],
+=======
+>>>>>>> Stashed changes
   slug: {
     type: String,
     required: true,
@@ -49,7 +68,7 @@ const mongoSchema = new Schema({
 class MatchClass {
   static async list({ offset = 0, limit = 10 } = {}) {
     const matches = await this.find({})
-      .populate('teamHome.defender')
+      .populate('teamHome.defender.user')
       .sort({ createdAt: -1 })
       .skip(offset)
       .limit(limit)
@@ -90,7 +109,6 @@ class MatchClass {
     const newMatch = await this.create({
       teamHome,
       teamAway,
-      badges,
       slug
     })
   }

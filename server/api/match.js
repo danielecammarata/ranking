@@ -17,14 +17,31 @@ router.get('/get/:offset/:limit/', async (req, res) => {
           id: 1,
           date: '2018/07/25',
           homeTeam: {
-            defender: 1,
-            striker: 2,
-            score: 6
+            defender: {
+              user: '213jhb23gjh324',
+              badges: [],
+              score: 2
+            },
+            striker: {
+              user: '213jhb23gjh324',
+              badges: [],
+              score: 4
+            },
+            score: 6,
+            badges: []
           },
           awayTeam: {
-            defender: 1,
-            striker: 2,
-            score: 4
+            defender: {
+              user: '213jhb23gjh324',
+              badges: [],
+              score: 2
+            },
+            striker: {
+              user: '213jhb23gjh324',
+              badges: [],
+              score: 2
+            },
+            score: 4            
           }
         }]
       )
@@ -32,10 +49,10 @@ router.get('/get/:offset/:limit/', async (req, res) => {
 
     Match.find()
       .populate([
-        {path: 'teamHome.defender', model: 'User'},
-        {path: 'teamHome.striker', model: 'User'},
-        {path: 'teamAway.defender', model: 'User'},
-        {path: 'teamAway.striker', model: 'User'}
+        {path: 'teamHome.defender.user', model: 'User'}, 
+        {path: 'teamHome.striker.user', model: 'User'}, 
+        {path: 'teamAway.defender.user', model: 'User'}, 
+        {path: 'teamAway.striker.user', model: 'User'}
       ])
       .sort({ createdAt: -1 })
       .skip(parseInt(offset))
@@ -52,16 +69,18 @@ router.post('/add', (req, res) => {
   const { teamAway, teamHome } = req.body
   const slug = Match.generateSlug()
   const createdAt = new Date().toISOString()
+<<<<<<< Updated upstream
   const badges = []
 
   const rank = rankify.calculate({
     teamHome,
     teamAway
   })
+=======
+>>>>>>> Stashed changes
   const matchData = {
     teamHome,
     teamAway,
-    badges,
     slug,
     createdAt,
     difference: rank.difference
