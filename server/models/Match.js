@@ -18,7 +18,11 @@ const mongoSchema = new Schema({
       ref: 'User',
       required: true
     },
-    score: Number
+    score: Number,
+    defScore: Number,
+    strScore: Number,
+    defBadges: [],
+    strBadges: []
   },
   teamAway: {
     defender: {
@@ -31,7 +35,11 @@ const mongoSchema = new Schema({
       ref: 'User',
       required: true
     },
-    score: Number
+    score: Number,
+    defScore: Number,
+    strScore: Number,
+    defBadges: [],
+    strBadges: []
   },
   difference: Number,
   badges: [],

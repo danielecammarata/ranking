@@ -101,11 +101,35 @@ class AddMatch extends React.Component {
     this.setState({[selector]: value})
   }
 
-  onSave = async () => {
-    const badges = []
-    if (this.state.homeGoals === 0 || this.state.awayGoals === 0) {
-      badges.push('cappotto')
+  calculateScoreAndBadges = () => {
+    const scoreAndBadges = {
+      badges: []
     }
+    if (this.state.homeGoals === 0 || this.state.awayGoals === 0) {
+      scoreAndBadges.badges.push('cappotto')
+    }
+
+    if (this.state.homeGoalsDefender + this.state.homeGoalsStriker !== this.state.homeGoals) {
+      scoreAndBadges.homeGoalsDefender = Math.floor(this.state.homeGoals / 2)
+      scoreAndBadges.homeGoalsStriker = Math.ceil(this.state.homeGoals / 2)
+    } else {
+      scoreAndBadges.homeGoalsDefender = this.state.homeGoalsDefender
+      scoreAndBadges.homeGoalsStriker = this.state.homeGoalsStriker
+    }
+
+    if (this.state.awayGoalsDefender + this.state.awayGoalsStriker !== this.state.awayGoals) {
+      scoreAndBadges.awayGoalsDefender = Math.floor(this.state.awayGoals / 2)
+      scoreAndBadges.awayGoalsStriker = Math.ceil(this.state.awayGoals / 2)
+    } else {
+      scoreAndBadges.awayGoalsDefender = this.state.awayGoalsDefender
+      scoreAndBadges.awayGoalsStriker = this.state.awayGoalsStriker
+    }
+
+    return scoreAndBadges
+  }
+
+  onSave = async () => {
+    const scoreAndBadges = this.calculateScoreAndBadges()
     const match = {
       teamHome: {
         defender: {
@@ -116,7 +140,11 @@ class AddMatch extends React.Component {
           _id: this.state.homeStriker._id,
           points: this.state.homeStriker.points
         },
-        score: this.state.homeGoals
+        score: this.state.homeGoals,
+        defScore: scoreAndBadges.homeGoalsDefender,
+        strScore: scoreAndBadges.homeGoalsStriker,
+        defBadges: [],
+        strBadges: []
       },
       teamAway: {
         defender: {
@@ -127,9 +155,13 @@ class AddMatch extends React.Component {
           _id: this.state.awayStriker._id,
           points: this.state.awayStriker.points
         },
-        score: this.state.awayGoals
+        score: this.state.awayGoals,
+        defScore: scoreAndBadges.awayGoalsDefender,
+        strScore: scoreAndBadges.awayGoalsStriker,
+        defBadges: [],
+        strBadges: []
       },
-      badges: badges
+      badges: scoreAndBadges.badges
     }
     await addNewMatch(match)
 
