@@ -1,6 +1,32 @@
 import Layout from '../components/Layout.js'
 import withTitle from '../components/hoc/WithTitle'
 
+import {
+  AlienIcon,
+  BombIcon,
+  BoneIcon,
+  CandycaneIcon,
+  CannabisIcon,
+  CatIcon,
+  ChessKingIcon,
+  DogIcon,
+  DuckIcon,
+  EmoticonPoopIcon,
+  FoodIcon,
+  GhostIcon,
+  NinjaIcon,
+  NukeIcon,
+  PigIcon,
+  PirateIcon,
+  RocketIcon,
+  SkullIcon,
+  SoccerFieldIcon,
+  SoccerIcon,
+  TrophyIcon,
+  WeatherSnowyIcon
+} from '../components/IconComponents'
+import { List, ListItem, ListItemText } from '@material-ui/core';
+
 export default withTitle('Rules | Scoreza')(() => (
   <Layout>
     <article>
@@ -106,6 +132,157 @@ export default withTitle('Rules | Scoreza')(() => (
         manovra
         consiste nell'evitare in maniera continua il tocco della pallina.
       </p>
+      <h4>Ranking calculation based on the Elo rating system</h4>
+      <p>
+
+      </p>
+      <h4>Badges</h4>
+      <p>
+        You can earn some badges during a match, during the season or during a turnament
+      </p>
+      <List>
+        <ListItem>
+          <AlienIcon
+            style={{
+              color: '#A2C563'
+            }}
+          />
+          <ListItemText primary="Uncommon player as CR7" />
+        </ListItem>
+        <ListItem>
+          <BombIcon />
+          <ListItemText primary="The bomb shooter" />
+        </ListItem>
+        <ListItem>
+          <BoneIcon
+            style={{
+              color: '#C6C6C6'
+            }}
+          />
+          <ListItemText primary="More than naked" />
+        </ListItem>
+        <ListItem>
+          <CandycaneIcon
+            style={{
+              color: 'red'
+            }}
+          />
+          <ListItemText primary="Too sweet" />
+        </ListItem>
+        <ListItem>
+          <CannabisIcon
+            style={{
+              color: '#537614'
+            }}
+          />
+          <ListItemText primary="Dumb as hell" />
+        </ListItem>
+        <ListItem>
+          <CatIcon
+            style={{
+              color: '#A3A3A3'
+            }}
+          />
+          <ListItemText primary="Ohh little cat" />
+        </ListItem>
+        <ListItem>
+          <ChessKingIcon
+            style={{
+              color: '#D4AF6A'
+            }}
+          />
+          <ListItemText primary="Here comes the king" />
+        </ListItem>
+        <ListItem>
+          <DogIcon
+            style={{
+              color: '#805A15'
+            }}
+          />
+          <ListItemText primary="Play like a dog" />
+        </ListItem>
+
+        <ListItem>
+          <DuckIcon
+            style={{
+              color: '#FFFF00'
+            }}
+          />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+        <ListItem>
+          <EmoticonPoopIcon
+            style={{
+              color: '#805A15'
+            }}
+          />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+        <ListItem>
+          <FoodIcon />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+        <ListItem>
+          <GhostIcon
+            style={{
+              color: '#C6C6C6'
+            }}
+          />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+        <ListItem>
+          <NinjaIcon />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+        <ListItem>
+          <NukeIcon
+            style={{
+              color: '#FF8B0E'
+            }}
+          />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+        <ListItem>
+          <PigIcon
+            style={{
+              color: '#F10088'
+            }}
+          />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+
+        <ListItem>
+          <PirateIcon />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+        <ListItem>
+          <RocketIcon />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+        <ListItem>
+          <SkullIcon />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+        <ListItem>
+          <SoccerFieldIcon />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+        <ListItem>
+          <SoccerIcon />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+        <ListItem>
+          <TrophyIcon />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+        <ListItem>
+          <WeatherSnowyIcon />
+          <ListItemText primary="T.B.D." />
+        </ListItem>
+      </List>
+
+
+
     </article>
   </Layout>
 ))
