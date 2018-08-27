@@ -48,6 +48,21 @@ router.get('/get/:offset/:limit/', async (req, res) => {
   }
 })
 
+router.get('/get/:slug', async (req, res) => {
+  const _id = req.params.slug
+  try {
+    const match = await Match.findOne({ _id })
+      .populate('teamHome.defender')
+      .populate('teamHome.striker')
+      .populate('teamAway.defender')
+      .populate('teamAway.striker')
+    res.json(match);
+  } catch (err) {
+    console.log(err)
+    res.json({ error: err.message || err.toString() });
+  }
+})
+
 router.post('/add', (req, res) => {
   const { teamAway, teamHome } = req.body
   const slug = Match.generateSlug()

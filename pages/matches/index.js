@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Layout from '../../components/Layout.js'
 import { getMatchesList } from '../../lib/api/match'
 import { styleLoadMoreButton,styleMatchInfo,styleMatchScore,styleMatchTile,stylePlayerScore,styleTeamTile,styleTeamPlayer } from '../../lib/ListOfMatches.js'
@@ -111,9 +112,11 @@ class IndexMatch extends React.Component {
                 />
               </GridListTile>
               <GridListTile style={styleMatchScore}>
-                <Button variant="fab" mini color="primary">
-                  {match.teamHome.score} - {match.teamAway.score}
-                </Button>
+                <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
+                  <Button variant="fab" mini color="primary">
+                    {match.teamHome.score} - {match.teamAway.score}
+                  </Button>
+                </Link>
                 <Badge color="secondary" badgeContent={<small>{match.teamHome.defScore}</small>} style={stylePlayerScore('defender','home')}> </Badge>
                 <Badge color="secondary" badgeContent={<small>{match.teamHome.strScore}</small>} style={stylePlayerScore('striker','home')}> </Badge>
                 <Badge color="secondary" badgeContent={<small>{match.teamAway.defScore}</small>} style={stylePlayerScore('defender','away')}> </Badge>

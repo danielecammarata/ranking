@@ -41,12 +41,17 @@ app.prepare().then(() => {
   server.use(express.static('public'))
 
   server.use(express.json())
-  
+
   api(server)
-  
+
   server.get('/users/:slug', (req, res) => {
     return app.render(req, res, `/users/update`, { slug: req.params.slug })
   })
+
+  server.get('/match/:slug', (req, res) => {
+    return app.render(req, res, `/matches/detail`, { slug: req.params.slug })
+  })
+
   // give all Nextjs's request to Nextjs server
   server.get('*', (req, res) => {
     handle(req, res)
