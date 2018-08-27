@@ -57,17 +57,7 @@ router.get('/get/:slug', async (req, res) => {
 
 router.get('/get', async (req, res) => {
   try {
-    if (process.env.offline !== 'false') {
-      res.json(
-        [{
-          _id: 'sadksahdas',
-          slug: 'mucci',
-          name: 'Mucci',
-          points: 1200
-        }]
-      )
-    }
-    const users = await User.find({ active:true })
+    const users = await User.find({ active:true }).sort({ points: -1 })
     res.json(users);
   } catch (err) {
     console.log(err)

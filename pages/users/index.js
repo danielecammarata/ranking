@@ -40,17 +40,25 @@ class IndexUser extends React.Component {
   render() {
     return (
       <Layout>
-        <h1 style={styleH1}>Players</h1>
+        <h1 style={styleH1}>Ranking</h1>
         <Divider />
-        <ul>
+        <ul
+          style={{
+            listStyle: 'none'
+          }}
+        >
           {this.state.users && this.state.users.map(user => (
-            <li key={user.slug}>
+            <li
+              key={user.slug}
+              style={{
+                marginBottom: '10px'
+              }}
+            >
               <Link as={`/users/${user.slug}`} href={`/users/update/?slug=${user.slug}`}>
                 <Card style={styleCard}>
                   <div style={styleCardContainer}>
                     <CardContent style={styleCardContent}>
                       <Typography variant="headline">{user.name}</Typography>
-                      <Typography variant="subheading" color="textSecondary">A.K.A.</Typography>
                       <Typography variant="subheading" color="textSecondary">Points: {user.points}</Typography>
                     </CardContent>
                   </div>
@@ -69,6 +77,6 @@ class IndexUser extends React.Component {
     )
   }
 
-  
+
 }
 export default IndexUser
