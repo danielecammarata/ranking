@@ -2,6 +2,7 @@
 node_modules/
 mongodb-data/
 .next/
+coverage/
 *.log
 package-lock.json
 
