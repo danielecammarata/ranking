@@ -3,6 +3,7 @@ node_modules/
 mongodb-data/
 .next/
 *.log
+package-lock.json
 
 # OS
 .DS_Store
