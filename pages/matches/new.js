@@ -77,7 +77,7 @@ class AddMatch extends React.Component {
     })
 
     this.setState({matchAdded: true})
-    Router.push('/matches')
+    Router.push('/')
   }
 
   onSelectPlayer = player => {
@@ -165,7 +165,7 @@ class AddMatch extends React.Component {
     }
     await addNewMatch(match)
 
-    Router.push('/matches')
+    Router.push('/')
   }
 
   render () {

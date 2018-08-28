@@ -12,12 +12,15 @@ import {
   styleTeamTile,
   styleTeamPlayer
 } from '../lib/ListOfMatches.js'
+import { SoccerIcon } from '../components/IconComponents'
+
 import { withStyles } from '@material-ui/core/styles'
 
 import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
 import Button from '@material-ui/core/Button'
 import Chip from '@material-ui/core/Chip'
+import Grid from '@material-ui/core/Grid'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
 import { Divider, Typography } from '@material-ui/core'
@@ -192,6 +195,35 @@ class Index extends React.Component {
     const { matchesObj } = this.state
     return (
       <Layout>
+        <Grid container spacing={16}>
+          <Grid container justify="center" spacing={24}>
+            <Link href="/matches/new">
+              <Button
+                variant="extendedFab"
+                aria-label="New Match"
+                style={{
+                  width: 200
+                }}
+              >
+                <SoccerIcon />
+                New Match
+              </Button>
+            </Link>
+            <Link href="/users">
+              <Button
+                variant="extendedFab"
+                aria-label="Ranking"
+                style={{
+                  width: 200,
+                  marginLeft: 20
+                }}
+              >
+                <SoccerIcon />
+                Ranking
+              </Button>
+            </Link>
+          </Grid>
+        </Grid>
         {/* New grouped matches list */}
         <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '400px'}}>
           {Object.keys(matchesObj).map(matchKey => (
