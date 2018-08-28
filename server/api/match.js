@@ -8,8 +8,13 @@ const User = require('../models/User')
 
 const rankify = require('../lib/rankify')
 
-router.get('/get/:offset/:limit/', async (req, res) => {
-  const { offset = 0, limit = 2 } = req.params
+router.get('/get/:offset/:limit/:withCount', async (req, res) => {
+  const { offset = 0, limit = 2, withCount = false } = req.params
+
+  console.log('withCount')
+  console.log(withCount)
+  console.log('withCount')
+
   try {
     if (process.env.offline !== 'false') {
       res.json(
@@ -41,7 +46,15 @@ router.get('/get/:offset/:limit/', async (req, res) => {
       .skip(parseInt(offset))
       .limit(parseInt(limit))
       .exec((err, rs) => {
-          res.json(rs)
+        if (withCount) {
+          Match.count({}, (err, count) => {
+            res.json(
+              Object.assign({}, { matches: rs }, { count: count })
+            )
+          })
+        } else {
+          res.json({ matches: rs })
+        }
       })
   } catch (err) {
     res.json({ error: err.message || err.toString() });

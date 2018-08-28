@@ -48,21 +48,22 @@ class Index extends React.Component {
     super(props)
     this.state = {
       loadMoreActive: true,
-      matches: [],
-      matchesObj: {}
+      matchesObj: {},
+      matchesFetchedCount: 0,
+      numMatches: 0
     }
     this.loadMore = this.loadMore.bind(this);
   }
 
   async componentDidMount () {
     try {
-      if(this.state.matches.length <= 0){
-        const data = await getMatchesList(0, elementPerPage)
+      const data = await getMatchesList(0, elementPerPage, true)
 
-        const matchesObj = this.prepareMatchData(data)
+      const matchesObj = this.prepareMatchData(data.matches)
+      const matchesFetchedCount = data.matches.length
+      const numMatches = data.count
 
-        this.setState({ matches: data, matchesObj: matchesObj })
-      }
+      this.setState({ matchesObj, matchesFetchedCount, numMatches })
     } catch (err) {
       console.log(err)
     }
@@ -72,10 +73,10 @@ class Index extends React.Component {
     if(this.state.loadMoreActive === true) {
       this.setState({ loadMoreActive: false })
       try {
-        getMatchesList(this.state.matches.length, elementPerPage).then((newMatches) => {
-          const matches = this.state.matches.concat(newMatches)
-          const matchesObj =this.prepareMatchData(newMatches)
-          this.setState({loadMoreActive: (matches.length > this.state.matches.length + elementPerPage), matches: matches, matchesObj: matchesObj })
+        getMatchesList(this.state.matchesFetchedCount, elementPerPage).then((newMatches) => {
+          const matchesObj = this.prepareMatchData(newMatches.matches)
+          const matchesFetchedCount = newMatches.matches.length + this.state.matchesFetchedCount
+          this.setState({ matchesObj, matchesFetchedCount, loadMoreActive: this.state.numMatches > matchesFetchedCount})
         })
       } catch (err) {
         console.log(err)
@@ -89,6 +90,7 @@ class Index extends React.Component {
    * @returns {object} grouped matches
    */
   prepareMatchData (data) {
+    console.log(data)
     const matches = this.state.matchesObj
     data.forEach(item => {
       const currDate = this.convertDate(item.createdAt)
