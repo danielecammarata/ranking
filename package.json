@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "nodemon server/index.js --watch server",
     "build": "next build",
-    "start": "next build && NODE_ENV=production node --optimize_for_size --max_old_space_size=460 server/index.js",
-    "test": "jest --coverage"
+    "start": "NODE_ENV=production node --optimize_for_size --max_old_space_size=460 server/index.js",
+    "test": "jest --coverage",
+    "heroku-postbuild": "next build"
   },
   "author": "",
   "license": "ISC",
