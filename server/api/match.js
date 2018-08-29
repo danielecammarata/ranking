@@ -11,10 +11,6 @@ const rankify = require('../lib/rankify')
 router.get('/get/:offset/:limit/:withCount', async (req, res) => {
   const { offset = 0, limit = 2, withCount = false } = req.params
 
-  console.log('withCount')
-  console.log(withCount)
-  console.log('withCount')
-
   try {
     if (process.env.offline !== 'false') {
       res.json(

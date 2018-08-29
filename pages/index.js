@@ -23,6 +23,7 @@ import Chip from '@material-ui/core/Chip'
 import Grid from '@material-ui/core/Grid'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
+import ListIcon from '@material-ui/icons/List'
 import { Divider, Typography } from '@material-ui/core'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
@@ -198,32 +199,35 @@ class Index extends React.Component {
     return (
       <Layout>
         <Grid container spacing={16}>
-          <Grid container justify="center" spacing={24}>
-            <Link href="/matches/new">
-              <Button
-                variant="extendedFab"
-                aria-label="New Match"
-                style={{
-                  width: 200
-                }}
-              >
-                <SoccerIcon />
-                New Match
-              </Button>
-            </Link>
-            <Link href="/users">
-              <Button
-                variant="extendedFab"
-                aria-label="Ranking"
-                style={{
-                  width: 200,
-                  marginLeft: 20
-                }}
-              >
-                <SoccerIcon />
-                Ranking
-              </Button>
-            </Link>
+          <Grid container justify="center" alignItems="center" spacing={24}>
+            <Grid item xs={24} sm={6}>
+              <Link href="/matches/new">
+                <Button
+                  variant="extendedFab"
+                  aria-label="New Match"
+                  style={{
+                    width: 200
+                  }}
+                >
+                  <SoccerIcon />
+                  New Match
+                </Button>
+              </Link>
+            </Grid>
+            <Grid item xs={24} sm={6}>
+              <Link href="/users">
+                <Button
+                  variant="extendedFab"
+                  aria-label="Ranking"
+                  style={{
+                    width: 200
+                  }}
+                >
+                  <ListIcon/>
+                  Ranking
+                </Button>
+              </Link>
+            </Grid>
           </Grid>
         </Grid>
         {/* New grouped matches list */}
