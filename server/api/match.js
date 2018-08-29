@@ -47,7 +47,7 @@ router.get('/get/:offset/:limit/:withCount', async (req, res) => {
       .limit(parseInt(limit))
       .exec((err, rs) => {
         if (withCount) {
-          Match.count({}, (err, count) => {
+          Match.countDocuments({}, (err, count) => {
             res.json(
               Object.assign({}, { matches: rs }, { count: count })
             )
