@@ -26,7 +26,11 @@ const mongoSchema = new Schema({
       badges: [],
       score: Number
     },
-    score: Number
+    score: Number,
+    defScore: Number,
+    strScore: Number,
+    defBadges: [],
+    strBadges: []
   },
   teamAway: {
     defender: {
@@ -47,7 +51,11 @@ const mongoSchema = new Schema({
       badges: [],
       score: Number
     },
-    score: Number
+    score: Number,
+    defScore: Number,
+    strScore: Number,
+    defBadges: [],
+    strBadges: []
   },
 <<<<<<< Updated upstream
   difference: Number,

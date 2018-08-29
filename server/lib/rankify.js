@@ -3,8 +3,8 @@ const Elo = require('arpad')
 const elo = new Elo()
 
 const calculate = ({ teamHome, teamAway }) => {
-  const homeRankPoints = (teamHome.defender.points + teamHome.striker.points) / 2
-  const awayRankPoints = (teamAway.defender.points + teamAway.striker.points) / 2
+  const homeRankPoints = Math.round((teamHome.defender.points + teamHome.striker.points) / 2)
+  const awayRankPoints = Math.round((teamAway.defender.points + teamAway.striker.points) / 2)
 
   const hasHomeWin = teamHome.score > teamAway.score
   const hasCappotto = teamHome.score === 0 || teamAway.score === 0

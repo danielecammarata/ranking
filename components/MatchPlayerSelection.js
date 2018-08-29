@@ -1,11 +1,11 @@
+import React from 'react'
+import PropTypes from 'prop-types'
 import AddIcon from '@material-ui/icons/Add'
 import Button from '@material-ui/core/Button'
 import GridListTile from '@material-ui/core/GridListTile'
 import GridListTileBar from '@material-ui/core/GridListTileBar'
-import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import getRootUrl from '../lib/api/getRootUrl'
-import { styleForm} from '../lib/SharedStyles'
 
 const styles = theme => ({
   tile: {
@@ -37,7 +37,7 @@ const styles = theme => ({
 
 class MatchPlayerSelection extends React.PureComponent {
   render () {
-    const {classes, player} = this.props
+    const { classes, player, selectionHandler, disableSelection } = this.props
 
     return (
       <GridListTile
@@ -55,21 +55,34 @@ class MatchPlayerSelection extends React.PureComponent {
           title={player.name}
         />
         }
-        <Button
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%'
-          }}
-          onClick={this.props.selectionHandler}
-        >
-          <AddIcon/>
-        </Button>
+        {!disableSelection &&
+          <Button
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%'
+            }}
+            onClick={selectionHandler}
+          >
+            <AddIcon/>
+          </Button>
+        }
       </GridListTile>
     )
   }
+}
+
+MatchPlayerSelection.defaultProps = {
+  disableSelection: false
+}
+
+MatchPlayerSelection.propTypes = {
+  classes: PropTypes.object,
+  player: PropTypes.object,
+  selectionHandler: PropTypes.func.isRequired,
+  disableSelection: PropTypes.bool
 }
 
 export default withStyles(styles)(MatchPlayerSelection)

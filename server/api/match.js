@@ -8,8 +8,9 @@ const User = require('../models/User')
 
 const rankify = require('../lib/rankify')
 
-router.get('/get/:offset/:limit/', async (req, res) => {
-  const { offset = 0, limit = 2 } = req.params
+router.get('/get/:offset/:limit/:withCount', async (req, res) => {
+  const { offset = 0, limit = 2, withCount = false } = req.params
+
   try {
     if (process.env.offline !== 'false') {
       res.json(
@@ -58,9 +59,32 @@ router.get('/get/:offset/:limit/', async (req, res) => {
       .skip(parseInt(offset))
       .limit(parseInt(limit))
       .exec((err, rs) => {
-          res.json(rs)
+        if (withCount) {
+          Match.countDocuments({}, (err, count) => {
+            res.json(
+              Object.assign({}, { matches: rs }, { count: count })
+            )
+          })
+        } else {
+          res.json({ matches: rs })
+        }
       })
   } catch (err) {
+    res.json({ error: err.message || err.toString() });
+  }
+})
+
+router.get('/get/:slug', async (req, res) => {
+  const _id = req.params.slug
+  try {
+    const match = await Match.findOne({ _id })
+      .populate('teamHome.defender')
+      .populate('teamHome.striker')
+      .populate('teamAway.defender')
+      .populate('teamAway.striker')
+    res.json(match);
+  } catch (err) {
+    console.log(err)
     res.json({ error: err.message || err.toString() });
   }
 })
