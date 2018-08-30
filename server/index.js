@@ -28,7 +28,7 @@ app.prepare().then(() => {
 
   if (!dev) {
     server.use (function (req, res, next) {
-      if (req.protocol === 'https') {
+      if (req.headers['x-forwarded-proto'] == 'https') {
         // request was via https, so do no special handling
         next();
       } else {
