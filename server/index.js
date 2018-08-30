@@ -9,7 +9,7 @@ const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 8000
 const ROOT_URL = dev ? `http://localhost:${port}` : 'https://scoreza.herokuapp.com'
 
-const MONGO_URL = dev ? process.env.MONGO_URL_TEST : process.env.MONGO_URL
+const MONGO_URL = process.env.MONGO_URL
 
 process.env.offline = false
 
@@ -26,17 +26,17 @@ const handle = app.getRequestHandler()
 app.prepare().then(() => {
   const server = express()
 
-  // if (!dev) {
-  //   server.use (function (req, res, next) {
-  //     if (req.secure) {
-  //       // request was via https, so do no special handling
-  //       next();
-  //     } else {
-  //       // request was via http, so redirect to https
-  //       res.redirect('https://scoreza.herokuapp.com' + req.url);
-  //     }
-  //   })
-  // }
+  if (!dev) {
+    server.use (function (req, res, next) {
+      if (req.protocol === 'https') {
+        // request was via https, so do no special handling
+        next();
+      } else {
+        // request was via http, so redirect to https
+        res.redirect('https://' + req.headers.host + req.url);
+      }
+    })
+  }
 
   server.use(express.static('public'))
 
