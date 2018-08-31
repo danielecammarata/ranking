@@ -72,8 +72,7 @@ class AddMatch extends React.Component {
 
     const match = await addNewMatch({
       teamHome: this.state.teamHome,
-      teamAway: this.state.teamAway,
-      badges: []
+      teamAway: this.state.teamAway
     })
 
     this.setState({matchAdded: true})
@@ -133,35 +132,30 @@ class AddMatch extends React.Component {
     const match = {
       teamHome: {
         defender: {
-          _id: this.state.homeDefender._id,
-          points: this.state.homeDefender.points
+          user: this.state.homeDefender._id,
+          score: scoreAndBadges.homeGoalsDefender,
+          badges: []
         },
         striker: {
-          _id: this.state.homeStriker._id,
-          points: this.state.homeStriker.points
+          user: this.state.homeStriker._id,
+          score: scoreAndBadges.homeGoalsStriker,
+          badges: []
         },
-        score: this.state.homeGoals,
-        defScore: scoreAndBadges.homeGoalsDefender,
-        strScore: scoreAndBadges.homeGoalsStriker,
-        defBadges: [],
-        strBadges: []
+        score: this.state.homeGoals
       },
       teamAway: {
         defender: {
-          _id: this.state.awayDefender._id,
-          points: this.state.awayDefender.points
+          user: this.state.awayDefender._id,
+          score: scoreAndBadges.awayGoalsDefender,
+          badges: []
         },
         striker: {
-          _id: this.state.awayStriker._id,
-          points: this.state.awayStriker.points
+          user: this.state.awayStriker._id,
+          strScore: scoreAndBadges.awayGoalsStriker,
+          badges: []
         },
-        score: this.state.awayGoals,
-        defScore: scoreAndBadges.awayGoalsDefender,
-        strScore: scoreAndBadges.awayGoalsStriker,
-        defBadges: [],
-        strBadges: []
-      },
-      badges: scoreAndBadges.badges
+        score: this.state.awayGoals
+      }
     }
     await addNewMatch(match)
 
@@ -169,18 +163,13 @@ class AddMatch extends React.Component {
   }
 
   render () {
-    const showScores =
-      this.state.homeDefender !== defaultPlayer &&
-      this.state.homeStriker !== defaultPlayer &&
-      this.state.awayDefender !== defaultPlayer &&
-      this.state.awayStriker !== defaultPlayer
     return (
       <Layout>
         <GridList
           cols={2}
         >
           <MatchPlayerHeader
-            enableScore={showScores}
+            enableScore={this.state.homeDefenderSelected && this.state.homeStrikerSelected}
             onScoreChange={this.onScoreChange}
             selector={'homeGoals'}
             teamLabel={'Team Home'}
@@ -194,7 +183,7 @@ class AddMatch extends React.Component {
             selectionHandler={this.showPlayersSelect('homeStriker')}
           />
           <MatchPlayerHeader
-            enableScore={showScores}
+            enableScore={this.state.awayDefenderSelected && this.state.awayStrikerSelected}
             onScoreChange={this.onScoreChange}
             selector={'awayGoals'}
             teamLabel={'Team Away'}

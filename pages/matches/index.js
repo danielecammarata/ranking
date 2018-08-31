@@ -101,13 +101,13 @@ class IndexMatch extends React.Component {
             <GridList>
               <GridListTile style={styleTeamTile('right')}>
                 <Chip
-                  avatar={<Avatar src={match.teamHome.defender.avatarUrl} />}
-                  label={match.teamHome.defender.name}
+                  avatar={<Avatar src={match.teamHome.defender.user.avatarUrl} />}
+                  label={match.teamHome.defender.user.name}
                   style={styleTeamPlayer('right')}
                 />
                 <Chip
-                  avatar={<Avatar src={match.teamHome.striker.avatarUrl} />}
-                  label={match.teamHome.striker.name}
+                  avatar={<Avatar src={match.teamHome.striker.user.avatarUrl} />}
+                  label={match.teamHome.striker.user.name}
                   style={styleTeamPlayer('right')}
                 />
               </GridListTile>
@@ -117,21 +117,21 @@ class IndexMatch extends React.Component {
                     {match.teamHome.score} - {match.teamAway.score}
                   </Button>
                 </Link>
-                <Badge color="secondary" badgeContent={<small>{match.teamHome.defScore}</small>} style={stylePlayerScore('defender','home')}> </Badge>
-                <Badge color="secondary" badgeContent={<small>{match.teamHome.strScore}</small>} style={stylePlayerScore('striker','home')}> </Badge>
-                <Badge color="secondary" badgeContent={<small>{match.teamAway.defScore}</small>} style={stylePlayerScore('defender','away')}> </Badge>
-                <Badge color="secondary" badgeContent={<small>{match.teamAway.strScore}</small>} style={stylePlayerScore('striker','away')}> </Badge>
+                <Badge color="secondary" badgeContent={<small>{match.teamHome.defender.score}</small>} style={stylePlayerScore('defender','home')}> </Badge>
+                <Badge color="secondary" badgeContent={<small>{match.teamHome.striker.score}</small>} style={stylePlayerScore('striker','home')}> </Badge>
+                <Badge color="secondary" badgeContent={<small>{match.teamAway.defender.score}</small>} style={stylePlayerScore('defender','away')}> </Badge>
+                <Badge color="secondary" badgeContent={<small>{match.teamAway.striker.score}</small>} style={stylePlayerScore('striker','away')}> </Badge>
               </GridListTile>
               <GridListTile style={styleTeamTile('left')}>
                 <Chip
-                  avatar={<Avatar src={match.teamAway.defender.avatarUrl} />}
+                  avatar={<Avatar src={match.teamAway.defender.user.avatarUrl} />}
                   classes={{label: this.props.classes.chipsLabel}}
-                  label={match.teamAway.defender.name}
+                  label={match.teamAway.defender.user.name}
                   style={styleTeamPlayer('left')}
                 />
                 <Chip
-                  avatar={<Avatar src={match.teamAway.striker.avatarUrl} />}
-                  label={match.teamAway.striker.name}
+                  avatar={<Avatar src={match.teamAway.striker.user.avatarUrl} />}
+                  label={match.teamAway.striker.user.name}
                   style={styleTeamPlayer('left')}
                 />
               </GridListTile>

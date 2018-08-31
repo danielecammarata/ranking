@@ -78,10 +78,10 @@ router.get('/get/:slug', async (req, res) => {
   const _id = req.params.slug
   try {
     const match = await Match.findOne({ _id })
-      .populate('teamHome.defender')
-      .populate('teamHome.striker')
-      .populate('teamAway.defender')
-      .populate('teamAway.striker')
+      .populate('teamHome.defender.user')
+      .populate('teamHome.striker.user')
+      .populate('teamAway.defender.user')
+      .populate('teamAway.striker.user')
     res.json(match);
   } catch (err) {
     console.log(err)
@@ -93,15 +93,12 @@ router.post('/add', (req, res) => {
   const { teamAway, teamHome } = req.body
   const slug = Match.generateSlug()
   const createdAt = new Date().toISOString()
-<<<<<<< Updated upstream
   const badges = []
 
   const rank = rankify.calculate({
     teamHome,
     teamAway
   })
-=======
->>>>>>> Stashed changes
   const matchData = {
     teamHome,
     teamAway,
@@ -114,28 +111,28 @@ router.post('/add', (req, res) => {
     if (err) return res.json({ error: err.message || err.toString() })
     // res.json(newMatch)
     const scoreHD = {
-      id: teamHome.defender._id,
+      id: teamHome.defender.user,
       score: rank.homeDefense,
       res
     }
     updateUser(scoreHD)
 
     const scoreHS = {
-      id: teamHome.striker._id,
+      id: teamHome.striker.user,
       score: rank.homeStriker,
       res
     }
     updateUser(scoreHS)
 
     const scoreAD = {
-      id: teamAway.defender._id,
+      id: teamAway.defender.user,
       score: rank.awayDefense,
       res
     }
     updateUser(scoreAD)
 
     const scoreAS = {
-      id: teamAway.striker._id,
+      id: teamAway.striker.user,
       score: rank.awayStriker,
       res
     }
