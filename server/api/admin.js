@@ -4,12 +4,17 @@ const router = express.Router()
 const Match = require('../models/Match')
 const User = require('../models/User')
 
+const rankify = require('../lib/rankify')
+
 router.post('/stats/users/update', async (req, res) => {
   let users = await User.find({ active: true }).sort({ points: -1 })
 
 
   users.forEach(user => {
-
+    user.points = 1200
+    user.stats.points_max = user.points
+    user.stats.points_min = user.points
+    user.stats.points_trend = 0
     let query = Match.find({})
     // query by one of the roles match with user id
     query.or([
@@ -17,6 +22,11 @@ router.post('/stats/users/update', async (req, res) => {
       { 'teamHome.striker': user._id },
       { 'teamAway.defender': user._id },
       { 'teamHome.striker': user._id }
+    ]).populate([
+      {path: 'teamHome.defender', model: 'User'},
+      {path: 'teamHome.striker', model: 'User'},
+      {path: 'teamAway.defender', model: 'User'},
+      {path: 'teamAway.striker', model: 'User'}
     ]).sort({ createdAt: 1 })
 
     query.exec((err, docs) => {
@@ -48,25 +58,30 @@ router.post('/stats/users/update', async (req, res) => {
           let roleSelector = ''
           let teamSelector = ''
           let oppositeTeamSelector = ''
+          let roleteamSelector = ''
 
           if (match.teamHome.defender.equals(user._id)) {
             roleSelector = 'defender'
             teamSelector = 'teamHome'
+            roleteamSelector = 'homeDefense'
             oppositeTeamSelector = 'teamAway'
             asDefender++
           } else if (match.teamHome.striker.equals(user._id)) {
             roleSelector = 'striker'
             teamSelector = 'teamHome'
+            roleteamSelector = 'homeStriker'
             oppositeTeamSelector = 'teamAway'
             asStriker++
           } else if (match.teamAway.defender.equals(user._id)) {
             roleSelector = 'defender'
             teamSelector = 'teamAway'
+            roleteamSelector = 'awayDefense'
             oppositeTeamSelector = 'teamHome'
             asDefender++
           } else if (match.teamAway.striker.equals(user._id)) {
             roleSelector = 'striker'
             teamSelector = 'teamAway'
+            roleteamSelector = 'awayStriker'
             oppositeTeamSelector = 'teamHome'
             asStriker++
           }
@@ -103,10 +118,32 @@ router.post('/stats/users/update', async (req, res) => {
             }
             winSteak = 0
           }
+          const teamHome = match.teamHome
+          const teamAway = match.teamAway
+          const rank = rankify.calculate({
+            teamHome,
+            teamAway
+          })
+
+          console.log('POINTS:',user.points, rank[roleteamSelector], rank, roleteamSelector)
+
+          if(user.stats.points_min > rank[roleteamSelector]) {
+            user.stats.points_min = rank[roleteamSelector]
+          }
+
+          if(user.stats.points_max < rank[roleteamSelector]) {
+            user.stats.points_max = rank[roleteamSelector]
+          }
+
+          user.stats.points_trend = 0
+
+          if(!user.stats.points_trend && !(rank[roleteamSelector] - user.points)){
+            user.stats.points_trend+=(rank[roleteamSelector] - user.points)
+          } else {
+            user.stats.points_trend = (rank[roleteamSelector] - user.points)
+          }
 
         })
-
-
 
         user.stats.match_played = matchCount
         user.stats.match_win = winCount
