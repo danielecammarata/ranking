@@ -16,6 +16,7 @@
     "@material-ui/core": "^1.4.1",
     "@material-ui/icons": "^2.0.0",
     "arpad": "^1.0.2",
+    "cloudinary": "^1.11.0",
     "dotenv": "^6.0.0",
     "downshift": "",
     "express": "^4.16.3",

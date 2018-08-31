@@ -5,6 +5,14 @@ const router = express.Router()
 
 const User = require('../models/User')
 
+const cloudinary = require('cloudinary')
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME || 'sample',
+  api_key: process.env.CLOUDINARY_KEY || '',
+  api_secret: process.env.CLOUDINARY_SECRET || ''
+})
+
 router.get('/get/:slug', async (req, res) => {
   const slug = req.params.slug
   try {
@@ -68,26 +76,30 @@ router.get('/get', async (req, res) => {
 router.post('/add', (req, res) => {
   const { name, avatarUrl } = req.body
   const slug = User.generateSlug()
-  const userData = {
-    name,
-    slug,
-    points: 1200,
-    avatarUrl,
-    active: true
-  }
-  const newUser = new User(userData)
-  newUser.save(function (err) {
-    if (err) return res.json({ error: err.message || err.toString() })
-    res.json(newUser)
+  cloudinary.uploader.upload(avatarUrl, result => {
+    const userData = {
+      name,
+      slug,
+      points: 1200,
+      avatarUrl: result.secure_url,
+      active: true
+    }
+    const newUser = new User(userData)
+    newUser.save(function (err) {
+      if (err) return res.json({ error: err.message || err.toString() })
+      res.json(newUser)
+    })
   })
 })
 
 router.post('/update', (req, res) => {
   const { slug, name, avatarUrl } = req.body
   const query = { slug: slug }
-  User.findOneAndUpdate(query, { name, avatarUrl }, {}, function (err, rs) {
-    if (err) return res.json({ error: err.message || err.toString() })
-    res.json(rs)
+  cloudinary.uploader.upload(avatarUrl, result => {
+    User.findOneAndUpdate(query, { name, avatarUrl: result.secure_url }, {}, function (err, rs) {
+      if (err) return res.json({ error: err.message || err.toString() })
+      res.json(rs)
+    })
   })
 })
 
