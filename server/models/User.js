@@ -11,8 +11,33 @@ const mongoSchema = new Schema({
   },
   name: String,
   points: Number,
+  points2: Number,
   avatarUrl: String,
-  active: Boolean
+  active: Boolean,
+  stats: {
+    win_streak: Number, // current matches winned in row
+    max_win_streak: Number, // max matches winned in row
+    points_trend: Number, // trend positive or negative
+    points_max: Number, // max points reached
+    points_min: Number, // min points reached
+    match_played: Number, // number of matches played
+    match_win: Number, // matches win
+    match_crawl: Number, // matches win with 6 - 0
+    match_crawled: Number, // matches loose with 6 - 0
+    match_as_defender: Number, // matches played as defender
+    match_as_striker: Number, // matches played as striker
+    win_as_defender: Number, // matches win as defender
+    win_as_striker: Number, // matches win as striker
+    match_goals_made: Number,
+    match_goals_conceded: Number,
+    match_goals_made_as_defender: Number,
+    match_goals_conceded_as_defender: Number,
+    last_matches: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Match',
+      required: true
+    }]
+  }
 })
 
 class UserClass {
