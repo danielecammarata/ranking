@@ -91,7 +91,6 @@ class Index extends React.Component {
    * @returns {object} grouped matches
    */
   prepareMatchData (data) {
-    console.log(data)
     const matches = this.state.matchesObj
     data.forEach(item => {
       const currDate = this.convertDate(item.createdAt)
@@ -131,7 +130,7 @@ class Index extends React.Component {
         {label}
       </Typography>
       <Divider />
-      <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '400px'}}>
+      <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '350px'}}>
         {matches.map(match => (
           <GridListTile style={styleMatchTile} key={match.slug}>
             <GridList>
@@ -228,10 +227,24 @@ class Index extends React.Component {
                 </Button>
               </Link>
             </Grid>
+            <Grid item xs={24} sm={0}>
+              <Link href="/matches/fast">
+                <Button
+                  variant="extendedFab"
+                  aria-label="Ranking"
+                  style={{
+                    width: 200
+                  }}
+                >
+                  <SoccerIcon/>
+                  Beta
+                </Button>
+              </Link>
+            </Grid>
           </Grid>
         </Grid>
         {/* New grouped matches list */}
-        <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '400px'}}>
+        <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '350px'}}>
           {Object.keys(matchesObj).map(matchKey => (
             this.matchTile(matchKey,  matchesObj[matchKey].matches)
           ))}

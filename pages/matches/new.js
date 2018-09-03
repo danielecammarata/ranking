@@ -61,7 +61,6 @@ class AddMatch extends React.Component {
   }
 
   async componentDidMount () {
-    console.log('mount')
     try {
       this.startAudio(document.getElementById('background_audio'), { volume: 1.0 })
       const players = await getUsersList()

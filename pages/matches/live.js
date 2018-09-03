@@ -91,7 +91,6 @@ class LiveMatch extends React.Component {
         score: this.state[team].defender.score + this.state[team].striker.score - 1
       }
     )
-    console.log(value)
     this.setState({[team]: value})
   }
 
@@ -99,7 +98,6 @@ class LiveMatch extends React.Component {
 
   updateTimer = () => {
     const val = startWatch()
-    console.log(val)
     this.setState({timer: val})
   }
 
@@ -193,7 +191,7 @@ class LiveMatch extends React.Component {
                 }
               />
             </GridListTile>
-            
+
             <GridListTile cols={2} style={{ height: 'auto' }}>
               <div style={styleTimer}>
                 <IconButton style={styleTimerButton}>
@@ -203,19 +201,19 @@ class LiveMatch extends React.Component {
               </div>
               <div style={{clear: 'both', float: 'none'}}></div>
               <IconButton style={styleTimerButton}>
-                <PauseIcon 
+                <PauseIcon
                   style={styleTimerIcon}
                   onClick={this.pauseTimer}
                 />
               </IconButton>
               <IconButton style={styleTimerButton}>
-                <PlayIcon 
+                <PlayIcon
                   style={styleTimerIcon}
                   onClick={this.activateTimer}
                 />
               </IconButton>
               <IconButton style={styleTimerButton}>
-                <ReplayIcon 
+                <ReplayIcon
                   style={styleTimerIcon}
                   onClick={this.resetTimer}
                 />
