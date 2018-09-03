@@ -11,6 +11,7 @@ import PinnedSubheaderList from '../../components/PinnedSubheaderList'
 import { addNewMatch } from '../../lib/api/match'
 import { getUsersList } from '../../lib/api/users'
 import { styleForm } from '../../lib/SharedStyles'
+import ReactAudioPlayer from 'react-audio-player'
 
 const defaultPlayer = {
   _id: 'default',
@@ -43,16 +44,26 @@ class AddMatch extends React.Component {
       homeStrikerSelected: false,
       matchAdded: false,
       search: '',
-      showSelectionList: false
+      showSelectionList: false,
+      backgroundSoundTracks: [
+        'theKingOfFighters.ogg',
+        'BurningD.N.A.ogg',
+        'ESAKA.ogg'
+      ],
+      currentSoundTrack: 0
     }
 
     this.onSelectPlayer = this.onSelectPlayer.bind(this)
   }
 
+  async componentWillMount () {
+    this.loadAudio(document.getElementById('background_audio'), { src: this.getBackgroundAudio(), volume: 1.0 })
+  }
+
   async componentDidMount () {
     console.log('mount')
-
     try {
+      this.startAudio(document.getElementById('background_audio'), { volume: 1.0 })
       const players = await getUsersList()
       this.setState({playersList: players})
     } catch (err) {
@@ -87,9 +98,10 @@ class AddMatch extends React.Component {
         activeSelection: null,
         showSelectionList: false
       })
+      this.startAudio(document.getElementById('character_selection'), { volume: 1.0 })
   }
 
-  showPlayersSelect = pointer => () => {
+  showPlayersSelect = pointer => () => {    
     this.setState({
       activeSelection: pointer,
       showSelectionList: true
@@ -126,6 +138,49 @@ class AddMatch extends React.Component {
     }
 
     return scoreAndBadges
+  }
+
+  getBackgroundAudio = () => {
+    console.log("->", this.state.backgroundSoundTracks.length)
+    this.state.currentSoundTrack++
+    if(this.state.backgroundSoundTracks.length <= this.state.currentSoundTrack) {
+      this.state.currentSoundTrack = 0
+    }
+    return getRootUrl() + '/sound/' + this.state.backgroundSoundTracks[this.state.currentSoundTrack]
+  }
+
+  loadAudio = async (elem, params) => {
+    console.log('ELEM ->', elem)
+    console.log('PARAMS ->', params)
+    let backgroundAudio = elem
+    backgroundAudio.volume = params.volume;
+    if (typeof(params.src) !== 'undefined') {
+      backgroundAudio.src = params.src
+      backgroundAudio.load()
+    } else {
+      backgroundAudio.play()
+    }
+  }
+
+  startAudio = (elem, params) => {
+    console.log(elem.id)
+    let backgroundAudio = elem
+    backgroundAudio.volume = params.volume;
+    backgroundAudio.play()
+  }
+
+  isReady = () => {
+    if ( this.state.homeDefender !== defaultPlayer &&
+    this.state.homeStriker !== defaultPlayer &&
+    this.state.awayDefender !== defaultPlayer &&
+    this.state.awayStriker !== defaultPlayer ) {
+      setTimeout( () => {
+        this.startAudio(document.getElementById('ready'), { volume: 1.0 })
+        }, 500 )
+      return true
+    } else {
+      return false
+    }
   }
 
   onSave = async () => {
@@ -169,11 +224,7 @@ class AddMatch extends React.Component {
   }
 
   render () {
-    const showScores =
-      this.state.homeDefender !== defaultPlayer &&
-      this.state.homeStriker !== defaultPlayer &&
-      this.state.awayDefender !== defaultPlayer &&
-      this.state.awayStriker !== defaultPlayer
+    const showScores = this.isReady()
     return (
       <Layout>
         <GridList
@@ -192,6 +243,29 @@ class AddMatch extends React.Component {
           <MatchPlayerSelection
             player={this.state.homeStriker}
             selectionHandler={this.showPlayersSelect('homeStriker')}
+          />
+          <ReactAudioPlayer
+            id="background_audio"
+            onEnded={( async (e) => { 
+                        this.loadAudio(
+                          e.target, 
+                          { 
+                            src: this.getBackgroundAudio(),
+                            volume: 0.3
+                          }
+                        ).then(() => { 
+                          this.startAudio(e.target, { volume: 0.3 }) 
+                        }) 
+                      })
+                    }
+          />
+          <ReactAudioPlayer
+            id="character_selection"
+            src={ getRootUrl() + '/sound/player_selection.ogg' }
+          />
+          <ReactAudioPlayer
+            id="ready"
+            src={ getRootUrl() + '/sound/ready.ogg' }
           />
           <MatchPlayerHeader
             enableScore={showScores}
