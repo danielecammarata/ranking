@@ -62,7 +62,6 @@ class DetailMatch extends React.Component {
         awayDefender: data.teamAway.defender,
         awayStriker: data.teamAway.striker,
       })
-      console.log(data)
     } catch (err) {
       console.log(err)
     }

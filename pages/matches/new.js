@@ -50,8 +50,6 @@ class AddMatch extends React.Component {
   }
 
   async componentDidMount () {
-    console.log('mount')
-
     try {
       const players = await getUsersList()
       this.setState({playersList: players})

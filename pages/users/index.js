@@ -60,7 +60,6 @@ class IndexUser extends React.Component {
 
   async removeUser (user, e) {
     e.preventDefault()
-    console.log(user)
     const removedUser = await deleteUser(user._id)
     const localUserList = this.state.users.filter( el => el._id !== removedUser._id )
     this.setState({ users: localUserList, userDeleted: true })
