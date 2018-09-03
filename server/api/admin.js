@@ -8,13 +8,196 @@ const rankify = require('../lib/rankify')
 
 // '5b8d1a0fbfda2800383ed2ac'
 router.post('/rank/update/:match_id', async (req, res) => {
+  // Match.find({ id: 5b8d1a0fbfda2800383ed2ac }).remove(
   const id = req.params.match_id
   await Match.findById(id, (err, doc) => {
-    let query = Match.find({createdAt: { $gt: doc.createdAt }}, (err, docs) => {
-      console.log(docs)
+    let query = Match.find({})
+    query.and({createdAt: { $gte: doc.createdAt }})
+      .populate([
+        {path: 'teamHome.defender', model: 'User'},
+        {path: 'teamHome.striker', model: 'User'},
+        {path: 'teamAway.defender', model: 'User'},
+        {path: 'teamAway.striker', model: 'User'}
+      ]).sort({ createdAt: 1 })
+
+    // let query = Match.find({createdAt: { $gt: doc.createdAt }}, (err, docs) => {
+    query.exec((err, docs) => {
+      console.log('num matches')
+      console.log(docs.length)
+      console.log('num matches')
+      const users = {}
+      docs.forEach((match, index) => {
+        const homeWin = match.teamHome.score > match.teamAway.score
+        console.log(`${index} - ${homeWin}`)
+        if (!Object.keys(users).includes(match.teamHome.defender.slug)) {
+          users[match.teamHome.defender.slug] = Object.assign({},
+            {
+              id: match.teamHome.defender._id,
+              name: match.teamHome.defender.name,
+              points: match.teamHome.defender.points
+            },
+            {
+              diff: homeWin ? - Math.abs(match.difference) : Math.abs(match.difference),
+              wins: homeWin ? 1 : 0
+            })
+        } else {
+          users[match.teamHome.defender.slug].diff += homeWin ? - Math.abs(match.difference) : Math.abs(match.difference)
+          users[match.teamHome.defender.slug].wins += homeWin ? 0 : 1
+        }
+
+        if (!Object.keys(users).includes(match.teamHome.striker.slug)) {
+          users[match.teamHome.striker.slug] = Object.assign({},
+            {
+              id: match.teamHome.striker._id,
+              name: match.teamHome.striker.name,
+              points: match.teamHome.striker.points
+            },
+            {
+              diff: homeWin ? - Math.abs(match.difference) : Math.abs(match.difference),
+              wins: homeWin ? 1 : 0
+            })
+        } else {
+          users[match.teamHome.striker.slug].diff += homeWin ? - Math.abs(match.difference) : Math.abs(match.difference)
+          users[match.teamHome.striker.slug].wins += homeWin ? 0 : 1
+        }
+
+        if (!Object.keys(users).includes(match.teamAway.defender.slug)) {
+          users[match.teamAway.defender.slug] = Object.assign({},
+            {
+              id: match.teamAway.defender._id,
+              name: match.teamAway.defender.name,
+              points: match.teamAway.defender.points
+            },
+            {
+              diff: homeWin ? Math.abs(match.difference) : - Math.abs(match.difference),
+              wins: homeWin ? 0 : 1
+            })
+        } else {
+          users[match.teamAway.defender.slug].diff += homeWin ? Math.abs(match.difference) : - Math.abs(match.difference)
+          users[match.teamAway.defender.slug].wins += homeWin ? 0 : 1
+        }
+
+        if (!Object.keys(users).includes(match.teamAway.striker.slug)) {
+          users[match.teamAway.striker.slug] = Object.assign({},
+            {
+              id: match.teamAway.striker._id,
+              name: match.teamAway.striker.name,
+              points: match.teamAway.striker.points
+            },
+            {
+              diff: homeWin ? Math.abs(match.difference) : - Math.abs(match.difference),
+              wins: homeWin ? 0 : 1
+            })
+        } else {
+          users[match.teamAway.striker.slug].diff += homeWin ? Math.abs(match.difference) : - Math.abs(match.difference)
+          users[match.teamAway.striker.slug].wins += homeWin ? 0 : 1
+        }
+      })
+
+      console.log('='.repeat(20))
+      console.log(users)
+      console.log('='.repeat(20))
+
+      Object.keys(users).map(key => {
+        users[key].points = users[key].points + users[key].diff
+      })
+
+      console.log('='.repeat(20))
+      console.log(users)
+      console.log('='.repeat(20))
+
+      const updateMatches = []
+
+      docs.forEach((match, index) => {
+        const newMatch = createMatchFromOriginal(match, users)
+        console.log(newMatch.teamHome.defender.points)
+        users[newMatch.teamHome.defender.slug].points = newMatch.teamHome.defender.points
+        users[newMatch.teamHome.striker.slug].points = newMatch.teamHome.striker.points
+        users[newMatch.teamAway.defender.slug].points = newMatch.teamAway.defender.points
+        users[newMatch.teamAway.striker.slug].points = newMatch.teamAway.striker.points
+        updateMatches.push(newMatch)
+      })
+
+      // console.log('='.repeat(20))
+      // console.log(users)
+      // console.log('='.repeat(20))
+
+      // Object.keys(users).map(user => {
+      //   updateUser({ id: user.id, score: user.points + user.diff })
+      // })
+
+
+      // console.log('='.repeat(20))
+      // console.log(updateMatches)
+      // console.log('='.repeat(20))
     })
   })
 })
+
+const createMatchFromOriginal = (original, users) => {
+  const slug = Match.generateSlug()
+  const createdAt = original.createdAt
+  const badges = []
+
+  const match = {
+    teamHome: {
+      defender: {
+        _id: original.teamHome.defender._id,
+        slug: original.teamHome.defender.slug,
+        points: users[original.teamHome.defender.slug].points
+      },
+      striker: {
+        _id: original.teamHome.striker._id,
+        slug: original.teamHome.striker.slug,
+        points: users[original.teamHome.striker.slug].points
+      },
+      score: original.teamHome.score,
+      defScore: original.teamHome.defScore,
+      strScore: original.teamHome.strScore,
+      defBadges: [],
+      strBadges: []
+    },
+    teamAway: {
+      defender: {
+        _id: original.teamAway.defender._id,
+        slug: original.teamAway.defender.slug,
+        points: users[original.teamAway.defender.slug].points
+      },
+      striker: {
+        _id: original.teamAway.striker._id,
+        slug: original.teamAway.striker.slug,
+        points: users[original.teamAway.striker.slug].points
+      },
+      score: original.teamAway.score,
+      defScore: original.teamAway.defScore,
+      strScore: original.teamAway.strScore,
+      defBadges: [],
+      strBadges: []
+    }
+  }
+
+  const rank = rankify.calculate({
+    teamHome: match.teamHome,
+    teamAway: match.teamAway
+  })
+  const matchData = {
+    teamHome: match.teamHome,
+    teamAway: match.teamAway,
+    badges,
+    slug,
+    createdAt,
+    difference: rank.difference
+  }
+
+  return matchData
+}
+
+const updateUser = async ({id, score, res}) => {
+  const query = { _id: id }
+  await User.findOneAndUpdate(query, { points: score }, {}, function (err, rs) {
+    // if (err) return res.json({ error: err.message || err.toString() })
+  })
+}
 
 router.post('/stats/users/update', async (req, res) => {
   let users = await User.find({ active: true }).sort({ points: -1 })
