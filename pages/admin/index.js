@@ -31,10 +31,19 @@ class Admin extends React.Component {
     sendRequest('/api/v1/admin/stats/users/update')
   }
 
+  matchRank = () => {
+    sendRequest('/api/v1/admin/rank/update/5b8d1a0fbfda2800383ed2ac')
+  }
+
   render () {
     return (
       <div>
         <p>This is the admin page</p>
+        <Button
+          onClick={this.matchRank}
+        >
+          match calc
+        </Button>
         <Button
           onClick={this.calc}
         >

@@ -6,6 +6,16 @@ const User = require('../models/User')
 
 const rankify = require('../lib/rankify')
 
+// '5b8d1a0fbfda2800383ed2ac'
+router.post('/rank/update/:match_id', async (req, res) => {
+  const id = req.params.match_id
+  await Match.findById(id, (err, doc) => {
+    let query = Match.find({createdAt: { $gt: doc.createdAt }}, (err, docs) => {
+      console.log(docs)
+    })
+  })
+})
+
 router.post('/stats/users/update', async (req, res) => {
   let users = await User.find({ active: true }).sort({ points: -1 })
 
@@ -59,6 +69,7 @@ router.post('/stats/users/update', async (req, res) => {
           let teamSelector = ''
           let oppositeTeamSelector = ''
           let roleteamSelector = ''
+          console.log(match._id)
 
           if (match.teamHome.defender.equals(user._id)) {
             roleSelector = 'defender'
