@@ -45,7 +45,7 @@ class UpdateUser extends React.Component {
     event.preventDefault()
 
     const users = await updateUser({
-      slug: this.state.slug,
+      slug: this.props.user.slug,
       name: this.state.name,
       avatarUrl: this.state.avatarUrl
     })
