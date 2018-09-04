@@ -73,10 +73,9 @@ router.get('/get/:slug', async (req, res) => {
 })
 
 router.post('/add', (req, res) => {
-  const { teamAway, teamHome } = req.body
+  const { teamAway, teamHome, badges } = req.body
   const slug = Match.generateSlug()
   const createdAt = new Date().toISOString()
-  const badges = []
 
   const rank = rankify.calculate({
     teamHome,
@@ -90,6 +89,9 @@ router.post('/add', (req, res) => {
     createdAt,
     difference: rank.difference
   }
+  console.log("matchData")
+  console.log(matchData)
+  console.log("matchData")
   const newMatch = new Match(matchData)
   newMatch.save(function (err) {
     if (err) return res.json({ error: err.message || err.toString() })
