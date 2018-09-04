@@ -36,8 +36,9 @@ const styles = theme => ({
 })
 
 class MatchPlayerSelection extends React.PureComponent {
+
   render () {
-    const { classes, player, selectionHandler, disableSelection } = this.props
+    const { classes, player, selectionHandler, disableSelection} = this.props
 
     return (
       <GridListTile

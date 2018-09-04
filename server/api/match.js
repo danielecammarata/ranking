@@ -89,13 +89,11 @@ router.post('/add', (req, res) => {
     createdAt,
     difference: rank.difference
   }
-  console.log("matchData")
-  console.log(matchData)
-  console.log("matchData")
+  
   const newMatch = new Match(matchData)
   newMatch.save(function (err) {
     if (err) return res.json({ error: err.message || err.toString() })
-    // res.json(newMatch)
+
     const scoreHD = {
       id: teamHome.defender._id,
       score: rank.homeDefense,

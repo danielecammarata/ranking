@@ -95,7 +95,8 @@ class AddMatch extends React.Component {
         activeSelection: null,
         showSelectionList: false
     }, () => { this.setState({ "showScores": this.isReady()}) })
-    this.startAudio(document.getElementById('character_selection'), { volume: 1.0 })
+    this.createAndStartAudio(getRootUrl() + '/sound/player_selection.ogg')
+    // this.startAudio(document.getElementById('character_selection'), { volume: 1.0 })
   }
 
   showPlayersSelect = pointer => () => {    
@@ -116,6 +117,7 @@ class AddMatch extends React.Component {
     }
     if (this.state.homeGoals === 0 || this.state.awayGoals === 0) {
       scoreAndBadges.badges.push('cappotto')
+      this.createAndStartAudio(getRootUrl() + '/sound/perfect.ogg')
     }
 
     if (this.state.homeGoalsDefender + this.state.homeGoalsStriker !== this.state.homeGoals) {
@@ -166,13 +168,26 @@ class AddMatch extends React.Component {
     backgroundAudio.play()
   }
 
+  removeAudio(element) {
+      element.parentNode.removeChild(element);
+  }
+
+  createAndStartAudio = (audioFile) => {
+    const flush = new Audio(audioFile)
+    flush.volume= 1.0
+    flush.play()
+    flush.onended = () => {
+      this.removeAudio(flush)
+    }
+  }
+
   isReady = () => {
     if ( this.state.homeDefender !== defaultPlayer &&
     this.state.homeStriker !== defaultPlayer &&
     this.state.awayDefender !== defaultPlayer &&
     this.state.awayStriker !== defaultPlayer ) {
       setTimeout( () => {
-        this.startAudio(document.getElementById('ready'), { volume: 1.0 })
+        this.createAndStartAudio(getRootUrl() + '/sound/ready.ogg')
         }, 500 )
       return true
     } else {
@@ -235,10 +250,12 @@ class AddMatch extends React.Component {
           <MatchPlayerSelection
             player={this.state.homeDefender}
             selectionHandler={this.showPlayersSelect('homeDefender')}
+            hoverHandler={() => { this.createAndStartAudio(getRootUrl() + '/sound/hoverEffect.ogg') } }
           />
           <MatchPlayerSelection
             player={this.state.homeStriker}
             selectionHandler={this.showPlayersSelect('homeStriker')}
+            hoverHandler={() => { this.createAndStartAudio(getRootUrl() + '/sound/hoverEffect.ogg') } }
           />
           <ReactAudioPlayer
             id="background_audio"
@@ -255,14 +272,6 @@ class AddMatch extends React.Component {
                       })
                     }
           />
-          <ReactAudioPlayer
-            id="character_selection"
-            src={ getRootUrl() + '/sound/player_selection.ogg' }
-          />
-          <ReactAudioPlayer
-            id="ready"
-            src={ getRootUrl() + '/sound/ready.ogg' }
-          />
           <MatchPlayerHeader
             enableScore={this.state.showScores}
             onScoreChange={this.onScoreChange}
@@ -272,6 +281,7 @@ class AddMatch extends React.Component {
           <MatchPlayerSelection
             player={this.state.awayDefender}
             selectionHandler={this.showPlayersSelect('awayDefender')}
+            hoverHandler={() => { this.createAndStartAudio(getRootUrl() + '/sound/hoverEffect.ogg') } }
           />
           <MatchPlayerSelection
             player={this.state.awayStriker}
@@ -297,6 +307,7 @@ class AddMatch extends React.Component {
           <PinnedSubheaderList
             playersList={this.state.playersList}
             onSelectPlayer={this.onSelectPlayer}
+            hoverHandler={() => { this.createAndStartAudio(getRootUrl() + '/sound/hoverEffect.ogg') } }
           />
         }
       </Layout>
