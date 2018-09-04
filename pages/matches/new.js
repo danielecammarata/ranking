@@ -56,13 +56,11 @@ class AddMatch extends React.Component {
     this.onSelectPlayer = this.onSelectPlayer.bind(this)
   }
 
-  async componentWillMount () {
-    this.loadAudio(document.getElementById('background_audio'), { src: this.getBackgroundAudio(), volume: 1.0 })
-  }
-
   async componentDidMount () {
     try {
-      this.startAudio(document.getElementById('background_audio'), { volume: 1.0 })
+      await this.loadAudio(document.getElementById('background_audio'), { src: this.getBackgroundAudio(), volume: 1.0 }).then(() => {
+        this.startAudio(document.getElementById('background_audio'), { volume: 1.0 })
+      })
       const players = await getUsersList()
       this.setState({playersList: players})
     } catch (err) {
