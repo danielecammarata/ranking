@@ -7,6 +7,7 @@ import getRootUrl from '../../lib/api/getRootUrl'
 import Layout from '../../components/Layout.js'
 import { addNewMatch } from '../../lib/api/match'
 import { getUsersList } from '../../lib/api/users'
+import ReactAudioPlayer from 'react-audio-player'
 
 import {
   styleMatchScore,
@@ -85,10 +86,27 @@ class AddMatch extends React.Component {
       homeGoalsStriker: NaN,
       homeStrikerSelected: false,
       matchAdded: false,
+      backgroundSoundTracks: [
+        'theKingOfFighters.ogg',
+        'ESAKA.ogg',
+        'BurningD.N.A.ogg'
+      ],
+      currentSoundTrack: -1,
+      showScores: false
     }
   }
 
-  static async getInitialProps() {
+  async componentDidMount () {
+    try {
+      await this.loadAudio(document.getElementById('background_audio'), { src: this.getBackgroundAudio(), volume: 1.0 }).then(() => {
+        this.startAudio(document.getElementById('background_audio'), { volume: 1.0 })
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  static async getInitialProps() {    
     const players = await getUsersList()
     return {
       players
@@ -112,35 +130,36 @@ class AddMatch extends React.Component {
 
   onMatchStart = () => {
     if (this.state.selectedPlayers === 4) {
-      this.setState({ matchView: matchViewState.TEAMS_COMPLETE })
+      this.setState({ matchView: matchViewState.TEAMS_COMPLETE }, () => { this.createAndStartAudio(getRootUrl() + '/sound/go.ogg') })
     }
   }
 
   onPlayerSelect = (player, index) => {
+    this.createAndStartAudio(getRootUrl() + '/sound/player_selection.ogg')
     let selectedIndexes = this.state.arrSelectedPlayerIndex
     if (!selectedIndexes.includes(index)) {
       const playersCount = this.state.selectedPlayers + 1
       selectedIndexes.push(index)
       if (this.state.homeDefender === defaultPlayer) {
-        this.setState({ homeDefender: player, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes })
+        this.setState({ homeDefender: player, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes }, () => { this.isReady() })
       } else if (this.state.homeStriker === defaultPlayer) {
-        this.setState({ homeStriker: player, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes })
+        this.setState({ homeStriker: player, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes }, () => { this.isReady() })
       } else if (this.state.awayDefender === defaultPlayer) {
-        this.setState({ awayDefender: player, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes })
+        this.setState({ awayDefender: player, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes }, () => { this.isReady() })
       } else if (this.state.awayStriker === defaultPlayer) {
-        this.setState({ awayStriker: player, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes })
+        this.setState({ awayStriker: player, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes }, () => { this.isReady() })
       }
     } else {
       const playersCount = this.state.selectedPlayers - 1
       selectedIndexes.splice(selectedIndexes.indexOf(index), 1)
       if (this.state.homeDefender === player) {
-        this.setState({ homeDefender: defaultPlayer, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes })
+        this.setState({ homeDefender: defaultPlayer, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes }, () => { this.isReady() })
       } else if (this.state.homeStriker === player) {
-        this.setState({ homeStriker: defaultPlayer, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes })
+        this.setState({ homeStriker: defaultPlayer, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes }, () => { this.isReady() })
       } else if (this.state.awayDefender === player) {
-        this.setState({ awayDefender: defaultPlayer, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes })
+        this.setState({ awayDefender: defaultPlayer, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes }, () => { this.isReady() })
       } else if (this.state.awayStriker === player) {
-        this.setState({ awayStriker: defaultPlayer, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes })
+        this.setState({ awayStriker: defaultPlayer, selectedPlayers: playersCount, arrSelectedPlayerIndex: selectedIndexes }, () => { this.isReady() })
       }
     }
   }
@@ -169,6 +188,7 @@ class AddMatch extends React.Component {
     }
     if (this.state.homeScore === 0 || this.state.awayScore === 0) {
       scoreAndBadges.badges.push('cappotto')
+      this.createAndStartAudio(getRootUrl() + '/sound/perfect.ogg')
     }
 
     if (this.state.homeScoreDefender + this.state.homeScoreStriker !== this.state.homeScore) {
@@ -239,6 +259,53 @@ class AddMatch extends React.Component {
     })
   }
 
+  getBackgroundAudio = () => {
+    console.log("->", this.state.backgroundSoundTracks.length)
+    this.state.currentSoundTrack++
+    if(this.state.backgroundSoundTracks.length <= this.state.currentSoundTrack) {
+      this.state.currentSoundTrack = 0
+    }
+    return getRootUrl() + '/sound/' + this.state.backgroundSoundTracks[this.state.currentSoundTrack]
+  }
+
+  loadAudio = async (elem, params) => {
+    console.log('ELEM ->', elem)
+    console.log('PARAMS ->', params)
+    let backgroundAudio = elem
+    backgroundAudio.volume = params.volume;
+    if (typeof(params.src) !== 'undefined') {
+      backgroundAudio.src = params.src
+      backgroundAudio.load()
+    } else {
+      backgroundAudio.play()
+    }
+  }
+
+  startAudio = (elem, params) => {
+    console.log(elem.id)
+    let backgroundAudio = elem
+    backgroundAudio.volume = params.volume;
+    backgroundAudio.play()
+  }
+  
+  createAndStartAudio = (audioFile) => {
+    var self = this;
+    const flush = new Audio(audioFile)
+    flush.volume= 1.0
+    flush.play()
+    flush.onended = () => {
+      flush.remove()
+    }
+  }
+
+  isReady = () => {
+    if ( this.state.selectedPlayers === 4 ) {
+      setTimeout( () => {
+        this.createAndStartAudio(getRootUrl() + '/sound/ready.ogg')
+        }, 500 )
+    }
+  }
+
   onSave = async () => {
     await this.saveMatch()
     Router.push('/')
@@ -264,7 +331,21 @@ class AddMatch extends React.Component {
   render () {
     return (
       <Layout>
-
+        <ReactAudioPlayer
+          id="background_audio"
+          onEnded={( async (e) => { 
+                      this.loadAudio(
+                        e.target, 
+                        { 
+                          src: this.getBackgroundAudio(),
+                          volume: 0.3
+                        }
+                      ).then(() => { 
+                        this.startAudio(e.target, { volume: 0.3 }) 
+                      }) 
+                    })
+                  }
+        />
         <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '350px'}}>
           <GridListTile style={styleMatchTile}>
             <GridList>

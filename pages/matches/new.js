@@ -96,7 +96,6 @@ class AddMatch extends React.Component {
         showSelectionList: false
     }, () => { this.setState({ "showScores": this.isReady()}) })
     this.createAndStartAudio(getRootUrl() + '/sound/player_selection.ogg')
-    // this.startAudio(document.getElementById('character_selection'), { volume: 1.0 })
   }
 
   showPlayersSelect = pointer => () => {    
@@ -140,7 +139,6 @@ class AddMatch extends React.Component {
   }
 
   getBackgroundAudio = () => {
-    console.log("->", this.state.backgroundSoundTracks.length)
     this.state.currentSoundTrack++
     if(this.state.backgroundSoundTracks.length <= this.state.currentSoundTrack) {
       this.state.currentSoundTrack = 0
@@ -149,8 +147,6 @@ class AddMatch extends React.Component {
   }
 
   loadAudio = async (elem, params) => {
-    console.log('ELEM ->', elem)
-    console.log('PARAMS ->', params)
     let backgroundAudio = elem
     backgroundAudio.volume = params.volume;
     if (typeof(params.src) !== 'undefined') {
