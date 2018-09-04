@@ -167,17 +167,14 @@ class AddMatch extends React.Component {
     backgroundAudio.volume = params.volume;
     backgroundAudio.play()
   }
-
-  removeAudio(element) {
-      element.parentNode.removeChild(element);
-  }
-
+  
   createAndStartAudio = (audioFile) => {
+    var self = this;
     const flush = new Audio(audioFile)
     flush.volume= 1.0
     flush.play()
     flush.onended = () => {
-      this.removeAudio(flush)
+      flush.remove()
     }
   }
 
