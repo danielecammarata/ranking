@@ -49,7 +49,7 @@ class MatchPlayerHeader extends React.Component {
   }
 
   render () {
-    const { classes, teamLabel, enableScore } = this.props
+    const { classes, teamLabel, enableScore, disableScore = false, scores = {} } = this.props
     return (
       <GridListTile cols={2} style={{ height: 'auto', width: '100%' }}>
         <ListSubheader component="div">
@@ -69,6 +69,7 @@ class MatchPlayerHeader extends React.Component {
                     id="teamgolas"
                     className={classes.text}
                     onChange={(ev) => this.handleScoreChange(ev, '')}
+                    value={scores.score}
                   />
                 </Grid>
                 <Grid item className={classes.iconContainer} item xs={1}>
@@ -81,6 +82,7 @@ class MatchPlayerHeader extends React.Component {
                     id="teamgolasdef"
                     className={classes.text}
                     onChange={ev => this.handleScoreChange(ev, 'Defender')}
+                    value={scores.defScore}
                   />
                 </Grid>
                 <Grid item className={classes.iconContainer} item xs={1}>
@@ -93,6 +95,7 @@ class MatchPlayerHeader extends React.Component {
                     id="teamgolassr"
                     className={classes.text}
                     onChange={ev => this.handleScoreChange(ev, 'Striker')}
+                    value={scores.strScore}
                   />
                 </Grid>
               </React.Fragment>

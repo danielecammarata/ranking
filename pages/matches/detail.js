@@ -30,18 +30,18 @@ class DetailMatch extends React.Component {
     //   activeSelection: null,
       awayDefender: defaultPlayer,
     //   awayDefenderSelected: false,
-    //   awayGoals: NaN,
-    //   awayGoalsDefender: NaN,
-    //   awayGoalsStriker: NaN,
+      awayGoals: NaN,
+      awayGoalsDefender: NaN,
+      awayGoalsStriker: NaN,
       awayStriker: defaultPlayer,
     //   awayStrikerSelected: false,
     //   badges: [],
     //   enableScore: false,
       homeDefender: defaultPlayer,
     //   homeDefenderSelected: false,
-    //   homeGoals: NaN,
-    //   homeGoalsDefender: NaN,
-    //   homeGoalsStriker: NaN,
+      homeGoals: NaN,
+      homeGoalsDefender: NaN,
+      homeGoalsStriker: NaN,
       homeStriker: defaultPlayer,
     //   homeStrikerSelected: false,
     //   matchAdded: false,
@@ -55,12 +55,19 @@ class DetailMatch extends React.Component {
 
   async componentDidMount () {
     try {
-      const data = await getMatchBySlug(this.state.slug)
-      this.setState({
-        homeDefender: data.teamHome.defender,
-        homeStriker: data.teamHome.striker,
-        awayDefender: data.teamAway.defender,
-        awayStriker: data.teamAway.striker,
+      const data = await getMatchBySlug(this.state.slug).then( (data) => {
+        this.setState({
+          homeDefender: data.teamHome.defender,
+          homeStriker: data.teamHome.striker,
+          awayDefender: data.teamAway.defender,
+          awayStriker: data.teamAway.striker,
+          homeGoals: data.teamHome.score,
+          homeGoalsDefender: data.teamHome.defScore,
+          homeGoalsStriker: data.teamHome.strScore,
+          awayGoals: data.teamAway.score,
+          awayGoalsDefender: data.teamAway.defScore,
+          awayGoalsStriker: data.teamAway.strScore
+        })
       })
     } catch (err) {
       console.log(err)
@@ -187,6 +194,8 @@ class DetailMatch extends React.Component {
             onScoreChange={this.onScoreChange}
             selector={'homeGoals'}
             teamLabel={'Team Home'}
+            disableScore={ true }
+            scores={ { "score": this.state.homeGoals, "defScore": this.state.homeGoalsDefender, "strScore": this.state.homeGoalsStriker } }
           />
           <MatchPlayerSelection
             disableSelection
@@ -203,6 +212,9 @@ class DetailMatch extends React.Component {
             onScoreChange={this.onScoreChange}
             selector={'awayGoals'}
             teamLabel={'Team Away'}
+            disableScore={ true }
+            scores = { this.state.teamAway }
+            scores={ { "score": this.state.awayGoals, "defScore": this.state.awayGoalsDefender, "strScore": this.state.awayGoalsStriker } }
           />
           <MatchPlayerSelection
             disableSelection

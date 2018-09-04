@@ -50,7 +50,8 @@ class AddMatch extends React.Component {
         'BurningD.N.A.ogg',
         'ESAKA.ogg'
       ],
-      currentSoundTrack: 0
+      currentSoundTrack: 0,
+      showScores: false
     }
 
     this.onSelectPlayer = this.onSelectPlayer.bind(this)
@@ -89,13 +90,12 @@ class AddMatch extends React.Component {
   }
 
   onSelectPlayer = player => {
-    this.setState(
-      {
+    this.setState({
         [`${this.state.activeSelection}`]: player,
         activeSelection: null,
         showSelectionList: false
-      })
-      this.startAudio(document.getElementById('character_selection'), { volume: 1.0 })
+    }, () => { this.setState({ "showScores": this.isReady()}) })
+    this.startAudio(document.getElementById('character_selection'), { volume: 1.0 })
   }
 
   showPlayersSelect = pointer => () => {    
@@ -221,14 +221,13 @@ class AddMatch extends React.Component {
   }
 
   render () {
-    const showScores = this.isReady()
     return (
       <Layout>
         <GridList
           cols={2}
         >
           <MatchPlayerHeader
-            enableScore={showScores}
+            enableScore={this.state.showScores}
             onScoreChange={this.onScoreChange}
             selector={'homeGoals'}
             teamLabel={'Team Home'}
@@ -265,7 +264,7 @@ class AddMatch extends React.Component {
             src={ getRootUrl() + '/sound/ready.ogg' }
           />
           <MatchPlayerHeader
-            enableScore={showScores}
+            enableScore={this.state.showScores}
             onScoreChange={this.onScoreChange}
             selector={'awayGoals'}
             teamLabel={'Team Away'}
