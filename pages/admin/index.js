@@ -32,7 +32,7 @@ class Admin extends React.Component {
   }
 
   matchRank = () => {
-    sendRequest('/api/v1/admin/rank/update/5b8d1a0fbfda2800383ed2ac')
+    sendRequest('/api/v1/admin/rank/update/5b857b08bc7a3f00e81bbf53')
   }
 
   render () {
