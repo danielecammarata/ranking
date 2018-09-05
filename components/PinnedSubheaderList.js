@@ -30,7 +30,7 @@ const styles = theme => ({
 })
 
 const PinnedSubheaderList = props => {
-  const {classes, playersList, onSelectPlayer} = props
+  const {classes, playersList, onSelectPlayer, hoverHandler} = props
   return (
     <div className={classes.listWrapper}>
       <div className={classes.listInner}>
@@ -43,6 +43,7 @@ const PinnedSubheaderList = props => {
                 key={`item-${item.name}`}
                 className={classes.ul}
                 onClick={() => onSelectPlayer(item)}
+                onMouseEnter={hoverHandler}
               >
                 <Avatar
                   src={item.avatarUrl}
