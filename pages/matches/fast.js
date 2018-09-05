@@ -87,9 +87,9 @@ class AddMatch extends React.Component {
       homeStrikerSelected: false,
       matchAdded: false,
       backgroundSoundTracks: [
-        'theKingOfFighters.ogg',
-        'ESAKA.ogg',
-        'BurningD.N.A.ogg'
+        'theKingOfFighters.aac',
+        'ESAKA.aac',
+        'BurningD.N.A.aac'
       ],
       currentSoundTrack: -1,
       showScores: false
@@ -130,12 +130,12 @@ class AddMatch extends React.Component {
 
   onMatchStart = () => {
     if (this.state.selectedPlayers === 4) {
-      this.setState({ matchView: matchViewState.TEAMS_COMPLETE }, () => { this.createAndStartAudio(getRootUrl() + '/sound/go.ogg') })
+      this.setState({ matchView: matchViewState.TEAMS_COMPLETE }, () => { this.createAndStartAudio(getRootUrl() + '/sound/go.aac') })
     }
   }
 
   onPlayerSelect = (player, index) => {
-    this.createAndStartAudio(getRootUrl() + '/sound/player_selection.ogg')
+    this.createAndStartAudio(getRootUrl() + '/sound/player_selection.aac')
     let selectedIndexes = this.state.arrSelectedPlayerIndex
     if (!selectedIndexes.includes(index)) {
       const playersCount = this.state.selectedPlayers + 1
@@ -188,7 +188,7 @@ class AddMatch extends React.Component {
     }
     if (this.state.homeScore === 0 || this.state.awayScore === 0) {
       scoreAndBadges.badges.push('cappotto')
-      this.createAndStartAudio(getRootUrl() + '/sound/perfect.ogg')
+      this.createAndStartAudio(getRootUrl() + '/sound/perfect.aac')
     }
 
     if (this.state.homeScoreDefender + this.state.homeScoreStriker !== this.state.homeScore) {
@@ -301,7 +301,7 @@ class AddMatch extends React.Component {
   isReady = () => {
     if ( this.state.selectedPlayers === 4 ) {
       setTimeout( () => {
-        this.createAndStartAudio(getRootUrl() + '/sound/ready.ogg')
+        this.createAndStartAudio(getRootUrl() + '/sound/ready.aac')
         }, 500 )
     }
   }
