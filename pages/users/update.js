@@ -22,6 +22,13 @@ import { getUsersBySlug, updateUser } from '../../lib/api/users'
 import { styleForm, styleTextField, styleRaisedButton } from '../../lib/SharedStyles'
 import { Typography } from '@material-ui/core';
 
+const listItemStyle = {
+  fontSize: '.8rem',
+  '&.span': {
+    fontSize: '.8rem',
+  }
+}
+
 class UpdateUser extends React.Component {
   constructor(props) {
     super(props)
@@ -59,9 +66,11 @@ class UpdateUser extends React.Component {
     })
   }
 
+
+
   render() {
     const { name, avatarUrl } = this.state
-    const { points } = this.props.user
+    const { points, stats } = this.props.user
     return (
       <Layout>
         <Grid
@@ -105,9 +114,9 @@ class UpdateUser extends React.Component {
           </Grid>
         </Grid>
         <Divider />
-        <GridList cols={2}>
+        <GridList cols={3}>
           <GridListTile
-            cols={2}
+            cols={3}
             rows={1}
             style={{ height: 'auto', width: '100%' }}
           >
@@ -120,8 +129,8 @@ class UpdateUser extends React.Component {
             </ListSubheader>
           </GridListTile>
           <GridListTile
-            cols={1}
-            rows={1}
+            cols={2}
+            rows={2}
           >
             <img
               src={avatarUrl}
@@ -130,16 +139,53 @@ class UpdateUser extends React.Component {
           </GridListTile>
           <GridListTile
             cols={1}
+            rows={2}
           >
             <List>
-              <ListItem>
-                <ListItemText primary={`Points: ${points}`} />
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Points: ${points}`} />
               </ListItem>
-              <ListItem>
-                <ListItemText primary="T.B.D." />
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Win streak: ${stats.win_streak}`} />
               </ListItem>
-              <ListItem>
-                <ListItemText primary="T.B.D." />
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Longest streak: ${stats.max_win_streak}`} />
+              </ListItem>
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Trend: ${stats.points_trend}`} />
+              </ListItem>
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Highest points: ${stats.points_max}`} />
+              </ListItem>
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Lowest points: ${stats.points_min}`} />
+              </ListItem>
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Matches played: ${stats.match_played}`} />
+              </ListItem>
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Matches winned: ${stats.match_win}`} />
+              </ListItem>
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Crawl: ${stats.match_crawl}`} />
+              </ListItem>
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Crawled: ${stats.match_crawled}`} />
+              </ListItem>
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Play as defender: ${stats.match_as_defender}`} />
+              </ListItem>
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Play as striker: ${stats.match_as_striker}`} />
+              </ListItem>
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Goals as defender: ${stats.match_goals_made_as_defender}`} />
+              </ListItem>
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Goals as striker: ${stats.match_goals_made_as_striker}`} />
+              </ListItem>
+              <ListItem style={{padding: 0}}>
+                <StatsListItem text={`Goals conceded as striker: ${stats.match_goals_conceded_as_defender}`} />
               </ListItem>
             </List>
           </GridListTile>
@@ -179,6 +225,19 @@ class UpdateUser extends React.Component {
       </Layout>
     )
   }
+}
+
+const StatsListItem = ({text}) => {
+  return (
+    <ListItemText
+      primaryTypographyProps={{
+        style: {
+          fontSize: 12
+        }
+      }}
+      primary={text}
+    />
+  )
 }
 
 export default UpdateUser
