@@ -46,9 +46,16 @@ import {
 } from '../../components/IconComponents'
 import lightBlue from '@material-ui/core/colors/lightBlue'
 
+const rowHeaderStyle = {
+  height: 25
+}
+
 const cellStyle = {
   whiteSpace: 'nowrap',
-  width: 5
+  width: 30,
+  padding: 0,
+  border: '1px solid #C6C6C6',
+  textAlign: 'center'
 }
 
 class IndexUser extends React.Component {
@@ -124,9 +131,9 @@ class IndexUser extends React.Component {
                   }}
                 />
 
-                <Table padding='none' style={{ width: 100 }}>
+                <Table style={{ width: 150 }}>
                   <TableHead>
-                    <TableRow>
+                    <TableRow style={rowHeaderStyle}>
                       <TableCell style={cellStyle}>P</TableCell>
                       <TableCell style={cellStyle}>W</TableCell>
                       <TableCell style={cellStyle}>GM</TableCell>
