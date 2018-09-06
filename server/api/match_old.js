@@ -89,7 +89,7 @@ router.post('/add', (req, res) => {
     createdAt,
     difference: rank.difference
   }
-  
+
   const newMatch = new Match(matchData)
   newMatch.save(function (err) {
     if (err) return res.json({ error: err.message || err.toString() })

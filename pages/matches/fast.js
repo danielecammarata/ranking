@@ -106,7 +106,7 @@ class AddMatch extends React.Component {
     }
   }
 
-  static async getInitialProps() {    
+  static async getInitialProps() {
     const players = await getUsersList()
     return {
       players
@@ -216,11 +216,13 @@ class AddMatch extends React.Component {
       teamHome: {
         defender: {
           _id: this.state.homeDefender._id,
-          points: this.state.homeDefender.points
+          points: this.state.homeDefender.points,
+          stats: this.state.homeDefender.stats
         },
         striker: {
           _id: this.state.homeStriker._id,
-          points: this.state.homeStriker.points
+          points: this.state.homeStriker.points,
+          stats: this.state.homeStriker.stats
         },
         score: this.state.homeScore,
         defScore: scoreAndBadges.homeScoreDefender,
@@ -231,11 +233,13 @@ class AddMatch extends React.Component {
       teamAway: {
         defender: {
           _id: this.state.awayDefender._id,
-          points: this.state.awayDefender.points
+          points: this.state.awayDefender.points,
+          stats: this.state.awayDefender.stats
         },
         striker: {
           _id: this.state.awayStriker._id,
-          points: this.state.awayStriker.points
+          points: this.state.awayStriker.points,
+          stats: this.state.awayStriker.stats
         },
         score: this.state.awayScore,
         defScore: scoreAndBadges.awayScoreDefender,
@@ -260,7 +264,6 @@ class AddMatch extends React.Component {
   }
 
   getBackgroundAudio = () => {
-    console.log("->", this.state.backgroundSoundTracks.length)
     this.state.currentSoundTrack++
     if(this.state.backgroundSoundTracks.length <= this.state.currentSoundTrack) {
       this.state.currentSoundTrack = 0
@@ -269,8 +272,6 @@ class AddMatch extends React.Component {
   }
 
   loadAudio = async (elem, params) => {
-    console.log('ELEM ->', elem)
-    console.log('PARAMS ->', params)
     let backgroundAudio = elem
     backgroundAudio.volume = params.volume;
     if (typeof(params.src) !== 'undefined') {
@@ -282,12 +283,11 @@ class AddMatch extends React.Component {
   }
 
   startAudio = (elem, params) => {
-    console.log(elem.id)
     let backgroundAudio = elem
     backgroundAudio.volume = params.volume;
     backgroundAudio.play()
   }
-  
+
   createAndStartAudio = (audioFile) => {
     var self = this;
     const flush = new Audio(audioFile)
@@ -333,16 +333,16 @@ class AddMatch extends React.Component {
       <Layout>
         <ReactAudioPlayer
           id="background_audio"
-          onEnded={( async (e) => { 
+          onEnded={( async (e) => {
                       this.loadAudio(
-                        e.target, 
-                        { 
+                        e.target,
+                        {
                           src: this.getBackgroundAudio(),
                           volume: 0.3
                         }
-                      ).then(() => { 
-                        this.startAudio(e.target, { volume: 0.3 }) 
-                      }) 
+                      ).then(() => {
+                        this.startAudio(e.target, { volume: 0.3 })
+                      })
                     })
                   }
         />

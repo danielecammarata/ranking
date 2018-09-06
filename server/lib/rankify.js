@@ -23,7 +23,9 @@ const calculate = ({ teamHome, teamAway }) => {
     homeStriker: hasHomeWin ? teamHome.striker.points + difference : teamHome.striker.points - difference,
     awayDefense: hasHomeWin ? teamAway.defender.points - difference : teamAway.defender.points + difference,
     awayStriker: hasHomeWin ? teamAway.striker.points - difference : teamAway.striker.points + difference,
-    difference
+    difference,
+    hasHomeWin,
+    hasCappotto
   }
 
   return newPoints

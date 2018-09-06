@@ -155,6 +155,43 @@ const GetMatchesStartingFromDateAndUsersFromMatchId = async id => {
 
 }
 
+const GetNewUsersPointsDeletingMatch = match => {
+  const users = {
+    add: function (user, rankDifference, winner) {
+      this[user.slug] = {
+        id: user._id,
+        name: user.name,
+        points: user.points + (winner ? - Math.abs(rankDifference) : Math.abs(rankDifference))
+      }
+    },
+    getUsers: function() {
+      return Object.keys(this)
+        .filter(key => ({}.toString.call(this[key]) !== '[object Function]'))
+        .reduce((obj, key) => {
+          obj[key] = this[key];
+          return obj;
+        }, {})
+    }
+  }
+
+
+  const homeWin = match.teamHome.score > match.teamAway.score
+  const teamHome = match.teamHome
+  const teamAway = match.teamAway
+  const homeDefender = teamHome.defender
+  const homeStriker = teamHome.striker
+  const awayDefender = teamAway.defender
+  const awayStriker = teamAway.striker
+
+  users.add(homeDefender, match.difference, homeWin)
+  users.add(homeStriker, match.difference, homeWin)
+  users.add(awayDefender, match.difference, !homeWin)
+  users.add(awayStriker, match.difference, !homeWin)
+
+  return users.getUsers()
+}
+
 module.exports = {
-  GetMatchesStartingFromDateAndUsersFromMatchId
+  GetMatchesStartingFromDateAndUsersFromMatchId,
+  GetNewUsersPointsDeletingMatch
 }

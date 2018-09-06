@@ -14,6 +14,12 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+
 import {
   AlienIcon,
   BombIcon,
@@ -40,6 +46,11 @@ import {
 } from '../../components/IconComponents'
 import lightBlue from '@material-ui/core/colors/lightBlue'
 
+const cellStyle = {
+  whiteSpace: 'nowrap',
+  width: 5
+}
+
 class IndexUser extends React.Component {
   constructor(props) {
     super(props)
@@ -49,12 +60,11 @@ class IndexUser extends React.Component {
     }
   }
 
-  async componentDidMount() {
-    try {
-      const data = await getUsersList()
-      this.setState({ users: data })
-    } catch (err) {
-      console.log(err)
+  static async getInitialProps() {
+    const users = await getUsersList()
+
+    return {
+      users: users
     }
   }
 
@@ -73,7 +83,7 @@ class IndexUser extends React.Component {
         <h1 style={styleH1}>Ranking</h1>
         <Divider />
         <List>
-          {this.state.users && this.state.users.map((user, index) => (
+          {this.props.users && this.props.users.map((user, index) => (
             <Link as={`/users/${user.slug}`} href={`/users/update/?slug=${user.slug}`}>
             <ListItem
               key={user.slug}
@@ -113,6 +123,25 @@ class IndexUser extends React.Component {
                     }
                   }}
                 />
+
+                <Table padding='none' style={{ width: 100 }}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell style={cellStyle}>P</TableCell>
+                      <TableCell style={cellStyle}>W</TableCell>
+                      <TableCell style={cellStyle}>GM</TableCell>
+                      <TableCell style={cellStyle}>GC</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell style={cellStyle}>{user.stats.match_played}</TableCell>
+                      <TableCell style={cellStyle}>{user.stats.match_win}</TableCell>
+                      <TableCell style={cellStyle}>{user.stats.match_goals_made}</TableCell>
+                      <TableCell style={cellStyle}>{user.stats.match_goals_conceded}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
                 {/*
                   THIS SHOULD BE USED FOR THE BADGES
                 <ListItemSecondaryAction>

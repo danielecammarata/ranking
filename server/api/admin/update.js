@@ -16,7 +16,6 @@ router.route('/').post(async (req, res) => {
   })
 
   Object.keys(result.users).forEach(async key => {
-    console.log(result.users[key])
     const query = { _id: result.users[key].id }
     const update = { points: result.users[key].points }
 

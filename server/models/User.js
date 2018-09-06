@@ -31,7 +31,9 @@ const mongoSchema = new Schema({
     match_goals_made: Number,
     match_goals_conceded: Number,
     match_goals_made_as_defender: Number,
+    match_goals_made_as_striker: Number,
     match_goals_conceded_as_defender: Number,
+    last_winned: Boolean,
     last_matches: [{
       type: Schema.Types.ObjectId,
       ref: 'Match',

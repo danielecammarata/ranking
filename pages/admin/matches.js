@@ -33,9 +33,7 @@ class AdminMatches extends React.Component {
   }
 
   onDelete = async (matchId) => {
-    console.log(matchId)
     const data = await sendRequest('/api/v1/admin/match/delete', {body: JSON.stringify({ matchId })})
-
     const matches = await getMatchesList()
     this.setState({
       matches: matches.matches
@@ -43,9 +41,7 @@ class AdminMatches extends React.Component {
   }
 
   onUpdateFrom = async (matchId) => {
-    console.log(matchId)
     const data = await sendRequest('/api/v1/admin/rank/update', {body: JSON.stringify({ matchId })})
-    console.log(data)
     const matches = await getMatchesList()
     this.setState({
       matches: matches.matches
@@ -66,6 +62,7 @@ class AdminMatches extends React.Component {
           <TableHead>
             <TableRow>
               <TableCell>Actions</TableCell>
+              <TableCell>Id</TableCell>
               <TableCell>Date</TableCell>
               <TableCell>Home Defender</TableCell>
               <TableCell>Home Striker</TableCell>
@@ -89,6 +86,7 @@ class AdminMatches extends React.Component {
                         onClick={this.onUpdateFrom.bind(this, match._id)}
                       />
                     </TableCell>
+                    <TableCell>{match._id}</TableCell>
                     <TableCell>{match.createdAt}</TableCell>
                     <TableCell>{match.teamHome.defender.name}</TableCell>
                     <TableCell>{match.teamHome.striker.name}</TableCell>

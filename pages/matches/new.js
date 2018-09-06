@@ -98,7 +98,7 @@ class AddMatch extends React.Component {
     this.createAndStartAudio(getRootUrl() + '/sound/player_selection.ogg')
   }
 
-  showPlayersSelect = pointer => () => {    
+  showPlayersSelect = pointer => () => {
     this.setState({
       activeSelection: pointer,
       showSelectionList: true
@@ -158,12 +158,11 @@ class AddMatch extends React.Component {
   }
 
   startAudio = (elem, params) => {
-    console.log(elem.id)
     let backgroundAudio = elem
     backgroundAudio.volume = params.volume;
     backgroundAudio.play()
   }
-  
+
   createAndStartAudio = (audioFile) => {
     var self = this;
     const flush = new Audio(audioFile)
@@ -252,16 +251,16 @@ class AddMatch extends React.Component {
           />
           <ReactAudioPlayer
             id="background_audio"
-            onEnded={( async (e) => { 
+            onEnded={( async (e) => {
                         this.loadAudio(
-                          e.target, 
-                          { 
+                          e.target,
+                          {
                             src: this.getBackgroundAudio(),
                             volume: 0.3
                           }
-                        ).then(() => { 
-                          this.startAudio(e.target, { volume: 0.3 }) 
-                        }) 
+                        ).then(() => {
+                          this.startAudio(e.target, { volume: 0.3 })
+                        })
                       })
                     }
           />

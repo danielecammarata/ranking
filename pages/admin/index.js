@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Button from '@material-ui/core/Button'
 
 import Table from '@material-ui/core/Table'
@@ -39,6 +40,8 @@ class Admin extends React.Component {
     return (
       <div>
         <p>This is the admin page</p>
+        <Link href="/admin/stats">Stats</Link>
+        <Link href="/admin/matches">Matches</Link>
         <Button
           onClick={this.matchRank}
         >
