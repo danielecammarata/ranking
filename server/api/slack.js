@@ -7,7 +7,7 @@ router.get('/test', async (req, res) => {
 
     const { WebClient } = require('@slack/client')
 
-    const token = 'xoxp-432288382578-431710618481-432100598180-93f81725a9ef8770e92ce8a6908ba2a3'
+    const token = 'xoxp-432288382578-431710618481-433554132487-5a3b9f688ef574be8b3ef950f3249407'
 
     const web = new WebClient(token)
 
