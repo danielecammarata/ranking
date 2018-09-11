@@ -10,12 +10,15 @@ const User = require('../../models/User')
 
 const rankify = require('../../lib/rankify')
 
-router.post('/', slackEvents.expressMiddleware())
+router.post('/', async (req, res) => {
+  slackEvents.expressMiddleware()
+  res.json({ "challenge": req.body.challenge })
+})
 
 slackEvents.on('message', (event) => {
   console.log('Events: ')
   console.log(event)
-  res.json({ "challenge": req.body.challenge })
+  
   // const { teamAway, teamHome, badges } = req.body
 
   // const slug = Match.generateSlug()
