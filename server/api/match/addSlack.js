@@ -14,6 +14,8 @@ const rankify = require('../../lib/rankify')
 
 router.post('/', async (req, res) => {
   slackEvents.expressMiddleware()
+  console.log('Daje:')
+  console.log(req)
   res.json({ "challenge": req.body.challenge })
 })
 
