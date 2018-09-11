@@ -5,9 +5,9 @@ const api = require('./api')
 
 require('dotenv').config()
 
-const dev = process.env.NODE_ENV !== 'production'
+const dev = process.env.v !== 'production'
 const port = process.env.PORT || 8000
-const ROOT_URL = dev ? `http://localhost:${port}` : 'https://murmuring-meadow-82162.herokuapp.com'
+const ROOT_URL = dev ? `http://localhost:${port}` : 'https://scoreza-bis.herokuapp.com'
 
 const MONGO_URL = process.env.MONGO_URL
 

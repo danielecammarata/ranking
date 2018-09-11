@@ -3,7 +3,9 @@ const express = require('express')
 const router = express.Router()
 
 const { createEventAdapter } = require('@slack/events-api')
-const slackEvents = createEventAdapter('9867b34f13115ea3839ddc91713b73a2')
+
+// const slackEvents = createEventAdapter('9867b34f13115ea3839ddc91713b73a2')
+const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET)
 
 const Match = require('../../models/Match')
 const User = require('../../models/User')
