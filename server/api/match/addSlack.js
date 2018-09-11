@@ -15,7 +15,7 @@ router.post('/', slackEvents.expressMiddleware())
 slackEvents.on('message', (event) => {
   console.log('Events: ')
   console.log(event)
-  
+  res.json({ "challenge": req.body.challenge })
   // const { teamAway, teamHome, badges } = req.body
 
   // const slug = Match.generateSlug()
