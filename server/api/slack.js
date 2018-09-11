@@ -21,4 +21,10 @@ router.get('/test', async (req, res) => {
 
 })
 
+router.post('/challenge', async (req, res) => {
+
+    res.json({ "challenge": req.body.challenge })
+
+})
+
 module.exports = router
