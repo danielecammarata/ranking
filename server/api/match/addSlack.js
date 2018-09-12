@@ -9,13 +9,21 @@ const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET)
 
 const Match = require('../../models/Match')
 const User = require('../../models/User')
+const slack = require('../../lib/slack')
 
 const rankify = require('../../lib/rankify')
 
 router.post('/', async (req, res) => {
   slackEvents.expressMiddleware()
   console.log('Daje:')
-  console.log(req)
+  console.log(req.body)
+  if(req.body.event.text.indexOf(process.env.SLACK_BOT_ID)) {
+    slack.sendMessage(
+      'Command Key Found!!!', 
+      process.env.SLACK_TOKEN,
+      process.env.SLACK_CHANNEL_ID
+    )  
+  }
   res.json({ "challenge": req.body.challenge })
 })
 
