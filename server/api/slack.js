@@ -1,6 +1,6 @@
 
 const express = require('express')
-const slack = require('../../lib/slack')
+const slack = require('../lib/slack')
 const router = express.Router()
 
 router.get('/test', async (req, res) => {
