@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
   slackEvents.expressMiddleware()
   console.log('Daje:')
   console.log(req.body)
-  if(req.body.event.text.indexOf(process.env.SLACK_BOT_ID)) {
+  if(req.body.event.text.indexOf(process.env.SLACK_BOT_ID) > -1) {
     slack.sendMessage(
       'Command Key Found!!!', 
       process.env.SLACK_TOKEN,
