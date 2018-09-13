@@ -17,7 +17,7 @@ const rankify = require('../../lib/rankify')
 router.post('/', async (req, res) => {
   slackEvents.expressMiddleware()
   const newMatchPattern = /^(<@[A-Z0-9]{9,}>) (<@[A-Z0-9]{9,}>) - (<@[A-Z0-9]{9,}>) (<@[A-Z0-9]{9,}>) : (0?[1-9][0-9]|[0-9])-(0?[1-9][0-9]|[0-9])/gm
-  const command = req.body.event.text.replace(`{process.env.SLACK_BOT_ID} `, ``)
+  const command = req.body.event.text.replace(process.env.SLACK_BOT_ID + '', '')
   const condition = command.match(newMatchPattern)
   console.log('COMMAND => ', command)
   console.log('MATCH => ', condition)
