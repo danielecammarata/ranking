@@ -34,7 +34,7 @@ slackEvents.on('message', (event) => {
 
   if(event.text.indexOf(process.env.SLACK_BOT_ID) > -1) {
     slack.sendMessage(
-      'Command Key Found!!!', 
+      '1Command Key Found!!!', 
       process.env.SLACK_TOKEN,
       process.env.SLACK_CHANNEL_ID
     )
