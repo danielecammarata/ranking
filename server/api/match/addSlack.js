@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
       'Command Key Found!!!', 
       process.env.SLACK_TOKEN,
       process.env.SLACK_CHANNEL_ID
-    )  
+    )
   }
   res.json({ "challenge": req.body.challenge })
 })
@@ -31,6 +31,14 @@ router.post('/', async (req, res) => {
 slackEvents.on('message', (event) => {
   console.log('Events: ')
   console.log(event)
+
+  if(event.text.indexOf(process.env.SLACK_BOT_ID) > -1) {
+    slack.sendMessage(
+      'Command Key Found!!!', 
+      process.env.SLACK_TOKEN,
+      process.env.SLACK_CHANNEL_ID
+    )
+  }
   
   // const { teamAway, teamHome, badges } = req.body
 
