@@ -20,10 +20,27 @@ router.post('/', async (req, res) => {
   const command = req.body.event.text.replace(process.env.SLACK_BOT_ID + ' ', '')
   const condition = command.match(newMatchPattern)
   console.log('COMMAND => ', command)
-  console.log('MATCH => ', condition)
   if ( condition !== null) {
+    const [ teams, scores ] = command.split(' : ')
+    const [ homeTeam, awayTeam ] = teams.split(' - ')
+    const [ homeScore, awayScore ] = scores.split('-')
     slack.sendMessage(
-      'Command Key Found!!!', 
+      `
+      --- Match data ---
+      ${homeTeam} : ${homeScore}
+      ${awayTeam} : ${awayScore}
+      `, 
+      process.env.SLACK_TOKEN,
+      process.env.SLACK_CHANNEL_ID
+    )
+  }
+
+  if ( command === 'man') {
+    slack.sendMessage(
+      `Welcome to scoreza slack manual syntax:
+      --- Add new match: @homeDef @homeStr - @awayDef @awayStr : homeScore-awayScore
+      --- Add new user: @playerSlack Name http://imageUrl
+      `, 
       process.env.SLACK_TOKEN,
       process.env.SLACK_CHANNEL_ID
     )
