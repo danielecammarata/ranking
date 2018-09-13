@@ -23,11 +23,14 @@ router.post('/', async (req, res) => {
   if ( condition !== null) {
     const [ teams, scores ] = command.split(' : ')
     const [ homeTeam, awayTeam ] = teams.split(' - ')
+    const [ homeDef, homeStr ] = homeTeam.split(' ')
+    const [ awayDef, awayStr ] = homeTeam.split(' ')
     const [ homeScore, awayScore ] = scores.split('-')
     slack.sendMessage(
       `
       --- Match data ---
       ${homeTeam} : ${homeScore}
+      vs
       ${awayTeam} : ${awayScore}
       `, 
       process.env.SLACK_TOKEN,
@@ -38,8 +41,12 @@ router.post('/', async (req, res) => {
   if ( command === 'man') {
     slack.sendMessage(
       `Welcome to scoreza slack manual syntax:
-      --- Add new match: @homeDef @homeStr - @awayDef @awayStr : homeScore-awayScore
-      --- Add new user: @playerSlack Name http://imageUrl
+
+      --- Add new match: 
+      @homeDef @homeStr - @awayDef @awayStr : homeScore-awayScore
+
+      --- Add new user: 
+      @playerSlack Name http://imageUrl
       `, 
       process.env.SLACK_TOKEN,
       process.env.SLACK_CHANNEL_ID
@@ -145,6 +152,15 @@ const calculateStats = (user, isDefender, winner, team, oppositeTeam, rankDiffer
     match_crawled: currentStats.match_crawled + (!winner && team.score === 0 ? 1 : 0),
     last_winned: winner
   }
+}
+
+const findUserBySlackID = ({slackID, res}) => {
+  const query = { slackID: slackID }
+  User.find(query, {}, function (err, rs) {
+    if (err) return res.json({ error: err.message || err.toString() })
+    console.log('Found player:')
+    console.log(rs)
+  })
 }
 
 const updateUser = ({id, score, stats, res}) => {
