@@ -16,29 +16,24 @@ const rankify = require('../../lib/rankify')
 
 router.post('/', async (req, res) => {
   slackEvents.expressMiddleware()
-  console.log('Daje:')
-  console.log(req.body)
-  if(req.body.event.text.indexOf(process.env.SLACK_BOT_ID) > -1) {
-    slack.sendMessage(
-      'Command Key Found!!!', 
-      process.env.SLACK_TOKEN,
-      process.env.SLACK_CHANNEL_ID
-    )
-  }
+  
+  slack.sendMessage(
+    'Command Key Found!!!', 
+    process.env.SLACK_TOKEN,
+    process.env.SLACK_CHANNEL_ID
+  )
   res.json({ "challenge": req.body.challenge })
 })
 
 slackEvents.on('message', (event) => {
   console.log('Events: ')
   console.log(event)
-
-  if(event.text.indexOf(process.env.SLACK_BOT_ID) > -1) {
-    slack.sendMessage(
-      '1Command Key Found!!!', 
-      process.env.SLACK_TOKEN,
-      process.env.SLACK_CHANNEL_ID
-    )
-  }
+  slack.sendMessage(
+    '1Command Key Found!!!', 
+    process.env.SLACK_TOKEN,
+    process.env.SLACK_CHANNEL_ID
+  )
+  
   
   // const { teamAway, teamHome, badges } = req.body
 
