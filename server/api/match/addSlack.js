@@ -16,12 +16,17 @@ const rankify = require('../../lib/rankify')
 
 router.post('/', async (req, res) => {
   slackEvents.expressMiddleware()
-  
-  slack.sendMessage(
-    'Command Key Found!!!', 
-    process.env.SLACK_TOKEN,
-    process.env.SLACK_CHANNEL_ID
-  )
+  const newMatchPattern = /^(<@[A-Z0-9]{5,}>) (<@[A-Z0-9]{5,}>) - (<@[A-Z0-9]{5,}>) (<@[A-Z0-9]{5,}>) : (0?[0-9]|[1-9][0-9])-(0?[0-9]|[1-9][0-9])')/g
+  const command = req.body.event.replace(`{process.env.SLACK_BOT_ID} `, ``)
+  const condition = command.match(newMatchPattern)
+  console.log(condition)
+  if ( condition !== null) {
+    slack.sendMessage(
+      'Command Key Found!!!', 
+      process.env.SLACK_TOKEN,
+      process.env.SLACK_CHANNEL_ID
+    )
+  }
   res.json({ "challenge": req.body.challenge })
 })
 
