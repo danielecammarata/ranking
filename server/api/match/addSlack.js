@@ -28,10 +28,10 @@ router.post('/', async (req, res) => {
     const [ homeScore, awayScore ] = scores.split('-')
     
     var tasks = [
-      findPlayerPromise(homeDef, "Home Defender"),
-      findPlayerPromise(homeDef, "Home Striker"),
-      findPlayerPromise(homeDef, "Away Defender"),
-      findPlayerPromise(homeDef, "Away Striker")
+      new Promise(findPlayerPromise(homeDef, "Home Defender")),
+      new Promise(findPlayerPromise(homeDef, "Home Striker")),
+      new Promise(findPlayerPromise(homeDef, "Away Defender")),
+      new Promise(findPlayerPromise(homeDef, "Away Striker"))
     ]
 
     tasks.reduce(function(cur, next) {
