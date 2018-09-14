@@ -26,16 +26,29 @@ router.post('/', async (req, res) => {
     const [ homeDef, homeStr ] = homeTeam.split(' ')
     const [ awayDef, awayStr ] = homeTeam.split(' ')
     const [ homeScore, awayScore ] = scores.split('-')
-    slack.sendMessage(
-      `
-      --- Match data ---
-      ${homeTeam} : ${homeScore}
-      vs
-      ${awayTeam} : ${awayScore}
-      `, 
-      process.env.SLACK_TOKEN,
-      process.env.SLACK_CHANNEL_ID
-    )
+    
+    var tasks = [
+      findPlayerPromise(homeDef, "Home Defender"),
+      findPlayerPromise(homeDef, "Home Striker"),
+      findPlayerPromise(homeDef, "Away Defender"),
+      findPlayerPromise(homeDef, "Away Striker")
+    ]
+
+    tasks.reduce(function(cur, next) {
+        return cur.then(next);
+    }, RSVP.resolve()).then(function(rs) {
+      console.log(rs)
+      slack.sendMessage(
+        `
+        --- Match data ---
+        ${homeTeam} : ${homeScore}
+        vs
+        ${awayTeam} : ${awayScore}
+        `, 
+        process.env.SLACK_TOKEN,
+        process.env.SLACK_CHANNEL_ID
+      )
+    });
   }
 
   if ( command === 'man') {
@@ -154,12 +167,22 @@ const calculateStats = (user, isDefender, winner, team, oppositeTeam, rankDiffer
   }
 }
 
-const findUserBySlackID = ({slackID, res}) => {
+const findPlayerPromise = async (homeDef, position) => {
+  return await findUserBySlackID(homeDef, position).then((rs) => {
+    if (!rs) return res.json({ error: `Unable to find ${position} player.` })
+  })
+}
+
+const findUserBySlackID = async ({slackID}) => {
   const query = { slackID: slackID }
   User.find(query, {}, function (err, rs) {
-    if (err) return res.json({ error: err.message || err.toString() })
+    if (err) {
+      console.error(err)
+      return false
+    }
     console.log('Found player:')
     console.log(rs)
+    return rs
   })
 }
 
