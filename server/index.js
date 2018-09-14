@@ -3,6 +3,8 @@ const next = require('next')
 const mongoose = require('mongoose')
 const api = require('./api')
 
+const auth = require('basic-auth')
+
 require('dotenv').config()
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -22,6 +24,18 @@ mongoose.connect(MONGO_URL, {}, err => {
 
 const app = next({ dev })
 const handle = app.getRequestHandler()
+
+function isAuthenticated(req, res, next) {
+  const credentials = auth(req)
+  if (credentials && credentials.name === 'john' && credentials.pass === 'secret') {
+    return next()
+  }
+  // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
+  res.statusCode = 401
+  res.setHeader('WWW-Authenticate', 'Basic realm="Scoreza Access"')
+  res.end('Access denied')
+}
+
 
 app.prepare().then(() => {
   const server = express()
@@ -50,6 +64,10 @@ app.prepare().then(() => {
 
   server.get('/match/:slug', (req, res) => {
     return app.render(req, res, `/matches/detail`, { slug: req.params.slug })
+  })
+
+  server.get('/admin*', isAuthenticated, (req, res) => {
+    return handle(req, res)
   })
 
   // give all Nextjs's request to Nextjs server
