@@ -27,26 +27,26 @@ router.post('/', async (req, res) => {
     const [ awayDef, awayStr ] = homeTeam.split(' ')
     const [ homeScore, awayScore ] = scores.split('-')
     
-    var tasks = [
-      new Promise(findPlayerPromise(homeDef, "Home Defender")),
-      new Promise(findPlayerPromise(homeDef, "Home Striker")),
-      new Promise(findPlayerPromise(homeDef, "Away Defender")),
-      new Promise(findPlayerPromise(homeDef, "Away Striker"))
-    ]
-
-    Promise.all(tasks).then(function(rs) {
-      console.log(rs)
-      slack.sendMessage(
-        `
-        --- Match data ---
-        ${homeTeam} : ${homeScore}
-        vs
-        ${awayTeam} : ${awayScore}
-        `, 
-        process.env.SLACK_TOKEN,
-        process.env.SLACK_CHANNEL_ID
-      )
-    })
+    const hdPlayer = findPlayerPromise(homeDef, "Home Defender")
+    const hsPlayer = findPlayerPromise(homeStr, "Home Striker")
+    const adPlayer = findPlayerPromise(awayDef, "Away Defender")
+    const asPlayer = findPlayerPromise(awayStr, "Away Striker")
+    console.log('--------------')
+    console.log(hdPlayer)
+    console.log(hsPlayer)
+    console.log(adPlayer)
+    console.log(asPlayer)
+    console.log('--------------')
+    slack.sendMessage(
+      `
+      --- Match data ---
+      ${homeTeam} : ${homeScore}
+      vs
+      ${awayTeam} : ${awayScore}
+      `, 
+      process.env.SLACK_TOKEN,
+      process.env.SLACK_CHANNEL_ID
+    )
 
     // tasks.reduce(function(cur, next) {
     //     return cur.then(next);
@@ -181,13 +181,14 @@ const calculateStats = (user, isDefender, winner, team, oppositeTeam, rankDiffer
   }
 }
 
-const findPlayerPromise = async (homeDef, position) => {
-  return await findUserBySlackID(homeDef, position).then((rs) => {
+const findPlayerPromise = (homeDef, position) => {
+  return findUserBySlackID(homeDef, position).then((rs) => {
     if (!rs) return res.json({ error: `Unable to find ${position} player.` })
+    return rs
   })
 }
 
-const findUserBySlackID = async ({slackID}) => {
+const findUserBySlackID = ({slackID}) => {
   const query = { slackID: slackID }
   User.find(query, {}, function (err, rs) {
     if (err) {
