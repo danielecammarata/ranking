@@ -172,8 +172,26 @@ class AddMatch extends React.Component {
     })
   }
 
+  onScoreSelectionAddOne = (score, team) => {
+    this.setState({ [`${team}Score`]: score+1 }, () =>{
+      const canSave = (this.state.homeScore > 5 && (this.state.homeScore - this.state.awayScore) > 1) ||
+                    (this.state.awayScore > 5 && (this.state.awayScore - this.state.homeScore) > 1)
+      this.setState({ canSave: canSave })
+    })
+  }
+
   onScorePlayerSelection = (score, team, role) => {
     this.setState({ [`${team}Score${role}`]: score }, () =>{
+      const homeScore = this.state.homeScoreDefender + this.state.homeScoreStriker
+      const awayScore = this.state.awayScoreDefender + this.state.awayScoreStriker
+      const canSave = (homeScore > 5 && (homeScore - awayScore) > 1) ||
+                    (awayScore > 5 && (awayScore - homeScore) > 1)
+      this.setState({ canSaveDetail: canSave, homeScore: homeScore, awayScore: awayScore })
+    })
+  }
+
+  onScorePlayerSelectionAddOne = (score, team, role) => {
+    this.setState({ [`${team}Score${role}`]: score+1 }, () =>{
       const homeScore = this.state.homeScoreDefender + this.state.homeScoreStriker
       const awayScore = this.state.awayScoreDefender + this.state.awayScoreStriker
       const canSave = (homeScore > 5 && (homeScore - awayScore) > 1) ||
@@ -348,17 +366,17 @@ class AddMatch extends React.Component {
         />
         <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '350px'}}>
           <GridListTile style={styleMatchTile}>
-            <GridList>
-              <GridListTile style={styleTeamTile('right')}>
+            <GridList style={{lineHeight: '15px'}}>
+              <GridListTile style={styleTeamTile('left')}>
                 <Chip
                   avatar={<Avatar src={this.state.homeDefender.avatarUrl} />}
                   label={this.state.homeDefender.name}
-                  style={styleTeamPlayer('right')}
+                  style={styleTeamPlayer('left')}
                 />
                 <Chip
                   avatar={<Avatar src={this.state.homeStriker.avatarUrl} />}
                   label={this.state.homeStriker.name}
-                  style={styleTeamPlayer('right')}
+                  style={styleTeamPlayer('left')}
                 />
 
               </GridListTile>
@@ -369,6 +387,7 @@ class AddMatch extends React.Component {
                     style={{
                       height: 75,
                       width: 60,
+                      margin: '40px 0 -40px',
                       paddingTop: 10
                     }}
                   >
@@ -386,20 +405,23 @@ class AddMatch extends React.Component {
                 {this.state.matchView === matchViewState.TEAMS_COMPLETE &&
                   <GridListTile
                     style={{
-                      height: 75,
-                      width: 60,
-                      paddingTop: 10
+                      height: 'auto',
+                      overflow: 'visible',
+                      padding: '10px 8px',
+                      width: 80,
                     }}
                   >
                     <Avatar
                       style={{
-                        height: 55,
-                        width: 55,
-                        padding: 0,
-                        backgroundColor: 'green',
-                        fontSize: '1em'
+                        backgroundColor: '#01ad01',
+                        fontSize: '1em',
+                        height: 45,
+                        margin: '4px 10px',
+                        overflow: 'visible',
+                        padding: '10px 0',
+                        width: 45,
                       }}
-                    >{`${this.state.homeScore} - ${this.state.awayScore}`}</Avatar>
+                    >{`${this.state.homeScore}`}</Avatar>
                     <Badge color="secondary" badgeContent={<small>{this.state.homeScoreDefender}</small>}
                       style={{
                         left: 11,
@@ -411,50 +433,72 @@ class AddMatch extends React.Component {
                       style={{
                         left: 11,
                         position: 'absolute',
-                        top: 52,
+                        top: 42,
                         zIndex: 1,
                     }}/>
+                  </GridListTile>
+                }
+
+              <GridListTile style={styleTeamTile('right')}>
+                <Chip
+                  avatar={<Avatar src={this.state.awayDefender.avatarUrl} />}
+                  label={this.state.awayDefender.name}
+                  style={styleTeamPlayer('right')}
+                />
+                <Chip
+                  avatar={<Avatar src={this.state.awayStriker.avatarUrl} />}
+                  label={this.state.awayStriker.name}
+                  style={styleTeamPlayer('right')}
+                />
+              </GridListTile>
+
+              {this.state.matchView === matchViewState.TEAMS_COMPLETE &&
+                  <GridListTile
+                    style={{
+                      height: 'auto',
+                      overflow: 'visible',
+                      paddingTop: 10,
+                      width: 80,
+                    }}
+                  >
+                    <Avatar
+                      style={{
+                        backgroundColor: '#01ad01',
+                        fontSize: '1em',
+                        height: 45,
+                        margin: '4px 10px',
+                        overflow: 'visible',
+                        padding: '10px 0',
+                        width: 45,
+                      }}
+                    >{`${this.state.awayScore}`}</Avatar>
                     <Badge color="secondary" badgeContent={<small>{this.state.awayScoreDefender}</small>}
                       style={{
-                        left: 45,
+                        left: 55,
                         position: 'absolute',
                         top: 11,
                         zIndex: 1,
                     }}/>
                     <Badge color="secondary" badgeContent={<small>{this.state.awayScoreStriker}</small>}
                       style={{
-                        left: 45,
+                        left: 55,
                         position: 'absolute',
-                        top: 52,
+                        top: 42,
                         zIndex: 1,
                     }}/>
                   </GridListTile>
                 }
-
-              <GridListTile style={styleTeamTile('left')}>
-                <Chip
-                  avatar={<Avatar src={this.state.awayDefender.avatarUrl} />}
-                  label={this.state.awayDefender.name}
-                  style={styleTeamPlayer('left')}
-                />
-                <Chip
-                  avatar={<Avatar src={this.state.awayStriker.avatarUrl} />}
-                  label={this.state.awayStriker.name}
-                  style={styleTeamPlayer('left')}
-                />
-
-              </GridListTile>
             </GridList>
           </GridListTile>
         </GridList>
 
         {this.state.matchView === matchViewState.PLAYER_SELECTION &&
           <Grid
-            style={{margin: '0 auto', maxWidth: '500px', minWidth: '350px'}}
+            style={{margin: '0 auto', maxWidth: '100%', minWidth: '350px'}}
           >
             {this.props.players.map((player, index) => (
               <PlayerChip
-                index={index}
+                index={index} 
                 player={player}
                 onSelection={this.onPlayerSelect}
                 canSelect={this.state.selectedPlayers < 4}
@@ -476,22 +520,34 @@ class AddMatch extends React.Component {
                   <Grid item xs={6} sm={6}>Home</Grid>
                   <Grid item xs={6} sm={6}>Away</Grid>
                   <Grid item xs={6} sm={6}>
-                    {[0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(item =>
+                    {[0, 1,2,3,4,5,6,7,8].map(item =>
                       <Button
                         key={`homeScore${item}`}
                         variant="contained"
+                        style={{minWidth: '59px', margin: '3px'}}
                         onClick={this.onScoreSelection.bind(this, item, 'home')}
                       >{item}</Button>
                     )}
+                    <Button
+                      style={{width: '96%', margin: '3px'}}
+                      variant="contained"
+                      onClick={this.onScoreSelectionAddOne.bind(this, this.state.homeScore, 'home')}
+                    >+1</Button>
                   </Grid>
                   <Grid item xs={6} sm={6}>
-                    {[0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(item =>
+                    {[0, 1,2,3,4,5,6,7,8].map(item =>
                       <Button
+                        style={{minWidth: '59px', margin: '3px'}}
                         key={`homeScore${item}`}
                         variant="contained"
                         onClick={this.onScoreSelection.bind(this, item, 'away')}
                       >{item}</Button>
                     )}
+                    <Button
+                      style={{width: '96%', margin: '3px'}}
+                      variant="contained"
+                      onClick={this.onScoreSelectionAddOne.bind(this, this.state.awayScore, 'away')}
+                    >+1</Button>
                   </Grid>
                 </Grid>
               </ExpansionPanelDetails>
@@ -513,42 +569,66 @@ class AddMatch extends React.Component {
                   <Grid item xs={6} sm={6}>Home Defender</Grid>
                   <Grid item xs={6} sm={6}>Home Striker</Grid>
                   <Grid item xs={6} sm={6}>
-                    {[0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(item =>
+                    {[0, 1,2,3,4,5,6,7,8].map(item =>
                       <Button
                         key={`homeScoreDef${item}`}
                         variant="contained"
+                        style={{minWidth: '59px', margin: '3px'}}
                         onClick={this.onScorePlayerSelection.bind(this, item, 'home', 'Defender')}
                       >{item}</Button>
                     )}
+                    <Button
+                      style={{width: '96%', margin: '3px'}}
+                      variant="contained"
+                      onClick={this.onScorePlayerSelectionAddOne.bind(this, this.state.homeScoreDefender, 'home', 'Defender')}
+                    >+1</Button>
                   </Grid>
                   <Grid item xs={6} sm={6}>
-                    {[0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(item =>
+                    {[0, 1,2,3,4,5,6,7,8].map(item =>
                       <Button
                         key={`homeScoreStr${item}`}
                         variant="contained"
+                        style={{minWidth: '59px', margin: '3px'}}
                         onClick={this.onScorePlayerSelection.bind(this, item, 'home', 'Striker')}
                       >{item}</Button>
                     )}
+                    <Button
+                      style={{width: '96%', margin: '3px'}}
+                      variant="contained"
+                      onClick={this.onScorePlayerSelectionAddOne.bind(this, this.state.homeScoreStriker, 'home', 'Striker')}
+                    >+1</Button>
                   </Grid>
-                  <Grid item xs={6} sm={6}>Away Defender</Grid>
-                  <Grid item xs={6} sm={6}>Away Striker</Grid>
+                  <Grid item xs={6} sm={6} style={{marginTop: '20px'}}>Away Defender</Grid>
+                  <Grid item xs={6} sm={6} style={{marginTop: '20px'}}>Away Striker</Grid>
                   <Grid item xs={6} sm={6}>
-                    {[0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(item =>
+                    {[0, 1,2,3,4,5,6,7,8].map(item =>
                       <Button
-                        key={`homeScoreDef${item}`}
+                        key={`awayScoreDef${item}`}
                         variant="contained"
+                        style={{minWidth: '59px', margin: '3px'}}
                         onClick={this.onScorePlayerSelection.bind(this, item, 'away', 'Defender')}
                       >{item}</Button>
                     )}
+                    <Button
+                      style={{width: '96%', margin: '3px'}}
+                      variant="contained"
+                      onClick={this.onScorePlayerSelectionAddOne.bind(this, this.state.awayScoreDefender, 'away', 'Defender')}
+                    >+1</Button>
                   </Grid>
                   <Grid item xs={6} sm={6}>
-                    {[0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(item =>
+                    {[0, 1,2,3,4,5,6,7,8].map(item =>
                       <Button
-                        key={`homeScoreStr${item}`}
+                        key={`awayScoreStr${item}`}
                         variant="contained"
+                        style={{minWidth: '59px', margin: '3px'}}
                         onClick={this.onScorePlayerSelection.bind(this, item, 'away', 'Striker')}
                       >{item}</Button>
                     )}
+                    <Button
+                      style={{width: '96%', margin: '3px'}}
+                      variant="contained"
+                      onClick={this.onScorePlayerSelectionAddOne.bind(this, this.state.awayScoreStriker, 'away', 'Striker')}
+                    >+1</Button>
                   </Grid>
                 </Grid>
               </ExpansionPanelDetails>
@@ -626,11 +706,13 @@ class PlayerChip extends React.Component {
         key={key}
         variant="extendedFab"
         style={{
-          minHeight: 25,
           height: 25,
-          padding: 0,
-          paddingRight: 10,
-          margin: 5,
+          justifyContent: 'flex-start',
+          margin: '15px 5px 0',
+          minHeight: 25,
+          overflow: 'hidden',
+          padding: '0px 10px 0px 0px',
+          width: '31%',
         }}
         onClick={this.onSelection}
       >
@@ -642,7 +724,9 @@ class PlayerChip extends React.Component {
             marginRight: 5,
           }}
         />
-        <Typography>{player.name}</Typography>
+        <Typography style={{whiteSpace: 'nowrap', fontSize: 12, overflow: 'hidden', textOverflow: 'ellipsis', width: '100px', textAlign: 'left'}}>
+          {player.name}
+        </Typography>
       </Button>
     )
   }
