@@ -11,7 +11,7 @@ const slack = require('../../lib/slack')
 
 const rankify = require('../../lib/rankify')
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
   slackEvents.expressMiddleware()
   var value = req.body.event.text
   // var value = '<@UCPLWJ6E5> <@UCS26NM6C> - <@UCQHH9YRK> <@UCSDP1Z4H> : 6-0'
