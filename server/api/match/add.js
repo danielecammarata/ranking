@@ -23,7 +23,8 @@ router.post('/', (req, res) => {
     badges,
     slug,
     createdAt,
-    difference: rank.difference
+    difference: rank.difference,
+    difference2: rank.difference2
   }
 
   const newMatch = new Match(matchData)
@@ -33,6 +34,7 @@ router.post('/', (req, res) => {
     const scoreHD = {
       id: teamHome.defender._id,
       score: rank.homeDefense,
+      score2: rank.homeDefense2,
       stats: calculateStats(teamHome.defender, true, rank.hasHomeWin, teamHome, teamAway, rank.difference, rank.homeDefense),
       res
     }
@@ -41,6 +43,7 @@ router.post('/', (req, res) => {
     const scoreHS = {
       id: teamHome.striker._id,
       score: rank.homeStriker,
+      score2: rank.homeStriker2,
       stats: calculateStats(teamHome.striker, false, rank.hasHomeWin, teamHome, teamAway, rank.difference, rank.homeStriker),
       res
     }
@@ -49,6 +52,7 @@ router.post('/', (req, res) => {
     const scoreAD = {
       id: teamAway.defender._id,
       score: rank.awayDefense,
+      score2: rank.awayDefense2,
       stats: calculateStats(teamAway.defender, true, !rank.hasHomeWin, teamAway, teamHome, rank.difference, rank.awayDefense),
       res
     }
@@ -57,6 +61,7 @@ router.post('/', (req, res) => {
     const scoreAS = {
       id: teamAway.striker._id,
       score: rank.awayStriker,
+      score2: rank.awayStriker2,
       stats: calculateStats(teamAway.striker, false, !rank.hasHomeWin, teamAway, teamHome, rank.difference, rank.awayStriker),
       res
     }
@@ -97,9 +102,9 @@ const calculateStats = (user, isDefender, winner, team, oppositeTeam, rankDiffer
   }
 }
 
-const updateUser = ({id, score, stats, res}) => {
+const updateUser = ({id, score, score2, stats, res}) => {
   const query = { _id: id }
-  User.findOneAndUpdate(query, { points: score, stats: stats }, {}, function (err, rs) {
+  User.findOneAndUpdate(query, { points: score, points2: score2, stats: stats }, {}, function (err, rs) {
     if (err) return res.json({ error: err.message || err.toString() })
   })
 }
