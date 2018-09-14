@@ -34,9 +34,7 @@ router.post('/', async (req, res) => {
       new Promise(findPlayerPromise(homeDef, "Away Striker"))
     ]
 
-    tasks.reduce(function(cur, next) {
-        return cur.then(next);
-    }, RSVP.resolve()).then(function(rs) {
+    Promise.all(tasks).then(function(rs) {
       console.log(rs)
       slack.sendMessage(
         `
@@ -48,7 +46,23 @@ router.post('/', async (req, res) => {
         process.env.SLACK_TOKEN,
         process.env.SLACK_CHANNEL_ID
       )
-    });
+    })
+
+    // tasks.reduce(function(cur, next) {
+    //     return cur.then(next);
+    // }, RSVP.resolve()).then(function(rs) {
+    //   console.log(rs)
+    //   slack.sendMessage(
+    //     `
+    //     --- Match data ---
+    //     ${homeTeam} : ${homeScore}
+    //     vs
+    //     ${awayTeam} : ${awayScore}
+    //     `, 
+    //     process.env.SLACK_TOKEN,
+    //     process.env.SLACK_CHANNEL_ID
+    //   )
+    // });
   }
 
   if ( command === 'man') {
