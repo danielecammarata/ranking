@@ -2,8 +2,8 @@ const express = require('express')
 
 const router = express.Router()
 
-// const { createEventAdapter } = require('@slack/events-api')
-// const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET)
+const { createEventAdapter } = require('@slack/events-api')
+const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET)
 
 const Match = require('../../models/Match')
 const User = require('../../models/User')
@@ -12,7 +12,7 @@ const slack = require('../../lib/slack')
 const rankify = require('../../lib/rankify')
 
 router.get('/', async (req, res) => {
-  // slackEvents.expressMiddleware()
+  slackEvents.expressMiddleware()
   var value = req.body.event.text
   // var value = '<@UCPLWJ6E5> <@UCS26NM6C> - <@UCQHH9YRK> <@UCSDP1Z4H> : 6-0'
   const newMatchPattern = /^(<@[A-Z0-9]{9,}>) (<@[A-Z0-9]{9,}>) - (<@[A-Z0-9]{9,}>) (<@[A-Z0-9]{9,}>) : (0?[1-9][0-9]|[0-9])-(0?[1-9][0-9]|[0-9])/gm
