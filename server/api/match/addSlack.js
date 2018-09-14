@@ -2,8 +2,8 @@ const express = require('express')
 
 const router = express.Router()
 
-const { createEventAdapter } = require('@slack/events-api')
-const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET)
+// const { createEventAdapter } = require('@slack/events-api')
+// const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET)
 
 const Match = require('../../models/Match')
 const User = require('../../models/User')
@@ -11,16 +11,10 @@ const slack = require('../../lib/slack')
 
 const rankify = require('../../lib/rankify')
 
-router.get('/test', async (req, res) => {
-  const rs = await User.find({ active: true })
-  console.log('All users!!!')
-  console.log(rs)
-})
-
 router.get('/', async (req, res) => {
-  slackEvents.expressMiddleware()
-  var value = req.body.event.text
-  // var value = '<@UCPLWJ6E5> <@UCS26NM6C> - <@UCQHH9YRK> <@UCSDP1Z4H> : 6-0'
+  // slackEvents.expressMiddleware()
+  // var value = req.body.event.text
+  var value = '<@UCPLWJ6E5> <@UCS26NM6C> - <@UCQHH9YRK> <@UCSDP1Z4H> : 6-0'
   const newMatchPattern = /^(<@[A-Z0-9]{9,}>) (<@[A-Z0-9]{9,}>) - (<@[A-Z0-9]{9,}>) (<@[A-Z0-9]{9,}>) : (0?[1-9][0-9]|[0-9])-(0?[1-9][0-9]|[0-9])/gm
   const command = value.replace(process.env.SLACK_BOT_ID + ' ', '')
   const condition = command.match(newMatchPattern)
@@ -42,22 +36,22 @@ router.get('/', async (req, res) => {
       const slug = Match.generateSlug()
       const rank = rankify.calculate({
         teamHome: {
-          defender: rs[0],
-          striker: rs[1],
+          defender: rs[0][0],
+          striker: rs[1][0],
           score: homeScore,
         },
         teamAway: {
-          defender: rs[2],
-          striker: rs[3],
+          defender: rs[2][0],
+          striker: rs[3][0],
           score: awayScore,
         }
-      })      
+      })
       const matchData = {
         teamHome: {
           defBadges: [],
           strBadges: [],
-          defender: rs[0],
-          striker: rs[1],
+          defender: rs[0][0],
+          striker: rs[1][0],
           score: homeScore,
           defScore: scoreAndBadges.homeScoreDefender,
           strScore: scoreAndBadges.homeScoreStriker
@@ -65,62 +59,62 @@ router.get('/', async (req, res) => {
         teamAway: {
           defBadges: [],
           strBadges: [],
-          defender: rs[2],
-          striker: rs[3],
+          defender: rs[2][0],
+          striker: rs[3][0],
           score: awayScore,
           defScore: scoreAndBadges.awayScoreDefender,
           strScore: scoreAndBadges.awayScoreStriker
         },
         badges: scoreAndBadges.badges,
-        slug,
-        createdAt,
+        slug: slug,
+        createdAt: createdAt,
         difference: rank.difference
       }
+      const newMatch = new Match(matchData)
       newMatch.save(function (err) {
         if (err) return res.json({ error: err.message || err.toString() })
 
         const scoreHD = {
-          id: teamHome.defender._id,
+          id: matchData.teamHome.defender._id,
           score: rank.homeDefense,
-          stats: calculateStats(teamHome.defender, true, rank.hasHomeWin, teamHome, teamAway, rank.difference, rank.homeDefense),
+          stats: calculateStats(matchData.teamHome.defender, true, rank.hasHomeWin, matchData.teamHome, matchData.teamAway, rank.difference, rank.homeDefense),
           res
         }
         updateUser(scoreHD)
 
         const scoreHS = {
-          id: teamHome.striker._id,
+          id: matchData.teamHome.striker._id,
           score: rank.homeStriker,
-          stats: calculateStats(teamHome.striker, false, rank.hasHomeWin, teamHome, teamAway, rank.difference, rank.homeStriker),
+          stats: calculateStats(matchData.teamHome.striker, false, rank.hasHomeWin, matchData.teamHome, matchData.teamAway, rank.difference, rank.homeStriker),
           res
         }
         updateUser(scoreHS)
 
         const scoreAD = {
-          id: teamAway.defender._id,
+          id: matchData.teamAway.defender._id,
           score: rank.awayDefense,
-          stats: calculateStats(teamAway.defender, true, !rank.hasHomeWin, teamAway, teamHome, rank.difference, rank.awayDefense),
+          stats: calculateStats(matchData.teamAway.defender, true, !rank.hasHomeWin, matchData.teamAway, matchData.teamHome, rank.difference, rank.awayDefense),
           res
         }
         updateUser(scoreAD)
 
         const scoreAS = {
-          id: teamAway.striker._id,
+          id: matchData.teamAway.striker._id,
           score: rank.awayStriker,
-          stats: calculateStats(teamAway.striker, false, !rank.hasHomeWin, teamAway, teamHome, rank.difference, rank.awayStriker),
+          stats: calculateStats(matchData.teamAway.striker, false, !rank.hasHomeWin, matchData.teamAway, matchData.teamHome, rank.difference, rank.awayStriker),
           res
         }
         updateUser(scoreAS)
         slack.sendMessage(
           `
           --- Match Successfully Inserted ---
-          ${teamHome.defender.name} + ${teamHome.striker.name} : ${teamHome.score}
+          ${matchData.teamHome.defender.name} + ${matchData.teamHome.striker.name} : ${matchData.teamHome.score}
           vs
-          ${teamAway.defender.name} + ${teamAway.striker.name} : ${teamAway.score}
+          ${matchData.teamAway.defender.name} + ${matchData.teamAway.striker.name} : ${matchData.teamAway.score}
           `, 
           process.env.SLACK_TOKEN,
           process.env.SLACK_CHANNEL_ID
         )
-        res.json(newMatch)
       })    
     }).catch((e) => {
       console.log(e)
@@ -152,7 +146,7 @@ router.get('/', async (req, res) => {
       --- Add new match: 
       @homeDef @homeStr - @awayDef @awayStr : homeScore-awayScore
 
-      --- Add new user: 
+      --- Add new user: (-WORK IN PROGRESS-)
       @playerSlack Name http://imageUrl
       `, 
       process.env.SLACK_TOKEN,
@@ -295,8 +289,6 @@ const calculateStats = (user, isDefender, winner, team, oppositeTeam, rankDiffer
 const findPlayerPromise = async (homeDef, position) => {
   const rs = await User.find({ slackID: homeDef })
   if (!rs || rs.length <= 0) return res.json({ error: `Unable to find ${position} player.` })
-  console.log(position)
-  console.log(rs)
   return rs
 }
 
