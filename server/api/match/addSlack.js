@@ -13,8 +13,8 @@ const rankify = require('../../lib/rankify')
 
 router.get('/', async (req, res) => {
   // slackEvents.expressMiddleware()
-  // var value = req.body.event.text
-  var value = '<@UCPLWJ6E5> <@UCS26NM6C> - <@UCQHH9YRK> <@UCSDP1Z4H> : 6-0'
+  var value = req.body.event.text
+  // var value = '<@UCPLWJ6E5> <@UCS26NM6C> - <@UCQHH9YRK> <@UCSDP1Z4H> : 6-0'
   const newMatchPattern = /^(<@[A-Z0-9]{9,}>) (<@[A-Z0-9]{9,}>) - (<@[A-Z0-9]{9,}>) (<@[A-Z0-9]{9,}>) : (0?[1-9][0-9]|[0-9])-(0?[1-9][0-9]|[0-9])/gm
   const command = value.replace(process.env.SLACK_BOT_ID + ' ', '')
   const condition = command.match(newMatchPattern)
