@@ -18,6 +18,7 @@
     "@slack/client": "^4.6.0",
     "@slack/events-api": "^2.1.0",
     "arpad": "^1.0.2",
+    "basic-auth": "^2.0.0",
     "dotenv": "^6.0.0",
     "downshift": "",
     "express": "^4.16.3",
