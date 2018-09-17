@@ -135,7 +135,7 @@ class Index extends React.Component {
         {label}
       </Typography>
       <Divider />
-      <GridList style={{margin: '0 auto', maxWidth: '100%', minWidth: '350px'}}>
+      <GridList style={{margin: '0 auto', maxWidth: '100%'}}>
         {matches.map(match => (
           <GridListTile style={styleMatchTile} key={match.slug}>
             <GridList style={{lineHeight: '13px'}}>
@@ -256,7 +256,7 @@ class Index extends React.Component {
           </Grid>
         </Grid>
         {/* New grouped matches list */}
-        <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '350px'}}>
+        <GridList style={{margin: '0 auto', maxWidth: '500px'}}>
           {Object.keys(matchesObj).map(matchKey => (
             this.matchTile(matchKey,  matchesObj[matchKey].matches)
           ))}

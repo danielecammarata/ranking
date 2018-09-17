@@ -364,7 +364,7 @@ class AddMatch extends React.Component {
                     })
                   }
         />
-        <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '350px'}}>
+        <GridList style={{margin: '0 auto', maxWidth: '500px'}}>
           <GridListTile style={styleMatchTile}>
             <GridList style={{lineHeight: '15px'}}>
               <GridListTile style={styleTeamTile('left')}>
@@ -494,7 +494,7 @@ class AddMatch extends React.Component {
 
         {this.state.matchView === matchViewState.PLAYER_SELECTION &&
           <Grid
-            style={{margin: '0 auto', maxWidth: '100%', minWidth: '350px'}}
+            style={{margin: '0 auto', maxWidth: '100%'}}
           >
             {this.props.players.map((player, index) => (
               <PlayerChip
@@ -524,7 +524,7 @@ class AddMatch extends React.Component {
                       <Button
                         key={`homeScore${item}`}
                         variant="contained"
-                        style={{minWidth: '59px', margin: '3px'}}
+                        style={{width: 'calc(33% - 6px)', margin: '3px', minWidth: 'initial'}}
                         onClick={this.onScoreSelection.bind(this, item, 'home')}
                       >{item}</Button>
                     )}
@@ -537,7 +537,7 @@ class AddMatch extends React.Component {
                   <Grid item xs={6} sm={6}>
                     {[0, 1,2,3,4,5,6,7,8].map(item =>
                       <Button
-                        style={{minWidth: '59px', margin: '3px'}}
+                        style={{width: 'calc(33% - 6px)', margin: '3px', minWidth: 'initial'}}
                         key={`homeScore${item}`}
                         variant="contained"
                         onClick={this.onScoreSelection.bind(this, item, 'away')}
@@ -573,7 +573,7 @@ class AddMatch extends React.Component {
                       <Button
                         key={`homeScoreDef${item}`}
                         variant="contained"
-                        style={{minWidth: '59px', margin: '3px'}}
+                        style={{width: 'calc(33% - 6px)', margin: '3px', minWidth: 'initial'}}
                         onClick={this.onScorePlayerSelection.bind(this, item, 'home', 'Defender')}
                       >{item}</Button>
                     )}
@@ -588,7 +588,7 @@ class AddMatch extends React.Component {
                       <Button
                         key={`homeScoreStr${item}`}
                         variant="contained"
-                        style={{minWidth: '59px', margin: '3px'}}
+                        style={{width: 'calc(33% - 6px)', margin: '3px', minWidth: 'initial'}}
                         onClick={this.onScorePlayerSelection.bind(this, item, 'home', 'Striker')}
                       >{item}</Button>
                     )}
@@ -605,7 +605,7 @@ class AddMatch extends React.Component {
                       <Button
                         key={`awayScoreDef${item}`}
                         variant="contained"
-                        style={{minWidth: '59px', margin: '3px'}}
+                        style={{width: 'calc(33% - 6px)', margin: '3px', minWidth: 'initial'}}
                         onClick={this.onScorePlayerSelection.bind(this, item, 'away', 'Defender')}
                       >{item}</Button>
                     )}
@@ -620,7 +620,7 @@ class AddMatch extends React.Component {
                       <Button
                         key={`awayScoreStr${item}`}
                         variant="contained"
-                        style={{minWidth: '59px', margin: '3px'}}
+                        style={{width: 'calc(33% - 6px)', margin: '3px', minWidth: 'initial'}}
                         onClick={this.onScorePlayerSelection.bind(this, item, 'away', 'Striker')}
                       >{item}</Button>
                     )}
@@ -712,7 +712,7 @@ class PlayerChip extends React.Component {
           minHeight: 25,
           overflow: 'hidden',
           padding: '0px 10px 0px 0px',
-          width: '31%',
+          width: 'calc(33% - 10px)',
         }}
         onClick={this.onSelection}
       >
@@ -724,7 +724,7 @@ class PlayerChip extends React.Component {
             marginRight: 5,
           }}
         />
-        <Typography style={{whiteSpace: 'nowrap', fontSize: 12, overflow: 'hidden', textOverflow: 'ellipsis', width: '100px', textAlign: 'left'}}>
+        <Typography style={{whiteSpace: 'nowrap', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 'calc(33vw - 52px)', textAlign: 'left'}}>
           {player.name}
         </Typography>
       </Button>
