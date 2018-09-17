@@ -71,8 +71,32 @@ router.post('/', (req, res) => {
   })
 })
 
+const defaultStats = {
+  win_streak: 0, // current matches winned in row
+  max_win_streak: 0, // max matches winned in row
+  points_trend: 0, // trend positive or negative
+  points_max: 1200, // max points reached
+  points_min: 1200, // min points reached
+  match_played: 0, // number of matches played
+  match_win: 0, // matches win
+  match_crawl: 0, // matches win with 6 - 0
+  match_crawled: 0, // matches loose with 6 - 0
+  match_as_defender: 0, // matches played as defender
+  match_as_striker: 0, // matches played as striker
+  win_as_defender: 0, // matches win as defender
+  win_as_striker: 0, // matches win as striker
+  match_goals_made: 0,
+  match_goals_conceded: 0,
+  match_goals_made_as_defender: 0,
+  match_goals_made_as_striker: 0,
+  match_goals_conceded_as_defender: 0,
+  last_winned: false,
+  last_matches: []
+}
+
 const calculateStats = (user, isDefender, winner, team, oppositeTeam, rankDifference, newPoints) => {
-  const currentStats = user.stats
+  const currentStats = Object.keys(user.stats).length > 2 ? user.stats : defaultStats
+
   const winAgain = winner && currentStats.last_winned
   const looseAgain = !winner && !currentStats.last_winned
 
@@ -105,7 +129,10 @@ const calculateStats = (user, isDefender, winner, team, oppositeTeam, rankDiffer
 const updateUser = ({id, score, score2, stats, res}) => {
   const query = { _id: id }
   User.findOneAndUpdate(query, { points: score, points2: score2, stats: stats }, {}, function (err, rs) {
-    if (err) return res.json({ error: err.message || err.toString() })
+    if (err) {
+      console.error(err)
+      return res.json({ error: err.message || err.toString() })
+    }
   })
 }
 

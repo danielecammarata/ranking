@@ -9,13 +9,15 @@ export default class MyApp extends App {
       pageProps = await Component.getInitialProps(ctx)
     }
 
+    //console.log(Component, router, ctx)
+
     return {pageProps}
   }
 
   render () {
-    const {Component, pageProps} = this.props
+    const {Component, router, pageProps} = this.props
     return <Container>
-      <Component {...pageProps} />
+      <Component url={router} {...pageProps} />
     </Container>
   }
 }
