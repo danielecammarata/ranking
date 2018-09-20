@@ -20,6 +20,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Layout from '../../components/Layout.js'
 import { getUsersBySlug, updateUser } from '../../lib/api/users'
 import { styleForm, styleTextField, styleRaisedButton } from '../../lib/SharedStyles'
+import { formArea, formButton, formButtonWrapper, formText, formTextSmall, userAvatar, userAvatarImg, userFeature, userFeatureLabel, userFeatureTitle, userFeatureValue } from '../../lib/userPage'
 import { Typography } from '@material-ui/core';
 
 const listItemStyle = {
@@ -65,8 +66,6 @@ class UpdateUser extends React.Component {
       [name]: event.target.value,
     })
   }
-
-
 
   render() {
     const { name, avatarUrl } = this.state
@@ -121,107 +120,134 @@ class UpdateUser extends React.Component {
             style={{ height: 'auto', width: '100%' }}
           >
             <ListSubheader component="div">
-              <Typography
+
+              <form
+                autoComplete="off"
+                style={styleForm}
+                onSubmit={this.onSubmit}
+              >
+                <div style={formArea}>
+                  <TextField
+                    style={formText}
+                    id="name"
+                    label="Name"
+                    value={name}
+                    onChange={this.handleChange('name')}
+                    margin="normal"
+                    required
+                  />
+                  <TextField
+                    style={formTextSmall}
+                    id="avatarUrl"
+                    label="Avatar URL"
+                    value={avatarUrl}
+                    onChange={this.handleChange('avatarUrl')}
+                    margin="normal"
+                    required
+                  />
+                </div>
+                <div style={formButtonWrapper}>
+                  <Button
+                    style={formButton}
+                    variant="contained"
+                    type="submit"
+                  >
+                    Modify
+                  </Button>
+                </div>
+              </form>
+
+              {/* <Typography
                 variant="display2"
               >
                 {name}
-              </Typography>
+              </Typography> */}
             </ListSubheader>
           </GridListTile>
-          <GridListTile
-            cols={2}
-            rows={2}
-          >
+          <GridListTile style={userAvatar}>
             <img
-              src={avatarUrl}
               alt={name}
+              style={userAvatarImg}
+              src={avatarUrl}
             />
           </GridListTile>
-          <GridListTile
-            cols={1}
-            rows={2}
-          >
+          <GridListTile style={{display: 'block', height: 'initial', width: '100%'}}>
             <List>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Points: ${points}`} />
+              <ListItem style={userFeatureTitle}>
+                <h5>SCORE</h5>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Win streak: ${stats.win_streak}`} />
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>Points</span>
+                <span style={userFeatureValue}>{`${points}`}</span>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Longest streak: ${stats.max_win_streak}`} />
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>Highest points</span>
+                <span style={userFeatureValue}>{`${stats.points_max}`}</span>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Trend: ${stats.points_trend}`} />
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>Lowest points</span>
+                <span style={userFeatureValue}>{`${stats.points_min}`}</span>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Highest points: ${stats.points_max}`} />
+              <ListItem style={userFeatureTitle}>
+                <h5>TRENDS</h5>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Lowest points: ${stats.points_min}`} />
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>Win streak</span>
+                <span style={userFeatureValue}>{`${stats.win_streak}`}</span>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Matches played: ${stats.match_played}`} />
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>Longest streak </span>
+                <span style={userFeatureValue}>{`${stats.max_win_streak}`}</span>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Matches winned: ${stats.match_win}`} />
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>Trend</span>
+                <span style={userFeatureValue}>{`${stats.points_trend}`}</span>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Crawl: ${stats.match_crawl}`} />
+              <ListItem style={userFeatureTitle}>
+                <h5>MATCHES</h5>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Crawled: ${stats.match_crawled}`} />
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>Played</span>
+                <span style={userFeatureValue}>{`${stats.match_played}`}</span>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Play as defender: ${stats.match_as_defender}`} />
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>Winned</span>
+                <span style={userFeatureValue}>{`${stats.match_win}`}</span>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Play as striker: ${stats.match_as_striker}`} />
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>Crawl</span>
+                <span style={userFeatureValue}>{`${stats.match_crawl}`}</span>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Goals as defender: ${stats.match_goals_made_as_defender}`} />
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>Crawled</span>
+                <span style={userFeatureValue}>{`${stats.match_crawled}`}</span>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Goals as striker: ${stats.match_goals_made_as_striker}`} />
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>As defender</span>
+                <span style={userFeatureValue}>{`${stats.match_as_defender}`}</span>
               </ListItem>
-              <ListItem style={{padding: 0}}>
-                <StatsListItem text={`Goals conceded as striker: ${stats.match_goals_conceded_as_defender}`} />
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>As striker</span>
+                <span style={userFeatureValue}>{`${stats.match_as_striker}`}</span>
+              </ListItem>
+              <ListItem style={userFeatureTitle}>
+                <h5>GOALS</h5>
+              </ListItem>
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>As defender</span>
+                <span style={userFeatureValue}>{`${stats.match_goals_made_as_defender}`}</span>
+              </ListItem>
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>As striker</span>
+                <span style={userFeatureValue}>{`${stats.match_goals_made_as_striker}`}</span>
+              </ListItem>
+              <ListItem style={userFeature}>
+                <span style={userFeatureLabel}>Conceded as striker</span>
+                <span style={userFeatureValue}>{`${stats.match_goals_conceded_as_defender}`}</span>
               </ListItem>
             </List>
           </GridListTile>
         </GridList>
-        <form
-          autoComplete="off"
-          style={styleForm}
-          onSubmit={this.onSubmit}
-        >
-          <TextField
-            style={styleTextField}
-            id="name"
-            label="Name"
-            value={name}
-            onChange={this.handleChange('name')}
-            margin="normal"
-            required
-          />
-          <TextField
-            style={styleTextField}
-            id="avatarUrl"
-            label="Avatar URL"
-            value={avatarUrl}
-            onChange={this.handleChange('avatarUrl')}
-            margin="normal"
-            required
-          />
-
-          <Button
-            variant="contained"
-            style={styleRaisedButton}
-            type="submit"
-          >
-            Modify
-          </Button>
-        </form>
       </Layout>
     )
   }

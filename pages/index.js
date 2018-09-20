@@ -37,11 +37,16 @@ const styles = {
     textOverflow: 'ellipsis',
   },
   winBadge: {
-    backgroundColor: green[500]
+    backgroundColor: green[500],
+    fontSize: '13px',
+    fontWeight: '700'
   },
   loseBadge: {
+    backgroundColor: red[500],
     colorPrimary: red[500],
-    backgroundColor: red[500]
+    fontSize: '13px',
+    fontWeight: '700',
+    left: '30px'
   }
 }
 class Index extends React.Component {
@@ -130,20 +135,20 @@ class Index extends React.Component {
         {label}
       </Typography>
       <Divider />
-      <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '350px'}}>
+      <GridList style={{margin: '0 auto', maxWidth: '100%'}}>
         {matches.map(match => (
           <GridListTile style={styleMatchTile} key={match.slug}>
-            <GridList>
-              <GridListTile style={styleTeamTile('right')}>
+            <GridList style={{lineHeight: '13px'}}>
+              <GridListTile style={styleTeamTile('left')}>
                 <Chip
                   avatar={<Avatar src={match.teamHome.defender.avatarUrl} />}
                   label={match.teamHome.defender.name}
-                  style={styleTeamPlayer('right')}
+                  style={styleTeamPlayer('left')}
                 />
                 <Chip
                   avatar={<Avatar src={match.teamHome.striker.avatarUrl} />}
                   label={match.teamHome.striker.name}
-                  style={styleTeamPlayer('right')}
+                  style={styleTeamPlayer('left')}
                 />
                 {
                   this.differenceTile(
@@ -157,25 +162,23 @@ class Index extends React.Component {
               <GridListTile style={styleMatchScore}>
                 <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
                   <Button variant="fab" mini color="primary">
-                    {match.teamHome.score} - {match.teamAway.score}
+                    {match.teamHome.score}
                   </Button>
                 </Link>
                 <Badge color="secondary" badgeContent={<small>{match.teamHome.defScore}</small>} style={stylePlayerScore('defender','home')}> </Badge>
                 <Badge color="secondary" badgeContent={<small>{match.teamHome.strScore}</small>} style={stylePlayerScore('striker','home')}> </Badge>
-                <Badge color="secondary" badgeContent={<small>{match.teamAway.defScore}</small>} style={stylePlayerScore('defender','away')}> </Badge>
-                <Badge color="secondary" badgeContent={<small>{match.teamAway.strScore}</small>} style={stylePlayerScore('striker','away')}> </Badge>
               </GridListTile>
-              <GridListTile style={styleTeamTile('left')}>
+              <GridListTile style={styleTeamTile('right')}>
                 <Chip
                   avatar={<Avatar src={match.teamAway.defender.avatarUrl} />}
                   classes={{label: this.props.classes.chipsLabel}}
                   label={match.teamAway.defender.name}
-                  style={styleTeamPlayer('left')}
+                  style={styleTeamPlayer('right')}
                 />
                 <Chip
                   avatar={<Avatar src={match.teamAway.striker.avatarUrl} />}
                   label={match.teamAway.striker.name}
-                  style={styleTeamPlayer('left')}
+                  style={styleTeamPlayer('right')}
                 />
                 {
                   this.differenceTile(
@@ -185,6 +188,15 @@ class Index extends React.Component {
                     styleMatchDifference
                   )
                 }
+              </GridListTile>
+              <GridListTile style={styleMatchScore}>
+                <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
+                  <Button variant="fab" mini color="primary">
+                    {match.teamAway.score}
+                  </Button>
+                </Link>
+                <Badge color="secondary" badgeContent={<small>{match.teamAway.defScore}</small>} style={stylePlayerScore('defender','away')}> </Badge>
+                <Badge color="secondary" badgeContent={<small>{match.teamAway.strScore}</small>} style={stylePlayerScore('striker','away')}> </Badge>
               </GridListTile>
             </GridList>
           </GridListTile>
@@ -199,7 +211,7 @@ class Index extends React.Component {
       <Layout>
         <Grid container spacing={16}>
           <Grid container justify="center" alignItems="center" spacing={24}>
-            <Grid item xs={24} sm={6}>
+            {/* <Grid item xs={24} sm={6}>
               <Link href="/matches/new">
                 <Button
                   variant="extendedFab"
@@ -212,7 +224,7 @@ class Index extends React.Component {
                   New Match
                 </Button>
               </Link>
-            </Grid>
+            </Grid> */}
             <Grid item xs={24} sm={6}>
               <Link href="/users">
                 <Button
@@ -237,14 +249,14 @@ class Index extends React.Component {
                   }}
                 >
                   <SoccerIcon/>
-                  Beta
+                  New Match (beta)
                 </Button>
               </Link>
             </Grid>
           </Grid>
         </Grid>
         {/* New grouped matches list */}
-        <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '350px'}}>
+        <GridList style={{margin: '0 auto', maxWidth: '500px'}}>
           {Object.keys(matchesObj).map(matchKey => (
             this.matchTile(matchKey,  matchesObj[matchKey].matches)
           ))}
