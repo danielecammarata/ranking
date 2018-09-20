@@ -19,6 +19,7 @@ import { SoccerIcon } from '../../components/IconComponents'
 import ListIcon from '@material-ui/icons/List'
 import classnames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
+import CountUp from 'react-countup'
 
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
@@ -98,7 +99,6 @@ class UpdateUser extends React.Component {
 
     setTimeout(function(){
       for(let i = 0; i < el.length; i++) {
-        console.log(el[i])
         barValue = el[i].getAttribute('data-bar-value')
         el[i].style.maxWidth = `${barValue}%`
         el[i].style.opacity = '0.8'
@@ -242,7 +242,7 @@ class UpdateUser extends React.Component {
                     </IconButton>
                   }
                   title={<h3 className={classes.cardTitle}>{name}</h3>}
-                  subheader={<span className={classes.cardSubheader}>{points}</span>}
+                  subheader={<span className={classes.cardSubheader}><CountUp start={1200} end={points} duration={2.1}/></span>}
                 />
                 <CardMedia
                   style = {{height: '350px'}}
@@ -280,15 +280,15 @@ class UpdateUser extends React.Component {
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Points</span>
-                          <span style={userFeatureValue}>{`${points}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={points} duration={1.6}/></span>
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Highest points</span>
-                          <span style={userFeatureValue}>{`${stats.points_max}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.points_max} duration={1.7}/></span>
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Lowest points</span>
-                          <span style={userFeatureValue}>{`${stats.points_min}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.points_min} duration={1.5}/></span>
                         </ListItem>
                         <ListItem style={userFeatureTitle}>
                           <h5 style={{margin: '20px 20px 20px 0'}}>TRENDS</h5>
@@ -299,15 +299,15 @@ class UpdateUser extends React.Component {
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Win streak</span>
-                          <span style={userFeatureValue}>{`${stats.win_streak}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.win_streak} duration={1.9}/></span>
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Longest streak </span>
-                          <span style={userFeatureValue}>{`${stats.max_win_streak}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.max_win_streak} duration={1.6}/></span>
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Trend</span>
-                          <span style={userFeatureValue}>{`${stats.points_trend}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.points_trend} duration={2.2}/></span>
                         </ListItem>
                         <ListItem style={userFeatureTitle}>
                           <h5 style={{margin: '20px 20px 20px 0'}}>MATCHES</h5>
@@ -318,27 +318,27 @@ class UpdateUser extends React.Component {
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Played</span>
-                          <span style={userFeatureValue}>{`${stats.match_played}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.match_played} duration={2}/></span>
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Winned</span>
-                          <span style={userFeatureValue}>{`${stats.match_win}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.match_win} duration={1.9}/></span>
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Crawl</span>
-                          <span style={userFeatureValue}>{`${stats.match_crawl}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.match_crawl} duration={1.7}/></span>
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Crawled</span>
-                          <span style={userFeatureValue}>{`${stats.match_crawled}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.match_crawled} duration={2.1}/></span>
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>As defender</span>
-                          <span style={userFeatureValue}>{`${stats.match_as_defender}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.match_as_defender} duration={1.3}/></span>
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>As striker</span>
-                          <span style={userFeatureValue}>{`${stats.match_as_striker}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.match_as_striker} duration={1.4}/></span>
                         </ListItem>
                         <ListItem style={userFeatureTitle}>
                           <h5 style={{margin: '20px 20px 20px 0'}}>GOALS</h5>
@@ -348,15 +348,15 @@ class UpdateUser extends React.Component {
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>As defender</span>
-                          <span style={userFeatureValue}>{`${stats.match_goals_made_as_defender}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.match_goals_made_as_defender} duration={2.1}/></span>
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>As striker</span>
-                          <span style={userFeatureValue}>{`${stats.match_goals_made_as_striker}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.match_goals_made_as_striker} duration={1.6}/></span>
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Conceded as defender</span>
-                          <span style={userFeatureValue}>{`${stats.match_goals_conceded_as_defender}`}</span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.match_goals_conceded_as_defender} duration={1.45}/></span>
                         </ListItem>
                       </List>
                     </GridListTile>
