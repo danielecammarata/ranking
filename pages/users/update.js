@@ -272,10 +272,10 @@ class UpdateUser extends React.Component {
                     <GridListTile style={{display: 'block', height: 'initial', width: '100%'}}>
                       <List>
                         <ListItem style={userFeatureTitle}>
-                          <h5 style={{margin: '0 20px 20px 0'}}>SCORE</h5>
+                          <h5 style={{margin: '20px 20px 20px 0'}}>SCORE</h5>
                           <div style={userFeatureBarWrapper}>
-                            <div data-bar data-bar-value='40' style={userFeatureBar()}></div>
-                            <div data-bar data-bar-value='70' style={userFeatureBar('rgb(29, 199, 115)')}></div>
+                            <div data-bar data-bar-value={`${stats.points_max * 50 / 1200}`} style={userFeatureBar()}></div>
+                            <div data-bar data-bar-value={`${stats.points_min * 50 / 1200}`} style={userFeatureBar('rgb(29, 199, 115)')}></div>
                           </div>
                         </ListItem>
                         <ListItem style={userFeature}>
@@ -291,10 +291,10 @@ class UpdateUser extends React.Component {
                           <span style={userFeatureValue}>{`${stats.points_min}`}</span>
                         </ListItem>
                         <ListItem style={userFeatureTitle}>
-                          <h5 style={{marginRight: '20px'}}>TRENDS</h5>
+                          <h5 style={{margin: '20px 20px 20px 0'}}>TRENDS</h5>
                           <div style={userFeatureBarWrapper}>
-                            <div data-bar data-bar-value='40' style={userFeatureBar()}></div>
-                            <div data-bar data-bar-value='50' style={userFeatureBar('rgb(29, 199, 115)')}></div>
+                            <div data-bar data-bar-value={`${stats.max_win_streak}`} style={userFeatureBar()}></div>
+                            <div data-bar data-bar-value={`${stats.points_trend}`} style={userFeatureBar('rgb(29, 199, 115)')}></div>
                           </div>
                         </ListItem>
                         <ListItem style={userFeature}>
@@ -310,10 +310,10 @@ class UpdateUser extends React.Component {
                           <span style={userFeatureValue}>{`${stats.points_trend}`}</span>
                         </ListItem>
                         <ListItem style={userFeatureTitle}>
-                          <h5 style={{marginRight: '20px'}}>MATCHES</h5>
+                          <h5 style={{margin: '20px 20px 20px 0'}}>MATCHES</h5>
                           <div style={userFeatureBarWrapper}>
-                            <div data-bar data-bar-value='40' style={userFeatureBar()}></div>
-                            <div data-bar data-bar-value='60' style={userFeatureBar('rgb(29, 199, 115)')}></div>
+                            <div data-bar data-bar-value={`${stats.match_win / stats.match_played * 100}`} style={userFeatureBar()}></div>
+                            <div data-bar data-bar-value={`${(stats.match_played - stats.match_win) / stats.match_played * 100}`} style={userFeatureBar('rgb(29, 199, 115)')}></div>
                           </div>
                         </ListItem>
                         <ListItem style={userFeature}>
@@ -341,10 +341,9 @@ class UpdateUser extends React.Component {
                           <span style={userFeatureValue}>{`${stats.match_as_striker}`}</span>
                         </ListItem>
                         <ListItem style={userFeatureTitle}>
-                          <h5 style={{marginRight: '20px'}}>GOALS</h5>
+                          <h5 style={{margin: '20px 20px 20px 0'}}>GOALS</h5>
                           <div style={userFeatureBarWrapper}>
-                            <div data-bar data-bar-value='59' style={userFeatureBar()}></div>
-                            <div data-bar data-bar-value='68' style={userFeatureBar('rgb(29, 199, 115)')}></div>
+                            <div data-bar data-bar-value={`${stats.match_goals_made_as_defender / stats.match_goals_made_as_striker * 100}`} style={userFeatureBar()}></div>
                           </div>
                         </ListItem>
                         <ListItem style={userFeature}>
