@@ -51,11 +51,11 @@ const rowHeaderStyle = {
 }
 
 const cellStyle = {
-  whiteSpace: 'nowrap',
-  width: 30,
-  padding: 0,
   border: '1px solid #C6C6C6',
-  textAlign: 'center'
+  padding: '0 10px',
+  textAlign: 'center',
+  whiteSpace: 'nowrap',
+  minWidth: 46,
 }
 
 class IndexUser extends React.Component {
@@ -82,6 +82,25 @@ class IndexUser extends React.Component {
     this.setState({ users: localUserList, userDeleted: true })
   }
 
+  // animateValue = (id, start, end, duration) => {
+  //   let range = end - start
+  //   let current = start
+  //   let increment = end > start? 1 : -1
+  //   let stepTime = Math.abs(Math.floor(duration / range))
+  //   let obj = document.getElementsByClassName(id)
+  //   let timer = setInterval(function() {
+  //       current += increment
+  //       obj.innerHTML = current
+  //       if (current == end) {
+  //           clearInterval(timer)
+  //       }
+  //   }, stepTime)
+  // }
+
+  // componentDidMount() {
+  //   this.animateValue('score', 1200, 1000, 0.1)
+  // }
+
 // https://static.nexilia.it/bitchyf/2018/05/cristiano-malgioglio-danzando-800x500.jpg
 
   render() {
@@ -94,13 +113,15 @@ class IndexUser extends React.Component {
             <Link as={`/users/${user.slug}`} href={`/users/update/?slug=${user.slug}`}>
             <ListItem
               key={user.slug}
+              style={{overflow: 'hidden', padding: '14px 0'}}
               divider
             >
 
                 <Typography
                   style={{
-                    paddingRight: 15,
-                    fontSize: 22
+                    padding: '0px 6px',
+                    fontSize: 22,
+                    minWidth: '36px',
                   }}
                 >
                   {index + 1}
@@ -111,15 +132,19 @@ class IndexUser extends React.Component {
                     src={user.avatarUrl}
                     style={{
                       height: 80,
+                      margin: '0px 10px',
                       width: 80
                     }}
                   />
                 </ListItemAvatar>
                 <ListItemText
+                  style={{minWidth: '100px', padding: '0px 6px'}}
                   primary={user.name}
                   primaryTypographyProps={{
                     style: {
-                      fontSize: 15
+                      fontSize: 15,
+                      overflowX: 'hidden',
+                      textOverflow: 'ellipsis',
                     }
                   }}
                   secondary={user.points}
@@ -162,7 +187,6 @@ class IndexUser extends React.Component {
       </Layout>
     )
   }
-
 
 }
 export default IndexUser

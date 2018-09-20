@@ -2,8 +2,23 @@ import React from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
 import Grid from '@material-ui/core/Grid'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardMedia from '@material-ui/core/CardMedia'
+import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
+import Avatar from '@material-ui/core/Avatar'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import IconButton from '@material-ui/core/IconButton'
+import Collapse from '@material-ui/core/Collapse'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import Popper from '@material-ui/core/Popper'
+import Fade from '@material-ui/core/Fade'
+import Paper from '@material-ui/core/Paper'
 import { SoccerIcon } from '../../components/IconComponents'
 import ListIcon from '@material-ui/icons/List'
+import classnames from 'classnames'
+import { withStyles } from '@material-ui/core/styles'
 
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
@@ -16,26 +31,54 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 
-
 import Layout from '../../components/Layout.js'
 import { getUsersBySlug, updateUser } from '../../lib/api/users'
 import { styleForm, styleTextField, styleRaisedButton } from '../../lib/SharedStyles'
-import { formArea, formButton, formButtonWrapper, formText, formTextSmall, userAvatar, userAvatarImg, userFeature, userFeatureLabel, userFeatureTitle, userFeatureValue } from '../../lib/userPage'
+import { formArea, formButton, formButtonWrapper, formText, formTextSmall, paperWrapper, popperWrapper, userAvatar, userFeature, userFeatureBar, userFeatureBarWrapper, userFeatureLabel, userFeatureTitle, userFeatureValue, userFirstChar } from '../../lib/userPage'
 import { Typography } from '@material-ui/core';
 
-const listItemStyle = {
-  fontSize: '.8rem',
-  '&.span': {
-    fontSize: '.8rem',
-  }
-}
+const styles = theme => ({
+  cardTitle: {
+    fontSize: '189x',
+    fontWeight: '400',
+    lineHeight: '30px',
+    margin: '0px',
+  },
+  cardSubheader: {
+    color: 'rgb(25, 118, 210)',
+    fontSize: '15px',
+    fontWeight: '700',
+  },
+  expand: {
+    borderRadius: '0px',
+    transform: 'rotate(0deg)',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.longest,
+    }),
+    marginLeft: 'auto',
+    [theme.breakpoints.up('sm')]: {
+      marginRight: -8,
+    },
+    width: '100%',
+  },
+  expandOpen: {
+    transform: 'rotateX(180deg)',
+  },
+  avatar: {
+    backgroundColor: 'red',
+  },
+})
 
 class UpdateUser extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       name: props.user.name,
-      avatarUrl: props.user.avatarUrl
+      avatarUrl: props.user.avatarUrl,
+      expandend: false,
+      anchorEl: null,
+      open: false,
+      placement: null
     }
   }
 
@@ -47,6 +90,20 @@ class UpdateUser extends React.Component {
     return {
       user: {}
     }
+  }
+
+  componentDidUpdate() {
+    let el = document.querySelectorAll('[data-bar]')
+    let barValue
+
+    setTimeout(function(){
+      for(let i = 0; i < el.length; i++) {
+        console.log(el[i])
+        barValue = el[i].getAttribute('data-bar-value')
+        el[i].style.maxWidth = `${barValue}%`
+        el[i].style.opacity = '0.8'
+      }
+    }, 300)
   }
 
   onSubmit = async (event) => {
@@ -67,9 +124,23 @@ class UpdateUser extends React.Component {
     })
   }
 
+  handleEdit = placement => event => {
+    const { currentTarget } = event;
+    this.setState(state => ({
+      anchorEl: currentTarget,
+      open: state.placement !== placement || !state.open,
+      placement,
+    }));
+  }
+
+  handleExpandClick = () => {
+    this.setState(state => ({ expanded: !state.expanded }))
+  }
+
   render() {
-    const { name, avatarUrl } = this.state
+    const { name, avatarUrl, anchorEl, open, placement, expanded } = this.state
     const { points, stats } = this.props.user
+    const { classes } = this.props
     return (
       <Layout>
         <Grid
@@ -81,7 +152,7 @@ class UpdateUser extends React.Component {
         >
           <Grid container justify="center" alignItems="center" spacing={24}>
             <Grid item xs={24} sm={6}>
-              <Link href="/matches/new">
+              <Link href="/matches/fast">
                 <Button
                   variant="extendedFab"
                   aria-label="New Match"
@@ -114,139 +185,189 @@ class UpdateUser extends React.Component {
         </Grid>
         <Divider />
         <GridList cols={3}>
-          <GridListTile
-            cols={3}
-            rows={1}
-            style={{ height: 'auto', width: '100%' }}
-          >
-            <ListSubheader component="div">
-
-              <form
-                autoComplete="off"
-                style={styleForm}
-                onSubmit={this.onSubmit}
-              >
-                <div style={formArea}>
-                  <TextField
-                    style={formText}
-                    id="name"
-                    label="Name"
-                    value={name}
-                    onChange={this.handleChange('name')}
-                    margin="normal"
-                    required
-                  />
-                  <TextField
-                    style={formTextSmall}
-                    id="avatarUrl"
-                    label="Avatar URL"
-                    value={avatarUrl}
-                    onChange={this.handleChange('avatarUrl')}
-                    margin="normal"
-                    required
-                  />
-                </div>
-                <div style={formButtonWrapper}>
-                  <Button
-                    style={formButton}
-                    variant="contained"
-                    type="submit"
-                  >
-                    Modify
-                  </Button>
-                </div>
-              </form>
-
-              {/* <Typography
-                variant="display2"
-              >
-                {name}
-              </Typography> */}
-            </ListSubheader>
-          </GridListTile>
           <GridListTile style={userAvatar}>
-            <img
-              alt={name}
-              style={userAvatarImg}
-              src={avatarUrl}
-            />
+              <Card className={classes.card}>
+                <CardHeader
+                  avatar={
+                    <Avatar aria-label="Recipe" style={userFirstChar}>
+                      {`${name[0]}`}
+                    </Avatar>
+                  }
+                  action={
+                    <IconButton>
+                      <MoreVertIcon onClick={this.handleEdit('bottom-end')} />
+                      <Popper open={open} anchorEl={anchorEl} placement={placement} style={popperWrapper} transition>
+                        {({ TransitionProps }) => (
+                          <Fade {...TransitionProps} timeout={350}>
+                            <Paper style={paperWrapper}>
+                              <form
+                                autoComplete="off"
+                                style={styleForm}
+                                onSubmit={this.onSubmit}
+                              >
+                                <div style={formArea}>
+                                  <TextField
+                                    style={formText}
+                                    id="name"
+                                    label="Name"
+                                    value={name}
+                                    onChange={this.handleChange('name')}
+                                    margin="normal"
+                                    required
+                                  />
+                                  <TextField
+                                    style={formTextSmall}
+                                    id="avatarUrl"
+                                    label="Avatar URL"
+                                    value={avatarUrl}
+                                    onChange={this.handleChange('avatarUrl')}
+                                    margin="normal"
+                                    required
+                                  />
+                                </div>
+                                <div style={formButtonWrapper}>
+                                  <Button
+                                    style={formButton}
+                                    variant="contained"
+                                    type="submit"
+                                  >
+                                    EDIT
+                                  </Button>
+                                </div>
+                              </form>
+                            </Paper>
+                          </Fade>
+                        )}
+                      </Popper>
+                    </IconButton>
+                  }
+                  title={<h3 className={classes.cardTitle}>{name}</h3>}
+                  subheader={<span className={classes.cardSubheader}>{points}</span>}
+                />
+                <CardMedia
+                  style = {{height: '350px'}}
+                  image={avatarUrl}
+                  title="Contemplative Reptile"
+                />
+                <CardContent>
+                  <Typography component="p">
+                  Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  </Typography>
+                </CardContent>
+                <CardActions disableActionSpacing>
+                  <IconButton
+                    className={classnames(classes.expand, {
+                      [classes.expandOpen]: this.state.expanded,
+                    })}
+                    onClick={this.handleExpandClick}
+                    aria-expanded={this.state.expanded}
+                    aria-label="Show more"
+                    style={{paddingTop: '0px'}}
+                  >
+                    <ExpandMoreIcon />
+                  </IconButton>
+                </CardActions>
+                <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+                  <CardContent>
+                    <GridListTile style={{display: 'block', height: 'initial', width: '100%'}}>
+                      <List>
+                        <ListItem style={userFeatureTitle}>
+                          <h5 style={{margin: '0 20px 20px 0'}}>SCORE</h5>
+                          <div style={userFeatureBarWrapper}>
+                            <div data-bar data-bar-value='40' style={userFeatureBar()}></div>
+                            <div data-bar data-bar-value='70' style={userFeatureBar('rgb(29, 199, 115)')}></div>
+                          </div>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>Points</span>
+                          <span style={userFeatureValue}>{`${points}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>Highest points</span>
+                          <span style={userFeatureValue}>{`${stats.points_max}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>Lowest points</span>
+                          <span style={userFeatureValue}>{`${stats.points_min}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeatureTitle}>
+                          <h5 style={{marginRight: '20px'}}>TRENDS</h5>
+                          <div style={userFeatureBarWrapper}>
+                            <div data-bar data-bar-value='40' style={userFeatureBar()}></div>
+                            <div data-bar data-bar-value='50' style={userFeatureBar('rgb(29, 199, 115)')}></div>
+                          </div>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>Win streak</span>
+                          <span style={userFeatureValue}>{`${stats.win_streak}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>Longest streak </span>
+                          <span style={userFeatureValue}>{`${stats.max_win_streak}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>Trend</span>
+                          <span style={userFeatureValue}>{`${stats.points_trend}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeatureTitle}>
+                          <h5 style={{marginRight: '20px'}}>MATCHES</h5>
+                          <div style={userFeatureBarWrapper}>
+                            <div data-bar data-bar-value='40' style={userFeatureBar()}></div>
+                            <div data-bar data-bar-value='60' style={userFeatureBar('rgb(29, 199, 115)')}></div>
+                          </div>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>Played</span>
+                          <span style={userFeatureValue}>{`${stats.match_played}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>Winned</span>
+                          <span style={userFeatureValue}>{`${stats.match_win}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>Crawl</span>
+                          <span style={userFeatureValue}>{`${stats.match_crawl}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>Crawled</span>
+                          <span style={userFeatureValue}>{`${stats.match_crawled}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>As defender</span>
+                          <span style={userFeatureValue}>{`${stats.match_as_defender}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>As striker</span>
+                          <span style={userFeatureValue}>{`${stats.match_as_striker}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeatureTitle}>
+                          <h5 style={{marginRight: '20px'}}>GOALS</h5>
+                          <div style={userFeatureBarWrapper}>
+                            <div data-bar data-bar-value='59' style={userFeatureBar()}></div>
+                            <div data-bar data-bar-value='68' style={userFeatureBar('rgb(29, 199, 115)')}></div>
+                          </div>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>As defender</span>
+                          <span style={userFeatureValue}>{`${stats.match_goals_made_as_defender}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>As striker</span>
+                          <span style={userFeatureValue}>{`${stats.match_goals_made_as_striker}`}</span>
+                        </ListItem>
+                        <ListItem style={userFeature}>
+                          <span style={userFeatureLabel}>Conceded as striker</span>
+                          <span style={userFeatureValue}>{`${stats.match_goals_conceded_as_defender}`}</span>
+                        </ListItem>
+                      </List>
+                    </GridListTile>
+                  </CardContent>
+                </Collapse>
+              </Card>
+
+
           </GridListTile>
-          <GridListTile style={{display: 'block', height: 'initial', width: '100%'}}>
-            <List>
-              <ListItem style={userFeatureTitle}>
-                <h5>SCORE</h5>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>Points</span>
-                <span style={userFeatureValue}>{`${points}`}</span>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>Highest points</span>
-                <span style={userFeatureValue}>{`${stats.points_max}`}</span>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>Lowest points</span>
-                <span style={userFeatureValue}>{`${stats.points_min}`}</span>
-              </ListItem>
-              <ListItem style={userFeatureTitle}>
-                <h5>TRENDS</h5>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>Win streak</span>
-                <span style={userFeatureValue}>{`${stats.win_streak}`}</span>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>Longest streak </span>
-                <span style={userFeatureValue}>{`${stats.max_win_streak}`}</span>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>Trend</span>
-                <span style={userFeatureValue}>{`${stats.points_trend}`}</span>
-              </ListItem>
-              <ListItem style={userFeatureTitle}>
-                <h5>MATCHES</h5>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>Played</span>
-                <span style={userFeatureValue}>{`${stats.match_played}`}</span>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>Winned</span>
-                <span style={userFeatureValue}>{`${stats.match_win}`}</span>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>Crawl</span>
-                <span style={userFeatureValue}>{`${stats.match_crawl}`}</span>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>Crawled</span>
-                <span style={userFeatureValue}>{`${stats.match_crawled}`}</span>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>As defender</span>
-                <span style={userFeatureValue}>{`${stats.match_as_defender}`}</span>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>As striker</span>
-                <span style={userFeatureValue}>{`${stats.match_as_striker}`}</span>
-              </ListItem>
-              <ListItem style={userFeatureTitle}>
-                <h5>GOALS</h5>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>As defender</span>
-                <span style={userFeatureValue}>{`${stats.match_goals_made_as_defender}`}</span>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>As striker</span>
-                <span style={userFeatureValue}>{`${stats.match_goals_made_as_striker}`}</span>
-              </ListItem>
-              <ListItem style={userFeature}>
-                <span style={userFeatureLabel}>Conceded as striker</span>
-                <span style={userFeatureValue}>{`${stats.match_goals_conceded_as_defender}`}</span>
-              </ListItem>
-            </List>
-          </GridListTile>
+
         </GridList>
       </Layout>
     )
@@ -266,4 +387,4 @@ const StatsListItem = ({text}) => {
   )
 }
 
-export default UpdateUser
+export default withStyles(styles)(UpdateUser)
