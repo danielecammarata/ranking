@@ -356,7 +356,7 @@ class UpdateUser extends React.Component {
                           <span style={userFeatureValue}>{`${stats.match_goals_made_as_striker}`}</span>
                         </ListItem>
                         <ListItem style={userFeature}>
-                          <span style={userFeatureLabel}>Conceded as striker</span>
+                          <span style={userFeatureLabel}>Conceded as defender</span>
                           <span style={userFeatureValue}>{`${stats.match_goals_conceded_as_defender}`}</span>
                         </ListItem>
                       </List>
