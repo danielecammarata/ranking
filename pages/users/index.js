@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Divider from '@material-ui/core/Divider'
 import Typography from '@material-ui/core/Typography'
+import CountUp from 'react-countup'
 
 import Layout from '../../components/Layout.js'
 import { getUsersList, deleteUser } from '../../lib/api/users'
@@ -82,25 +83,6 @@ class IndexUser extends React.Component {
     this.setState({ users: localUserList, userDeleted: true })
   }
 
-  // animateValue = (id, start, end, duration) => {
-  //   let range = end - start
-  //   let current = start
-  //   let increment = end > start? 1 : -1
-  //   let stepTime = Math.abs(Math.floor(duration / range))
-  //   let obj = document.getElementsByClassName(id)
-  //   let timer = setInterval(function() {
-  //       current += increment
-  //       obj.innerHTML = current
-  //       if (current == end) {
-  //           clearInterval(timer)
-  //       }
-  //   }, stepTime)
-  // }
-
-  // componentDidMount() {
-  //   this.animateValue('score', 1200, 1000, 0.1)
-  // }
-
 // https://static.nexilia.it/bitchyf/2018/05/cristiano-malgioglio-danzando-800x500.jpg
 
   render() {
@@ -147,7 +129,7 @@ class IndexUser extends React.Component {
                       textOverflow: 'ellipsis',
                     }
                   }}
-                  secondary={user.points}
+                  secondary={<CountUp start={1200} end={user.points} duration={3}/>}
                   secondaryTypographyProps={{
                     style: {
                       fontSize: 18,
@@ -167,10 +149,10 @@ class IndexUser extends React.Component {
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell style={cellStyle}>{user.stats.match_played}</TableCell>
-                      <TableCell style={cellStyle}>{user.stats.match_win}</TableCell>
-                      <TableCell style={cellStyle}>{user.stats.match_goals_made}</TableCell>
-                      <TableCell style={cellStyle}>{user.stats.match_goals_conceded}</TableCell>
+                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_played} duration={2.00}/></TableCell>
+                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_win} duration={2.20}/></TableCell>
+                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_made} duration={3.00}/></TableCell>
+                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_conceded} duration={1.80}/></TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
