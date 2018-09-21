@@ -30,7 +30,7 @@ import red from '@material-ui/core/colors/red'
 
 const elementPerPage = 6
 
-const styles = {
+const styles = theme => ({
   chipsLabel: {
     display: 'inline-block',
     overflow: 'hidden',
@@ -39,16 +39,30 @@ const styles = {
   winBadge: {
     backgroundColor: green[500],
     fontSize: '13px',
-    fontWeight: '700'
+    fontWeight: '700',
   },
   loseBadge: {
     backgroundColor: red[500],
     colorPrimary: red[500],
     fontSize: '13px',
     fontWeight: '700',
-    left: '30px'
+    left: '30px',
+  },
+  styleTeamTile: {
+    width:'calc(100% - 60px) !important' ,
+    [theme.breakpoints.up('sm')]: {
+      width:'calc(52% - 70px) !important',
+    }
+  },
+  styleTeamTileLast: {
+    width:'calc(100% - 60px) !important' ,
+    [theme.breakpoints.up('sm')]: {
+      width:'calc(52% - 70px) !important',
+      order: '2',
+    }
   }
-}
+})
+
 class Index extends React.Component {
   constructor(props) {
     super(props)
@@ -139,7 +153,7 @@ class Index extends React.Component {
         {matches.map(match => (
           <GridListTile style={styleMatchTile} key={match.slug}>
             <GridList style={{lineHeight: '13px'}}>
-              <GridListTile style={styleTeamTile('left')}>
+              <GridListTile style={styleTeamTile('left')} className={this.props.classes.styleTeamTile}>
                 <Chip
                   avatar={<Avatar src={match.teamHome.defender.avatarUrl} />}
                   label={match.teamHome.defender.name}
@@ -168,7 +182,7 @@ class Index extends React.Component {
                 <Badge color="secondary" badgeContent={<small>{match.teamHome.defScore}</small>} style={stylePlayerScore('defender','home')}> </Badge>
                 <Badge color="secondary" badgeContent={<small>{match.teamHome.strScore}</small>} style={stylePlayerScore('striker','home')}> </Badge>
               </GridListTile>
-              <GridListTile style={styleTeamTile('right')}>
+              <GridListTile style={styleTeamTile('right')} className={this.props.classes.styleTeamTileLast}>
                 <Chip
                   avatar={<Avatar src={match.teamAway.defender.avatarUrl} />}
                   classes={{label: this.props.classes.chipsLabel}}
