@@ -16,9 +16,10 @@ const styles = {
     background: `url(${getRootUrl()}/img/logo.png) no-repeat center center`,
     backgroundSize: 'cover',
     display: 'inline-block',
-    height: '100%',
+    height: '65px',
     textDecoration: 'none',
     flexBasis: 200,
+    marginTop: '12px',
   },
   menuButton: {
     color: indigo[700],

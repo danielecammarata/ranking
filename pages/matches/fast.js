@@ -8,6 +8,7 @@ import Layout from '../../components/Layout.js'
 import { addNewMatch } from '../../lib/api/match'
 import { getUsersList } from '../../lib/api/users'
 import ReactAudioPlayer from 'react-audio-player'
+import { withStyles } from '@material-ui/core/styles'
 
 import {
   styleMatchScore,
@@ -24,6 +25,22 @@ import Grid from '@material-ui/core/Grid'
 import { Typography, Divider, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, ExpansionPanelActions, Badge } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
+
+const styles = theme => ({
+  styleTeamTile: {
+    width:'calc(100% - 60px) !important',
+    [theme.breakpoints.up('sm')]: {
+      width:'calc(50% - 35px) !important',
+    }
+  },
+
+  styleButtonGo: {
+    margin: '40px 0 -40px',
+    [theme.breakpoints.up('sm')]: {
+      margin:'0',
+    }
+  },
+})
 
 const defaultPlayer = {
   _id: 'default',
@@ -367,7 +384,7 @@ class AddMatch extends React.Component {
         <GridList style={{margin: '0 auto', maxWidth: '500px'}}>
           <GridListTile style={styleMatchTile}>
             <GridList style={{lineHeight: '15px'}}>
-              <GridListTile style={styleTeamTile('left')}>
+              <GridListTile style={styleTeamTile('left')} className={this.props.classes.styleTeamTile}>
                 <Chip
                   avatar={<Avatar src={this.state.homeDefender.avatarUrl} />}
                   label={this.state.homeDefender.name}
@@ -384,11 +401,11 @@ class AddMatch extends React.Component {
 
                 {this.state.matchView === matchViewState.PLAYER_SELECTION &&
                   <GridListTile
+                    className={this.props.classes.styleButtonGo}
                     style={{
                       height: 75,
+                      paddingTop: 10,
                       width: 60,
-                      margin: '40px 0 -40px',
-                      paddingTop: 10
                     }}
                   >
                     <Avatar
@@ -439,7 +456,7 @@ class AddMatch extends React.Component {
                   </GridListTile>
                 }
 
-              <GridListTile style={styleTeamTile('right')}>
+              <GridListTile style={styleTeamTile('right')} className={this.props.classes.styleTeamTile}>
                 <Chip
                   avatar={<Avatar src={this.state.awayDefender.avatarUrl} />}
                   label={this.state.awayDefender.name}
@@ -732,4 +749,4 @@ class PlayerChip extends React.Component {
   }
 }
 
-export default AddMatch
+export default withStyles(styles)(AddMatch)
