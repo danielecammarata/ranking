@@ -51,13 +51,13 @@ const styles = theme => ({
   styleTeamTile: {
     width:'calc(100% - 60px) !important' ,
     [theme.breakpoints.up('sm')]: {
-      width:'calc(52% - 70px) !important',
+      width:'calc(50% - 60px) !important',
     }
   },
   styleTeamTileLast: {
     width:'calc(100% - 60px) !important' ,
     [theme.breakpoints.up('sm')]: {
-      width:'calc(52% - 70px) !important',
+      width:'calc(50% - 60px) !important',
       order: '2',
     }
   }
@@ -270,7 +270,7 @@ class Index extends React.Component {
           </Grid>
         </Grid>
         {/* New grouped matches list */}
-        <GridList style={{margin: '0 auto', maxWidth: '500px'}}>
+        <GridList style={{margin: '0 auto', maxWidth: '768px'}}>
           {Object.keys(matchesObj).map(matchKey => (
             this.matchTile(matchKey,  matchesObj[matchKey].matches)
           ))}
