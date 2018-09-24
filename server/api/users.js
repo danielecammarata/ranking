@@ -66,13 +66,15 @@ router.get('/get', async (req, res) => {
 })
 
 router.post('/add', (req, res) => {
-  const { name, avatarUrl } = req.body
+  const { name, avatarUrl, slackID, description } = req.body
   const slug = User.generateSlug()
   const userData = {
     name,
     slug,
     points: 1200,
     avatarUrl,
+    slackID,
+    description,
     active: true
   }
   const newUser = new User(userData)
@@ -83,9 +85,9 @@ router.post('/add', (req, res) => {
 })
 
 router.post('/update', (req, res) => {
-  const { slug, name, avatarUrl } = req.body
+  const { slug, name, avatarUrl, slackID, description } = req.body
   const query = { slug: slug }
-  User.findOneAndUpdate(query, { name, avatarUrl }, {}, function (err, rs) {
+  User.findOneAndUpdate(query, { name, avatarUrl, slackID, description }, {}, function (err, rs) {
     if (err) return res.json({ error: err.message || err.toString() })
     res.json(rs)
   })

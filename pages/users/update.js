@@ -76,6 +76,8 @@ class UpdateUser extends React.Component {
     this.state = {
       name: props.user.name,
       avatarUrl: props.user.avatarUrl,
+      description: props.user.description,
+      slackID: props.user.slackID,
       expandend: false,
       anchorEl: null,
       open: false,
@@ -112,7 +114,9 @@ class UpdateUser extends React.Component {
     const users = await updateUser({
       slug: this.props.user.slug,
       name: this.state.name,
-      avatarUrl: this.state.avatarUrl
+      avatarUrl: this.state.avatarUrl,
+      description: this.state.description,
+      slackID: this.state.slackID,
     })
 
     Router.push('/users')
@@ -138,42 +142,19 @@ class UpdateUser extends React.Component {
   }
 
   render() {
-    const { name, avatarUrl, anchorEl, open, placement, expanded } = this.state
+    const { name, avatarUrl, description, slackID, anchorEl, open, placement, expanded } = this.state
     const { points, stats } = this.props.user
     const { classes } = this.props
     return (
       <Layout>
-        <Grid
-          container
-          spacing={16}
-          style={{
-            marginBottom: 20
-          }}
-        >
-          <Grid container justify="center" alignItems="center" spacing={24}>
-            <Grid item xs={24} sm={6}>
-              <Link href="/matches/fast">
-                <Button
-                  variant="extendedFab"
-                  aria-label="New Match"
-                  style={{
-                    width: 200,
-                    height: 30
-                  }}
-                >
-                  <SoccerIcon />
-                  New Match
-                </Button>
-              </Link>
-            </Grid>
+          <Grid container justify="center" alignItems="center" spacing={24} style={{marginBottom: '20px'}}>
             <Grid item xs={24} sm={6}>
               <Link href="/users">
                 <Button
                   variant="extendedFab"
                   aria-label="Ranking"
                   style={{
-                    width: 200,
-                    height: 30
+                    width: 200
                   }}
                 >
                   <ListIcon/>
@@ -181,8 +162,21 @@ class UpdateUser extends React.Component {
                 </Button>
               </Link>
             </Grid>
+            <Grid item xs={24} sm={0}>
+              <Link href="/matches/fast">
+                <Button
+                  variant="extendedFab"
+                  aria-label="Ranking"
+                  style={{
+                    width: 200
+                  }}
+                >
+                  <SoccerIcon/>
+                  New Match (beta)
+                </Button>
+              </Link>
+            </Grid>
           </Grid>
-        </Grid>
         <Divider />
         <GridList cols={3}>
           <GridListTile style={userAvatar}>
@@ -216,13 +210,29 @@ class UpdateUser extends React.Component {
                                     required
                                   />
                                   <TextField
-                                    style={formTextSmall}
+                                    style={formText}
                                     id="avatarUrl"
                                     label="Avatar URL"
                                     value={avatarUrl}
                                     onChange={this.handleChange('avatarUrl')}
                                     margin="normal"
                                     required
+                                  />
+                                  <TextField
+                                    style={formText}
+                                    id="slackID"
+                                    label="Account Slack (e.g. <@slackID>)"
+                                    value={slackID}
+                                    onChange={this.handleChange('slackID')}
+                                    margin="normal"
+                                  />
+                                  <TextField
+                                    style={formText}
+                                    id="description"
+                                    label="Description"
+                                    value={description}
+                                    onChange={this.handleChange('description')}
+                                    margin="normal"
                                   />
                                 </div>
                                 <div style={formButtonWrapper}>
@@ -251,7 +261,7 @@ class UpdateUser extends React.Component {
                 />
                 <CardContent>
                   <Typography component="p">
-                  Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  {description}
                   </Typography>
                 </CardContent>
                 <CardActions disableActionSpacing>
@@ -288,7 +298,7 @@ class UpdateUser extends React.Component {
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Lowest points</span>
-                          <span style={userFeatureValue}><CountUp start={1200} end={stats.points_min} duration={1.5}/></span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.points_min} duration={2.5}/></span>
                         </ListItem>
                         <ListItem style={userFeatureTitle}>
                           <h5 style={{margin: '20px 20px 20px 0'}}>TRENDS</h5>

@@ -28,18 +28,24 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 const styles = theme => ({
   styleTeamTile: {
-    width:'calc(100% - 60px) !important',
+    width: 'calc(100% - 60px) !important',
     [theme.breakpoints.up('sm')]: {
-      width:'calc(50% - 35px) !important',
+      width: 'calc(50% - 60px) !important',
     }
   },
 
   styleButtonGo: {
     margin: '40px 0 -40px',
     [theme.breakpoints.up('sm')]: {
-      margin:'0',
+      margin: '0',
     }
   },
+
+  styleAwayTeam: {
+    [theme.breakpoints.up('sm')]: {
+      order: '2',
+    }
+  }
 })
 
 const defaultPlayer = {
@@ -424,8 +430,8 @@ class AddMatch extends React.Component {
                     style={{
                       height: 'auto',
                       overflow: 'visible',
-                      padding: '10px 8px',
-                      width: 80,
+                      padding: '10px 0px',
+                      width: 60,
                     }}
                   >
                     <Avatar
@@ -456,7 +462,7 @@ class AddMatch extends React.Component {
                   </GridListTile>
                 }
 
-              <GridListTile style={styleTeamTile('right')} className={this.props.classes.styleTeamTile}>
+              <GridListTile style={styleTeamTile('right')} className={this.props.classes.styleTeamTile + ' ' + this.props.classes.styleAwayTeam }>
                 <Chip
                   avatar={<Avatar src={this.state.awayDefender.avatarUrl} />}
                   label={this.state.awayDefender.name}
@@ -475,7 +481,7 @@ class AddMatch extends React.Component {
                       height: 'auto',
                       overflow: 'visible',
                       paddingTop: 10,
-                      width: 80,
+                      width: 60,
                     }}
                   >
                     <Avatar
@@ -483,7 +489,7 @@ class AddMatch extends React.Component {
                         backgroundColor: '#01ad01',
                         fontSize: '1em',
                         height: 45,
-                        margin: '4px 10px',
+                        margin: '4px 0px',
                         overflow: 'visible',
                         padding: '10px 0',
                         width: 45,
@@ -491,14 +497,14 @@ class AddMatch extends React.Component {
                     >{`${this.state.awayScore}`}</Avatar>
                     <Badge color="secondary" badgeContent={<small>{this.state.awayScoreDefender}</small>}
                       style={{
-                        left: 55,
+                        right: 11,
                         position: 'absolute',
                         top: 11,
                         zIndex: 1,
                     }}/>
                     <Badge color="secondary" badgeContent={<small>{this.state.awayScoreStriker}</small>}
                       style={{
-                        left: 55,
+                        right: 11,
                         position: 'absolute',
                         top: 42,
                         zIndex: 1,
@@ -546,7 +552,7 @@ class AddMatch extends React.Component {
                       >{item}</Button>
                     )}
                     <Button
-                      style={{width: '96%', margin: '3px'}}
+                      style={{width: 'calc(100% - 9px)', margin: '3px'}}
                       variant="contained"
                       onClick={this.onScoreSelectionAddOne.bind(this, this.state.homeScore, 'home')}
                     >+1</Button>
@@ -561,7 +567,7 @@ class AddMatch extends React.Component {
                       >{item}</Button>
                     )}
                     <Button
-                      style={{width: '96%', margin: '3px'}}
+                      style={{width: 'calc(100% - 9px)', margin: '3px'}}
                       variant="contained"
                       onClick={this.onScoreSelectionAddOne.bind(this, this.state.awayScore, 'away')}
                     >+1</Button>
@@ -595,7 +601,7 @@ class AddMatch extends React.Component {
                       >{item}</Button>
                     )}
                     <Button
-                      style={{width: '96%', margin: '3px'}}
+                      style={{width: 'calc(100% - 9px)', margin: '3px'}}
                       variant="contained"
                       onClick={this.onScorePlayerSelectionAddOne.bind(this, this.state.homeScoreDefender, 'home', 'Defender')}
                     >+1</Button>
@@ -610,7 +616,7 @@ class AddMatch extends React.Component {
                       >{item}</Button>
                     )}
                     <Button
-                      style={{width: '96%', margin: '3px'}}
+                      style={{width: 'calc(100% - 9px)', margin: '3px'}}
                       variant="contained"
                       onClick={this.onScorePlayerSelectionAddOne.bind(this, this.state.homeScoreStriker, 'home', 'Striker')}
                     >+1</Button>
@@ -627,7 +633,7 @@ class AddMatch extends React.Component {
                       >{item}</Button>
                     )}
                     <Button
-                      style={{width: '96%', margin: '3px'}}
+                      style={{width: 'calc(100% - 9px)', margin: '3px'}}
                       variant="contained"
                       onClick={this.onScorePlayerSelectionAddOne.bind(this, this.state.awayScoreDefender, 'away', 'Defender')}
                     >+1</Button>
@@ -642,7 +648,7 @@ class AddMatch extends React.Component {
                       >{item}</Button>
                     )}
                     <Button
-                      style={{width: '96%', margin: '3px'}}
+                      style={{width: 'calc(100% - 9px)', margin: '3px'}}
                       variant="contained"
                       onClick={this.onScorePlayerSelectionAddOne.bind(this, this.state.awayScoreStriker, 'away', 'Striker')}
                     >+1</Button>
