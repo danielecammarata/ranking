@@ -188,65 +188,6 @@ router.post('/', async (req, res) => {
 //     process.env.SLACK_TOKEN,
 //     process.env.SLACK_CHANNEL_ID
 //   )
-  
-  
-//   // const { teamAway, teamHome, badges } = req.body
-
-//   // const slug = Match.generateSlug()
-//   // const createdAt = new Date().toISOString()
-
-//   // const rank = rankify.calculate({
-//   //   teamHome,
-//   //   teamAway
-//   // })
-//   // const matchData = {
-//   //   teamHome,
-//   //   teamAway,
-//   //   badges,
-//   //   slug,
-//   //   createdAt,
-//   //   difference: rank.difference
-//   // }
-
-//   // const newMatch = new Match(matchData)
-//   // newMatch.save(function (err) {
-//   //   if (err) return res.json({ error: err.message || err.toString() })
-
-//   //   const scoreHD = {
-//   //     id: teamHome.defender._id,
-//   //     score: rank.homeDefense,
-//   //     stats: calculateStats(teamHome.defender, true, rank.hasHomeWin, teamHome, teamAway, rank.difference, rank.homeDefense),
-//   //     res
-//   //   }
-//   //   updateUser(scoreHD)
-
-//   //   const scoreHS = {
-//   //     id: teamHome.striker._id,
-//   //     score: rank.homeStriker,
-//   //     stats: calculateStats(teamHome.striker, false, rank.hasHomeWin, teamHome, teamAway, rank.difference, rank.homeStriker),
-//   //     res
-//   //   }
-//   //   updateUser(scoreHS)
-
-//   //   const scoreAD = {
-//   //     id: teamAway.defender._id,
-//   //     score: rank.awayDefense,
-//   //     stats: calculateStats(teamAway.defender, true, !rank.hasHomeWin, teamAway, teamHome, rank.difference, rank.awayDefense),
-//   //     res
-//   //   }
-//   //   updateUser(scoreAD)
-
-//   //   const scoreAS = {
-//   //     id: teamAway.striker._id,
-//   //     score: rank.awayStriker,
-//   //     stats: calculateStats(teamAway.striker, false, !rank.hasHomeWin, teamAway, teamHome, rank.difference, rank.awayStriker),
-//   //     res
-//   //   }
-//   //   updateUser(scoreAS)
-
-//   //   res.json(newMatch)
-//   // })
-// })
 
 const calculateScoreAndBadges = (homeScore, awayScore) => {
   const scoreAndBadges = {
