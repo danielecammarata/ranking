@@ -13,6 +13,7 @@ const mongoSchema = new Schema({
   points: Number,
   points2: Number,
   avatarUrl: String,
+  slackID: String,
   active: Boolean,
   stats: {
     win_streak: Number, // current matches winned in row
@@ -49,6 +50,7 @@ class UserClass {
       'name',
       'points',
       'avatarUrl',
+      'slackID',
       'slug',
       'active'
     ]
