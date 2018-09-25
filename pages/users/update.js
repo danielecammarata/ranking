@@ -3,6 +3,11 @@ import Router from 'next/router'
 import Link from 'next/link'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormControl from '@material-ui/core/FormControl'
+import FormLabel from '@material-ui/core/FormLabel'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
@@ -68,6 +73,42 @@ const styles = theme => ({
   avatar: {
     backgroundColor: 'red',
   },
+  radioLegend: {
+    color: '#000',
+    fontSize: '15px',
+    marginBottom: '10px',
+    marginTop: '30px',
+    [theme.breakpoints.up('sm')]: {
+      float: 'left',
+      marginTop: '18px',
+      width: 'calc(100% - 280px)',
+    }
+  },
+  radioGroup: {
+    [theme.breakpoints.up('sm')]: {
+      display: 'inline',
+    }
+  },
+  radioLabel: {
+    maxHeight: '36px',
+    [theme.breakpoints.up('sm')]: {
+      float: 'left',
+      maxWidth: '33%',
+    },
+  },
+  smallTextField: {
+    [theme.breakpoints.up('sm')]: {
+      float: 'left',
+      marginRight: '50px',
+      maxWidth: '230px',
+    }
+  },
+  test: {
+    '& > div > div': {
+      maxHeight: '100px',
+      overflow: 'auto',
+    }
+  }
 })
 
 class UpdateUser extends React.Component {
@@ -76,6 +117,9 @@ class UpdateUser extends React.Component {
     this.state = {
       name: props.user.name,
       avatarUrl: props.user.avatarUrl,
+      description: props.user.description,
+      slackID: props.user.slackID,
+      role: props.user.role,
       expandend: false,
       anchorEl: null,
       open: false,
@@ -112,7 +156,10 @@ class UpdateUser extends React.Component {
     const users = await updateUser({
       slug: this.props.user.slug,
       name: this.state.name,
-      avatarUrl: this.state.avatarUrl
+      avatarUrl: this.state.avatarUrl,
+      description: this.state.description,
+      slackID: this.state.slackID,
+      role: this.state.role,
     })
 
     Router.push('/users')
@@ -138,42 +185,19 @@ class UpdateUser extends React.Component {
   }
 
   render() {
-    const { name, avatarUrl, anchorEl, open, placement, expanded } = this.state
+    const { name, avatarUrl, description, slackID, role, anchorEl, open, placement, expanded } = this.state
     const { points, stats } = this.props.user
     const { classes } = this.props
     return (
       <Layout>
-        <Grid
-          container
-          spacing={16}
-          style={{
-            marginBottom: 20
-          }}
-        >
-          <Grid container justify="center" alignItems="center" spacing={24}>
-            <Grid item xs={24} sm={6}>
-              <Link href="/matches/fast">
-                <Button
-                  variant="extendedFab"
-                  aria-label="New Match"
-                  style={{
-                    width: 200,
-                    height: 30
-                  }}
-                >
-                  <SoccerIcon />
-                  New Match
-                </Button>
-              </Link>
-            </Grid>
+          <Grid container justify="center" alignItems="center" spacing={24} style={{marginBottom: '20px'}}>
             <Grid item xs={24} sm={6}>
               <Link href="/users">
                 <Button
                   variant="extendedFab"
                   aria-label="Ranking"
                   style={{
-                    width: 200,
-                    height: 30
+                    width: 200
                   }}
                 >
                   <ListIcon/>
@@ -181,8 +205,21 @@ class UpdateUser extends React.Component {
                 </Button>
               </Link>
             </Grid>
+            <Grid item xs={24} sm={0}>
+              <Link href="/matches/fast">
+                <Button
+                  variant="extendedFab"
+                  aria-label="Ranking"
+                  style={{
+                    width: 200
+                  }}
+                >
+                  <SoccerIcon/>
+                  New Match (beta)
+                </Button>
+              </Link>
+            </Grid>
           </Grid>
-        </Grid>
         <Divider />
         <GridList cols={3}>
           <GridListTile style={userAvatar}>
@@ -194,7 +231,7 @@ class UpdateUser extends React.Component {
                     </Avatar>
                   }
                   action={
-                    <IconButton>
+                    <IconButton style={{position: 'relative'}}>
                       <MoreVertIcon onClick={this.handleEdit('bottom-end')} />
                       <Popper open={open} anchorEl={anchorEl} placement={placement} style={popperWrapper} transition>
                         {({ TransitionProps }) => (
@@ -216,13 +253,59 @@ class UpdateUser extends React.Component {
                                     required
                                   />
                                   <TextField
-                                    style={formTextSmall}
+                                    style={formText}
                                     id="avatarUrl"
                                     label="Avatar URL"
                                     value={avatarUrl}
                                     onChange={this.handleChange('avatarUrl')}
                                     margin="normal"
                                     required
+                                  />
+                                  <TextField
+                                    className={this.props.classes.smallTextField}
+                                    style={formText}
+                                    id="slackID"
+                                    label="Account Slack (e.g. <@slackID>)"
+                                    value={slackID}
+                                    onChange={this.handleChange('slackID')}
+                                    margin="normal"
+                                  />
+                                  <FormLabel className={this.props.classes.radioLegend} component="legend">Main role</FormLabel>
+                                  <RadioGroup
+                                    aria-label="role"
+                                    className={this.props.classes.radioGroup}
+                                    name="role2"
+                                    value={this.state.role || 'jolly'}
+                                    onChange={this.handleChange('role')}
+                                  >
+                                    <FormControlLabel
+                                      className={this.props.classes.radioLabel}
+                                      value='defender'
+                                      control={<Radio color="primary" />}
+                                      label="Defender"
+                                    />
+                                    <FormControlLabel
+                                      className={this.props.classes.radioLabel}
+                                      value='striker'
+                                      control={<Radio color="primary" />}
+                                      label="Striker"
+                                    />
+                                    <FormControlLabel
+                                      className={this.props.classes.radioLabel}
+                                      value='jolly'
+                                      control={<Radio color="primary" />}
+                                      label="Jolly"
+                                    />
+                                  </RadioGroup>
+                                  <TextField
+                                    style={formText}
+                                    className={this.props.classes.test}
+                                    id="description"
+                                    label="Description"
+                                    value={description}
+                                    multiline
+                                    onChange={this.handleChange('description')}
+                                    margin="normal"
                                   />
                                 </div>
                                 <div style={formButtonWrapper}>
@@ -249,9 +332,12 @@ class UpdateUser extends React.Component {
                   image={avatarUrl}
                   title="Contemplative Reptile"
                 />
+                <div style={{backgroundColor: 'rgba(103,103,103,0.85)', borderRadius: '0% 50% 50% 50%', height: '100px', left: '0', position: 'absolute', top: '86px', width: '100px'}}>
+                  <img src={`/img/attacco-difesa/${role}.svg`} style={{height: '100%'}} />
+                </div>
                 <CardContent>
                   <Typography component="p">
-                  Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  {description}
                   </Typography>
                 </CardContent>
                 <CardActions disableActionSpacing>
@@ -288,7 +374,7 @@ class UpdateUser extends React.Component {
                         </ListItem>
                         <ListItem style={userFeature}>
                           <span style={userFeatureLabel}>Lowest points</span>
-                          <span style={userFeatureValue}><CountUp start={1200} end={stats.points_min} duration={1.5}/></span>
+                          <span style={userFeatureValue}><CountUp start={1200} end={stats.points_min} duration={2.5}/></span>
                         </ListItem>
                         <ListItem style={userFeatureTitle}>
                           <h5 style={{margin: '20px 20px 20px 0'}}>TRENDS</h5>
