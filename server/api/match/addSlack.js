@@ -142,7 +142,6 @@ router.post('/', async (req, res) => {
   const isUserPattern = command.match(newUserPattern)
   if ( isUserPattern !== null) {
     const [slackID, name, avatarUrl] = command.split(' ')
-    const { name, avatarUrl } = req.body
     const slug = User.generateSlug()
     const userData = {
       name,
