@@ -40,18 +40,6 @@ function isAuthenticated(req, res, next) {
 app.prepare().then(() => {
   const server = express()
 
-  // if (!dev) {
-  //   server.use (function (req, res, next) {
-  //     if (req.headers['x-forwarded-proto'] == 'https') {
-  //       // request was via https, so do no special handling
-  //       next();
-  //     } else {
-  //       // request was via http, so redirect to https
-  //       res.redirect('https://' + req.headers.host + req.url);
-  //     }
-  //   })
-  // }
-
   server.use(express.static('public'))
 
   server.use(express.json())
