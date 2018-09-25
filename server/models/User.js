@@ -15,6 +15,7 @@ const mongoSchema = new Schema({
   avatarUrl: String,
   description: String,
   slackID: String,
+  role: String,
   active: Boolean,
   stats: {
     win_streak: Number, // current matches winned in row
@@ -52,6 +53,7 @@ class UserClass {
       'points',
       'avatarUrl',
       'description',
+      'role',
       'slackID',
       'slug',
       'active'
@@ -81,12 +83,12 @@ class UserClass {
     return uuid.v1()
   }
 
-  static async addModifyUser({ userId, name, avatarUrl, description }) {
+  static async addModifyUser({ userId, name, avatarUrl, description, role }) {
     const user = await this.findOne({ userId }).select(UserClass.publicFields().join(' '))
 
     // if user exists then modify
     if (user) {
-      await this.updateOne({ userId }, { name, avatarUrl, description });
+      await this.updateOne({ userId }, { name, avatarUrl, description, role });
 
       return user
     }
@@ -97,6 +99,7 @@ class UserClass {
       name,
       avatarUrl,
       description,
+      role,
       slug,
       active
     })

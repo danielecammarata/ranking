@@ -3,6 +3,11 @@ import Router from 'next/router'
 import Link from 'next/link'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormControl from '@material-ui/core/FormControl'
+import FormLabel from '@material-ui/core/FormLabel'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
@@ -68,6 +73,42 @@ const styles = theme => ({
   avatar: {
     backgroundColor: 'red',
   },
+  radioLegend: {
+    color: '#000',
+    fontSize: '15px',
+    marginBottom: '10px',
+    marginTop: '30px',
+    [theme.breakpoints.up('sm')]: {
+      float: 'left',
+      marginTop: '18px',
+      width: 'calc(100% - 280px)',
+    }
+  },
+  radioGroup: {
+    [theme.breakpoints.up('sm')]: {
+      display: 'inline',
+    }
+  },
+  radioLabel: {
+    maxHeight: '36px',
+    [theme.breakpoints.up('sm')]: {
+      float: 'left',
+      maxWidth: '33%',
+    },
+  },
+  smallTextField: {
+    [theme.breakpoints.up('sm')]: {
+      float: 'left',
+      marginRight: '50px',
+      maxWidth: '230px',
+    }
+  },
+  test: {
+    '& > div > div': {
+      maxHeight: '100px',
+      overflow: 'auto',
+    }
+  }
 })
 
 class UpdateUser extends React.Component {
@@ -78,6 +119,7 @@ class UpdateUser extends React.Component {
       avatarUrl: props.user.avatarUrl,
       description: props.user.description,
       slackID: props.user.slackID,
+      role: props.user.role,
       expandend: false,
       anchorEl: null,
       open: false,
@@ -117,6 +159,7 @@ class UpdateUser extends React.Component {
       avatarUrl: this.state.avatarUrl,
       description: this.state.description,
       slackID: this.state.slackID,
+      role: this.state.role,
     })
 
     Router.push('/users')
@@ -142,7 +185,7 @@ class UpdateUser extends React.Component {
   }
 
   render() {
-    const { name, avatarUrl, description, slackID, anchorEl, open, placement, expanded } = this.state
+    const { name, avatarUrl, description, slackID, role, anchorEl, open, placement, expanded } = this.state
     const { points, stats } = this.props.user
     const { classes } = this.props
     return (
@@ -188,7 +231,7 @@ class UpdateUser extends React.Component {
                     </Avatar>
                   }
                   action={
-                    <IconButton>
+                    <IconButton style={{position: 'relative'}}>
                       <MoreVertIcon onClick={this.handleEdit('bottom-end')} />
                       <Popper open={open} anchorEl={anchorEl} placement={placement} style={popperWrapper} transition>
                         {({ TransitionProps }) => (
@@ -219,6 +262,7 @@ class UpdateUser extends React.Component {
                                     required
                                   />
                                   <TextField
+                                    className={this.props.classes.smallTextField}
                                     style={formText}
                                     id="slackID"
                                     label="Account Slack (e.g. <@slackID>)"
@@ -226,11 +270,40 @@ class UpdateUser extends React.Component {
                                     onChange={this.handleChange('slackID')}
                                     margin="normal"
                                   />
+                                  <FormLabel className={this.props.classes.radioLegend} component="legend">Main role</FormLabel>
+                                  <RadioGroup
+                                    aria-label="role"
+                                    className={this.props.classes.radioGroup}
+                                    name="role2"
+                                    value={this.state.role || 'jolly'}
+                                    onChange={this.handleChange('role')}
+                                  >
+                                    <FormControlLabel
+                                      className={this.props.classes.radioLabel}
+                                      value='defender'
+                                      control={<Radio color="primary" />}
+                                      label="Defender"
+                                    />
+                                    <FormControlLabel
+                                      className={this.props.classes.radioLabel}
+                                      value='striker'
+                                      control={<Radio color="primary" />}
+                                      label="Striker"
+                                    />
+                                    <FormControlLabel
+                                      className={this.props.classes.radioLabel}
+                                      value='jolly'
+                                      control={<Radio color="primary" />}
+                                      label="Jolly"
+                                    />
+                                  </RadioGroup>
                                   <TextField
                                     style={formText}
+                                    className={this.props.classes.test}
                                     id="description"
                                     label="Description"
                                     value={description}
+                                    multiline
                                     onChange={this.handleChange('description')}
                                     margin="normal"
                                   />
@@ -259,6 +332,9 @@ class UpdateUser extends React.Component {
                   image={avatarUrl}
                   title="Contemplative Reptile"
                 />
+                <div style={{backgroundColor: 'rgba(103,103,103,0.85)', borderRadius: '0% 50% 50% 50%', height: '100px', left: '0', position: 'absolute', top: '86px', width: '100px'}}>
+                  <img src={`/img/attacco-difesa/${role}.svg`} style={{height: '100%'}} />
+                </div>
                 <CardContent>
                   <Typography component="p">
                   {description}
