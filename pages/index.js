@@ -225,20 +225,6 @@ class Index extends React.Component {
       <Layout>
         <Grid container spacing={16}>
           <Grid container justify="center" alignItems="center" spacing={24}>
-            {/* <Grid item xs={24} sm={6}>
-              <Link href="/matches/new">
-                <Button
-                  variant="extendedFab"
-                  aria-label="New Match"
-                  style={{
-                    width: 200
-                  }}
-                >
-                  <SoccerIcon />
-                  New Match
-                </Button>
-              </Link>
-            </Grid> */}
             <Grid item xs={24} sm={6}>
               <Link href="/users">
                 <Button
