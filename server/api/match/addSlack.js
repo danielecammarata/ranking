@@ -17,9 +17,9 @@ router.post('/', async (req, res) => {
   // var value = '<@UCPLWJ6E5> <@UCS26NM6C> - <@UCQHH9YRK> <@UCSDP1Z4H> : 6-0'
   const newMatchPattern = /^(<@[A-Z0-9]{9,}>) (<@[A-Z0-9]{9,}>) - (<@[A-Z0-9]{9,}>) (<@[A-Z0-9]{9,}>) : (0?[1-9][0-9]|[0-9])-(0?[1-9][0-9]|[0-9])/gm
   const command = value.replace(process.env.SLACK_BOT_ID + ' ', '')
-  const condition = command.match(newMatchPattern)
+  const isMatchPattern = command.match(newMatchPattern)
   console.log('COMMAND => ', command)
-  if ( condition !== null) {
+  if ( isMatchPattern !== null) {
     const [ teams, scores ] = command.split(' : ')
     const [ homeTeam, awayTeam ] = teams.split(' - ')
     const [ homeDef, homeStr ] = homeTeam.split(' ')
@@ -138,6 +138,29 @@ router.post('/', async (req, res) => {
     //   )
     // });
   }
+  const newUserPattern = /^(<@[A-Z0-9]{9,}>) ([\w]+) (https?:\/\/.*\.(?:png|jpg|gif))/gm
+  const isUserPattern = command.match(newUserPattern)
+  if ( isUserPattern !== null) {
+    const [slackID, name, avatarUrl] = command.split(' ')
+    const slug = User.generateSlug()
+    const userData = {
+      name,
+      slug,
+      slackID,
+      points: 1200,
+      avatarUrl,
+      active: true
+    }
+    const newUser = new User(userData)
+    newUser.save(function (err) {
+      if (err) return res.json({ error: err.message || err.toString() })
+      slack.sendMessage(
+        `New Player ${name} ready to go!`, 
+        process.env.SLACK_TOKEN,
+        process.env.SLACK_CHANNEL_ID
+      )
+    })
+  }
 
   if ( command === 'man') {
     slack.sendMessage(
@@ -164,65 +187,6 @@ router.post('/', async (req, res) => {
 //     process.env.SLACK_TOKEN,
 //     process.env.SLACK_CHANNEL_ID
 //   )
-  
-  
-//   // const { teamAway, teamHome, badges } = req.body
-
-//   // const slug = Match.generateSlug()
-//   // const createdAt = new Date().toISOString()
-
-//   // const rank = rankify.calculate({
-//   //   teamHome,
-//   //   teamAway
-//   // })
-//   // const matchData = {
-//   //   teamHome,
-//   //   teamAway,
-//   //   badges,
-//   //   slug,
-//   //   createdAt,
-//   //   difference: rank.difference
-//   // }
-
-//   // const newMatch = new Match(matchData)
-//   // newMatch.save(function (err) {
-//   //   if (err) return res.json({ error: err.message || err.toString() })
-
-//   //   const scoreHD = {
-//   //     id: teamHome.defender._id,
-//   //     score: rank.homeDefense,
-//   //     stats: calculateStats(teamHome.defender, true, rank.hasHomeWin, teamHome, teamAway, rank.difference, rank.homeDefense),
-//   //     res
-//   //   }
-//   //   updateUser(scoreHD)
-
-//   //   const scoreHS = {
-//   //     id: teamHome.striker._id,
-//   //     score: rank.homeStriker,
-//   //     stats: calculateStats(teamHome.striker, false, rank.hasHomeWin, teamHome, teamAway, rank.difference, rank.homeStriker),
-//   //     res
-//   //   }
-//   //   updateUser(scoreHS)
-
-//   //   const scoreAD = {
-//   //     id: teamAway.defender._id,
-//   //     score: rank.awayDefense,
-//   //     stats: calculateStats(teamAway.defender, true, !rank.hasHomeWin, teamAway, teamHome, rank.difference, rank.awayDefense),
-//   //     res
-//   //   }
-//   //   updateUser(scoreAD)
-
-//   //   const scoreAS = {
-//   //     id: teamAway.striker._id,
-//   //     score: rank.awayStriker,
-//   //     stats: calculateStats(teamAway.striker, false, !rank.hasHomeWin, teamAway, teamHome, rank.difference, rank.awayStriker),
-//   //     res
-//   //   }
-//   //   updateUser(scoreAS)
-
-//   //   res.json(newMatch)
-//   // })
-// })
 
 const calculateScoreAndBadges = (homeScore, awayScore) => {
   const scoreAndBadges = {
