@@ -70,9 +70,6 @@ const styles = theme => ({
   expandOpen: {
     transform: 'rotateX(180deg)',
   },
-  avatar: {
-    backgroundColor: 'red',
-  },
   radioLegend: {
     color: '#000',
     fontSize: '15px',
@@ -97,16 +94,30 @@ const styles = theme => ({
     },
   },
   smallTextField: {
+    '& > label': {
+      fontSize: '11px',
+    },
     [theme.breakpoints.up('sm')]: {
       float: 'left',
-      marginRight: '50px',
-      maxWidth: '230px',
+      marginRight: '30px',
+      maxWidth: '160px',
     }
   },
-  test: {
+  textDescription: {
     '& > div > div': {
       maxHeight: '100px',
       overflow: 'auto',
+    }
+  },
+  closePopper: {
+    cursor: 'pointer',
+    fontSize: '11px',
+    letterSpacing: '0.6px',
+    position: 'absolute',
+    right: '20px',
+    top: '20px',
+    '&  > small': {
+      marginLeft: '2px',
     }
   }
 })
@@ -184,6 +195,11 @@ class UpdateUser extends React.Component {
     this.setState(state => ({ expanded: !state.expanded }))
   }
 
+  handleCollapseTooltip = () => {
+    this.setState(state => ({ open: false }))
+    console.log('ciao')
+  }
+
   render() {
     const { name, avatarUrl, description, slackID, role, anchorEl, open, placement, expanded } = this.state
     const { points, stats } = this.props.user
@@ -237,6 +253,7 @@ class UpdateUser extends React.Component {
                         {({ TransitionProps }) => (
                           <Fade {...TransitionProps} timeout={350}>
                             <Paper style={paperWrapper}>
+                              <div className={this.props.classes.closePopper} onClick={this.handleCollapseTooltip}>X<small>close</small></div>
                               <form
                                 autoComplete="off"
                                 style={styleForm}
@@ -265,7 +282,7 @@ class UpdateUser extends React.Component {
                                     className={this.props.classes.smallTextField}
                                     style={formText}
                                     id="slackID"
-                                    label="Account Slack (e.g. <@slackID>)"
+                                    label="SlackID (e.g. <@slackID>)"
                                     value={slackID}
                                     onChange={this.handleChange('slackID')}
                                     margin="normal"
@@ -299,7 +316,7 @@ class UpdateUser extends React.Component {
                                   </RadioGroup>
                                   <TextField
                                     style={formText}
-                                    className={this.props.classes.test}
+                                    className={this.props.classes.textDescription}
                                     id="description"
                                     label="Description"
                                     value={description}
