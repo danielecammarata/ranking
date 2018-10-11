@@ -14,24 +14,54 @@ const interval = 500
 
 const styles = theme => ({
     audioPlayer: {
-        display: 'block',
-        width: '427px',
-        margin: 'auto',
-        padding: '2px 2px 1px 2px',
-        backgroundColor: 'black',
-        border: '2px solid darkgreen',
-        borderRadius: '9px',
-        marginTop: '30px'
+      position: 'relative',
     },
     progress: {
-        color: 'green',
-        fontSize: '12px',
-        width: '220px',
-        height: '12px',
-        border: 'none',
-        marginRight: '10px',
-        background: '#434343',
-        borderRadius: '9px'
+      position: 'absolute',
+      right: '-94px',
+      top: '92px',
+      transform: 'rotate(-90deg)',
+      width: '200px',
+      zIndex: '2',
+    },
+    playerWrapper: {
+      position: 'absolute',
+      right: '0',
+      top: '20px',
+      zIndex: '2',
+    },
+    audioControlPanel: {
+      display: 'flex',
+      flexDirection: 'column',
+      marginRight: '2px',
+      width: '44px',
+    },
+    audioButton: {
+      backgroundColor: '#e0e0e0',
+      border: 'none',
+      height: '38px',
+      marginBottom: '2px',
+      padding: '1px 7px 2px 3px',
+      position: 'relative',
+      '&:first-child': {
+        borderRadius: '10px 0 0 0',
+      },
+      '&:last-child': {
+        borderRadius: '0 0 0 10px',
+      },
+      '&:focus': {
+        outlineStyle: 'none',
+      },
+      '&::after': {
+        backgroundColor: '#fff',
+        bottom: '-2px',
+        content: '""',
+        left: '0',
+        height: '2px',
+        position: 'absolute',
+        width: '100%',
+        zIndex: '3',
+      }
     }
 })
 
@@ -135,9 +165,6 @@ class AudioPlayer extends React.Component {
     var percent = player.currentTime / player.duration
     // Update the progress bar's value
     percent = percent * 100
-    console.log('ACTUAL', player.currentTime)
-    console.log('TOTAL', player.duration)
-    console.log('PERCENT', percent)
     this.setState({
       percent: percent
     })
@@ -195,7 +222,7 @@ class AudioPlayer extends React.Component {
 
   render (props) {
       return (
-      <div >
+      <div className={this.props.classes.playerWrapper}>
         <ReactAudioPlayer
             id="background_audio"
             listenInterval={ interval }
@@ -205,24 +232,26 @@ class AudioPlayer extends React.Component {
             // onPlay={}
         />
         <div id="audio_player" className={this.props.classes.audioPlayer}>
-            <progress id='progress-bar' min='0' max='100' value={this.state.percent} className={this.props.classes.progress} onClick={(e) => { this.seek(e, e.nativeEvent.offsetX) }}>0% played</progress>
-            <button accessKey="P" onClick={this.playPauseAudio}>
+          <div className={this.props.classes.audioControlPanel}>
+            <button className={this.props.classes.audioButton} accessKey="P" onClick={this.playPauseAudio}>
               { (this.state.isPause) ? 
                 <PlayIcon {...props}/>
                 : 
                 <PauseIcon {...props}/>
               }
             </button>
-            <button accesskey="X" onClick={this.stopAudio}><StopIcon {...props}/></button>
-            <button accesskey="R" onClick={this.replayAudio}><ReplayIcon {...props}/></button>
-            <button accesskey="N" onClick={this.nextAudio}><NextIcon {...props}/></button>
-            <button onClick={this.muteVolume}>
+            <button className={this.props.classes.audioButton} accessKey="X" onClick={this.stopAudio}><StopIcon {...props}/></button>
+            <button className={this.props.classes.audioButton} accessKey="R" onClick={this.replayAudio}><ReplayIcon {...props}/></button>
+            <button className={this.props.classes.audioButton} accessKey="N" onClick={this.nextAudio}><NextIcon {...props}/></button>
+            <button className={this.props.classes.audioButton} onClick={this.muteVolume}>
               { (this.state.isMute) ? 
                 <MuteIcon {...props}/>
                 : 
                 <UnmuteIcon {...props}/>
               }
             </button>
+          </div>
+          <progress id='progress-bar' min='0' max='100' value={this.state.percent} className={this.props.classes.progress} onClick={(e) => { this.seek(e, e.nativeEvent.offsetX) }}>0% played</progress>
         </div>
       </div>
       )

@@ -28,16 +28,18 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 const styles = theme => ({
   styleTeamTile: {
-    width: 'calc(100% - 60px) !important',
+    width: 'calc(100% - 90px) !important',
     [theme.breakpoints.up('sm')]: {
-      width: 'calc(50% - 60px) !important',
+      marginTop: '20px',
+      minHeight: '130px',
+      width: 'calc(50% - 30px) !important',
     }
   },
 
   styleButtonGo: {
     margin: '40px 0 -40px',
     [theme.breakpoints.up('sm')]: {
-      margin: '0',
+      margin: '20px 0 0 0',
     }
   },
 
@@ -312,7 +314,7 @@ class AddMatch extends React.Component {
 
   render () {
     return (
-      <Layout>        
+      <Layout style={{position: 'relative'}}>        
         <AudioPlayer />
         <GridList style={{margin: '0 auto', maxWidth: '500px'}}>
           <GridListTile style={styleMatchTile}>

@@ -1,4 +1,5 @@
 import withTitle from '../components/hoc/WithTitle'
+import BadgeIcon from '../components/badge'
 
 import Link from 'next/link'
 import Layout from '../components/Layout.js'
@@ -60,6 +61,9 @@ const styles = theme => ({
       width:'calc(50% - 60px) !important',
       order: '2',
     }
+  },
+  badgesList: {
+    textAlign: 'center'
   }
 })
 
@@ -213,6 +217,11 @@ class Index extends React.Component {
                 <Badge color="secondary" badgeContent={<small>{match.teamAway.strScore}</small>} style={stylePlayerScore('striker','away')}> </Badge>
               </GridListTile>
             </GridList>
+            <div className={this.props.classes.badgesList}>
+              {match.badges.map(badge => (
+                <BadgeIcon type={badge}/>
+              ))}
+            </div>
           </GridListTile>
         ))}
       </GridList>
