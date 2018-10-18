@@ -20,7 +20,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Popper from '@material-ui/core/Popper'
 import Fade from '@material-ui/core/Fade'
 import Paper from '@material-ui/core/Paper'
-import { SoccerIcon } from '../../components/IconComponents'
+import { ChessKingIcon, TrophyIcon } from '../../components/IconComponents'
 import ListIcon from '@material-ui/icons/List'
 import classnames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
@@ -200,7 +200,7 @@ class UpdateUser extends React.Component {
                     width: 200
                   }}
                 >
-                  <ListIcon/>
+                  <TrophyIcon style={{marginRight: '10px'}}/>
                   Ranking
                 </Button>
               </Link>
@@ -214,8 +214,8 @@ class UpdateUser extends React.Component {
                     width: 200
                   }}
                 >
-                  <SoccerIcon/>
-                  New Match (beta)
+                  <ChessKingIcon style={{marginRight: '10px'}}/>
+                  New Match
                 </Button>
               </Link>
             </Grid>

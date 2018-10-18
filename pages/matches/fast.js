@@ -18,7 +18,6 @@ import {
   styleTeamPlayer
 } from '../../lib/ListOfMatches.js'
 
-
 import Avatar from '@material-ui/core/Avatar'
 import Chip from '@material-ui/core/Chip'
 import Grid from '@material-ui/core/Grid'
@@ -32,7 +31,7 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       marginTop: '20px',
       minHeight: '130px',
-      width: 'calc(50% - 30px) !important',
+      width: 'calc(50% - 60px) !important',
     }
   },
 
@@ -47,6 +46,31 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       order: '2',
     }
+  },
+
+  styleScore: {
+    backgroundColor: '#01ad01',
+    fontSize: '1em',
+    height: 45,
+    overflow: 'visible',
+    padding: '10px 0',
+    width: 45,
+    [theme.breakpoints.up('sm')]: {
+      margin: '20px 7px',
+    }
+  },
+  
+  styleScorePlayer: {
+    left: 11,
+    position: 'absolute',
+    top: 24,
+    zIndex: 1,
+  },
+
+  styleScoreWrapper: {
+    '& > div': {
+      overflow: 'visible',
+    },
   }
 })
 
@@ -333,7 +357,6 @@ class AddMatch extends React.Component {
 
               </GridListTile>
 
-
                 {this.state.matchView === matchViewState.PLAYER_SELECTION &&
                   <GridListTile
                     className={this.props.classes.styleButtonGo}
@@ -356,6 +379,7 @@ class AddMatch extends React.Component {
                 }
                 {this.state.matchView === matchViewState.TEAMS_COMPLETE &&
                   <GridListTile
+                  className={this.props.classes.styleScoreWrapper}
                     style={{
                       height: 'auto',
                       overflow: 'visible',
@@ -363,30 +387,18 @@ class AddMatch extends React.Component {
                       width: 60,
                     }}
                   >
-                    <Avatar
-                      style={{
-                        backgroundColor: '#01ad01',
-                        fontSize: '1em',
-                        height: 45,
-                        margin: '4px 10px',
-                        overflow: 'visible',
-                        padding: '10px 0',
-                        width: 45,
-                      }}
-                    >{`${this.state.homeScore}`}</Avatar>
+                    <Avatar className={this.props.classes.styleScore}>{`${this.state.homeScore}`}</Avatar>
                     <Badge color="secondary" badgeContent={<small>{this.state.homeScoreDefender}</small>}
+                      className={this.props.classes.styleScorePlayer}
                       style={{
                         left: 11,
-                        position: 'absolute',
-                        top: 11,
-                        zIndex: 1,
+                        top: 3,
                     }}/>
                     <Badge color="secondary" badgeContent={<small>{this.state.homeScoreStriker}</small>}
+                      className={this.props.classes.styleScorePlayer}
                       style={{
                         left: 11,
-                        position: 'absolute',
-                        top: 42,
-                        zIndex: 1,
+                        top: 45,
                     }}/>
                   </GridListTile>
                 }
@@ -406,6 +418,7 @@ class AddMatch extends React.Component {
 
               {this.state.matchView === matchViewState.TEAMS_COMPLETE &&
                   <GridListTile
+                    className={this.props.classes.styleScoreWrapper}
                     style={{
                       height: 'auto',
                       overflow: 'visible',
@@ -413,30 +426,18 @@ class AddMatch extends React.Component {
                       width: 60,
                     }}
                   >
-                    <Avatar
-                      style={{
-                        backgroundColor: '#01ad01',
-                        fontSize: '1em',
-                        height: 45,
-                        margin: '4px 0px',
-                        overflow: 'visible',
-                        padding: '10px 0',
-                        width: 45,
-                      }}
-                    >{`${this.state.awayScore}`}</Avatar>
+                    <Avatar className={this.props.classes.styleScore}>{`${this.state.awayScore}`}</Avatar>
                     <Badge color="secondary" badgeContent={<small>{this.state.awayScoreDefender}</small>}
+                      className={this.props.classes.styleScorePlayer}
                       style={{
-                        right: 11,
-                        position: 'absolute',
-                        top: 11,
-                        zIndex: 1,
+                        right: 13,
+                        top: 3,
                     }}/>
                     <Badge color="secondary" badgeContent={<small>{this.state.awayScoreStriker}</small>}
+                      className={this.props.classes.styleScorePlayer}
                       style={{
-                        right: 11,
-                        position: 'absolute',
-                        top: 42,
-                        zIndex: 1,
+                        right: 13,
+                        top: 45,
                     }}/>
                   </GridListTile>
                 }
