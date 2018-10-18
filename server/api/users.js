@@ -75,6 +75,16 @@ router.get('/get', async (req, res) => {
   }
 })
 
+router.get('/goals', async (req, res) => {
+  try {
+    const users = await User.find({ active:true }).sort({ "stats.match_goals_made": -1 })
+    res.json(users);
+  } catch (err) {
+    console.log(err)
+    res.json({ error: err.message || err.toString() });
+  }
+})
+
 router.post('/add', (req, res) => {
   const { name, avatarUrl, slackID, description, role } = req.body
   const slug = User.generateSlug()

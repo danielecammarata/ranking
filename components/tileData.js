@@ -8,15 +8,25 @@ import NewMatchIcon from '@material-ui/icons/DirectionsRun'
 import NewUserIcon from '@material-ui/icons/PersonAdd'
 import ListIcon from '@material-ui/icons/List'
 import RulesIcon from '@material-ui/icons/DeveloperBoard'
+import { ChessKingIcon, SoccerIcon, TrophyIcon } from './IconComponents'
+
 
 export const mainDrawerUser = (
   <div>
     <Link href="/users">
       <ListItem button>
         <ListItemIcon>
-          <ListIcon/>
+          <TrophyIcon/>
         </ListItemIcon>
-        <ListItemText primary="User list"/>
+        <ListItemText primary="Ranking"/>
+      </ListItem>
+    </Link>
+    <Link href="/bombers">
+      <ListItem button>
+        <ListItemIcon>
+          <SoccerIcon/>
+        </ListItemIcon>
+        <ListItemText primary="Bombers"/>
       </ListItem>
     </Link>
     <Link href="/users/new">
@@ -43,9 +53,9 @@ export const mainDrawerMatch = (
     <Link href="/matches/fast">
       <ListItem button>
         <ListItemIcon>
-          <NewMatchIcon/>
+          <ChessKingIcon/>
         </ListItemIcon>
-        <ListItemText primary="New match (beta)"/>
+        <ListItemText primary="New match"/>
       </ListItem>
     </Link>
   </div>

@@ -96,7 +96,7 @@ class AudioPlayer extends React.Component {
     })
     try {
       await this.loadAudio(player, { src: this.getBackgroundAudio(), volume: 1.0 }).then(() => {
-        this.startAudio(player, { volume: 1.0 })
+        this.stopAudio()
       })
     } catch (err) {
       console.log(err)

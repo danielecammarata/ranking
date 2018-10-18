@@ -54,6 +54,10 @@ app.prepare().then(() => {
     return app.render(req, res, `/matches/detail`, { slug: req.params.slug })
   })
 
+  server.get('/bombers', (req, res) => {
+    return app.render(req, res, `/users/bombers`)
+  })
+
   server.get('/admin*', isAuthenticated, (req, res) => {
     return handle(req, res)
   })
