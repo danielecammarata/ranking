@@ -13,7 +13,7 @@ import {
   styleTeamTile,
   styleTeamPlayer
 } from '../lib/ListOfMatches.js'
-import { ChessKingIcon, TrophyIcon } from '../components/IconComponents'
+import { SoccerFieldIcon, TrophyIcon } from '../components/IconComponents'
 
 import { withStyles } from '@material-ui/core/styles'
 
@@ -257,7 +257,7 @@ class Index extends React.Component {
                     width: 200
                   }}
                 >
-                  <ChessKingIcon style={{marginRight:'10px'}}/>
+                  <SoccerFieldIcon style={{marginRight:'10px'}}/>
                   New Match
                 </Button>
               </Link>
