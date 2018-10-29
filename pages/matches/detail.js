@@ -8,6 +8,7 @@ import Layout from '../../components/Layout.js'
 import MatchPlayerHeader from '../../components/MatchPlayerHeader'
 import MatchPlayerSelection from '../../components/MatchPlayerSelection'
 import PinnedSubheaderList from '../../components/PinnedSubheaderList'
+import BadgeIcon from '../../components/badge'
 import { addNewMatch } from '../../lib/api/match'
 import { getUsersList } from '../../lib/api/users'
 
@@ -36,7 +37,7 @@ class DetailMatch extends React.Component {
       awayGoalsStriker: NaN,
       awayStriker: defaultPlayer,
     //   awayStrikerSelected: false,
-    //   badges: [],
+      badges: [],
     //   enableScore: false,
       homeDefender: defaultPlayer,
     //   homeDefenderSelected: false,
@@ -67,7 +68,8 @@ class DetailMatch extends React.Component {
           homeGoalsStriker: data.teamHome.strScore,
           awayGoals: data.teamAway.score,
           awayGoalsDefender: data.teamAway.defScore,
-          awayGoalsStriker: data.teamAway.strScore
+          awayGoalsStriker: data.teamAway.strScore,
+          badges: data.badges
         })
       })
     } catch (err) {
@@ -208,6 +210,11 @@ class DetailMatch extends React.Component {
             player={this.state.homeStriker}
             selectionHandler={this.showPlayersSelect('homeStriker')}
           />
+          
+          {this.state.badges.map(badge => (
+            <BadgeIcon type={badge}/>
+          ))}
+
           <MatchPlayerHeader
             enableScore
             onScoreChange={this.onScoreChange}

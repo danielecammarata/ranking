@@ -98,6 +98,7 @@ class IndexMatch extends React.Component {
       <GridList style={{margin: '0 auto', maxWidth: '500px', minWidth: '400px'}}>
         {matches.map(match => (
           <GridListTile style={styleMatchTile} key={match.slug}>
+            <div>{match.badges.join(' ')}</div>
             <GridList>
               <GridListTile style={styleTeamTile('right')}>
                 <Chip

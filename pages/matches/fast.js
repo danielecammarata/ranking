@@ -5,9 +5,9 @@ import React from 'react'
 import Router from 'next/router'
 import getRootUrl from '../../lib/api/getRootUrl'
 import Layout from '../../components/Layout.js'
+import AudioPlayer from '../../components/audioPlayer.js'
 import { addNewMatch } from '../../lib/api/match'
 import { getUsersList } from '../../lib/api/users'
-import ReactAudioPlayer from 'react-audio-player'
 import { withStyles } from '@material-ui/core/styles'
 
 import {
@@ -28,16 +28,18 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 const styles = theme => ({
   styleTeamTile: {
-    width: 'calc(100% - 60px) !important',
+    width: 'calc(100% - 90px) !important',
     [theme.breakpoints.up('sm')]: {
-      width: 'calc(50% - 60px) !important',
+      marginTop: '20px',
+      minHeight: '130px',
+      width: 'calc(50% - 30px) !important',
     }
   },
 
   styleButtonGo: {
     margin: '40px 0 -40px',
     [theme.breakpoints.up('sm')]: {
-      margin: '0',
+      margin: '20px 0 0 0',
     }
   },
 
@@ -78,8 +80,6 @@ class AddMatch extends React.Component {
 
       matchView: matchViewState.PLAYER_SELECTION,
 
-      matchScore: '0 - 0',
-
       homeScore: 0,
       awayScore: 0,
 
@@ -93,39 +93,7 @@ class AddMatch extends React.Component {
 
       expanded: 'panelMatchGoals',
 
-
-
-      activeSelection: null,
-      awayDefenderSelected: false,
-      awayGoals: NaN,
-      awayGoalsDefender: NaN,
-      awayGoalsStriker: NaN,
-      awayStrikerSelected: false,
-      badges: [],
-      enableScore: false,
-      homeDefenderSelected: false,
-      homeGoals: NaN,
-      homeGoalsDefender: NaN,
-      homeGoalsStriker: NaN,
-      homeStrikerSelected: false,
-      matchAdded: false,
-      backgroundSoundTracks: [
-        'theKingOfFighters.aac',
-        'ESAKA.aac',
-        'BurningD.N.A.aac'
-      ],
-      currentSoundTrack: -1,
-      showScores: false
-    }
-  }
-
-  async componentDidMount () {
-    try {
-      await this.loadAudio(document.getElementById('background_audio'), { src: this.getBackgroundAudio(), volume: 1.0 }).then(() => {
-        this.startAudio(document.getElementById('background_audio'), { volume: 1.0 })
-      })
-    } catch (err) {
-      console.log(err)
+      badges: []
     }
   }
 
@@ -304,31 +272,6 @@ class AddMatch extends React.Component {
     })
   }
 
-  getBackgroundAudio = () => {
-    this.state.currentSoundTrack++
-    if(this.state.backgroundSoundTracks.length <= this.state.currentSoundTrack) {
-      this.state.currentSoundTrack = 0
-    }
-    return getRootUrl() + '/sound/' + this.state.backgroundSoundTracks[this.state.currentSoundTrack]
-  }
-
-  loadAudio = async (elem, params) => {
-    let backgroundAudio = elem
-    backgroundAudio.volume = params.volume;
-    if (typeof(params.src) !== 'undefined') {
-      backgroundAudio.src = params.src
-      backgroundAudio.load()
-    } else {
-      backgroundAudio.play()
-    }
-  }
-
-  startAudio = (elem, params) => {
-    let backgroundAudio = elem
-    backgroundAudio.volume = params.volume;
-    backgroundAudio.play()
-  }
-
   createAndStartAudio = (audioFile) => {
     var self = this;
     const flush = new Audio(audioFile)
@@ -371,22 +314,8 @@ class AddMatch extends React.Component {
 
   render () {
     return (
-      <Layout>
-        <ReactAudioPlayer
-          id="background_audio"
-          onEnded={( async (e) => {
-                      this.loadAudio(
-                        e.target,
-                        {
-                          src: this.getBackgroundAudio(),
-                          volume: 0.3
-                        }
-                      ).then(() => {
-                        this.startAudio(e.target, { volume: 0.3 })
-                      })
-                    })
-                  }
-        />
+      <Layout style={{position: 'relative'}}>        
+        <AudioPlayer />
         <GridList style={{margin: '0 auto', maxWidth: '500px'}}>
           <GridListTile style={styleMatchTile}>
             <GridList style={{lineHeight: '15px'}}>
