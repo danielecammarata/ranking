@@ -119,6 +119,18 @@ const styles = theme => ({
       maxWidth: '230px',
     }
   },
+  winBadge: {
+    backgroundColor: green[500],
+    fontSize: '13px',
+    fontWeight: '700',
+  },
+  loseBadge: {
+    backgroundColor: red[500],
+    colorPrimary: red[500],
+    fontSize: '13px',
+    fontWeight: '700',
+    left: '30px',
+  },
   test: {
     '& > div > div': {
       maxHeight: '100px',
@@ -274,6 +286,18 @@ class UpdateUser extends React.Component {
       style={styleMatchDifference}
     />
   )
+  
+  homeTeamStyle = () => {
+    var t = styleTeamTile('left')
+    t.width = '41%'
+    return t
+  }
+
+  awayTeamStyle = () => {
+    var t = styleTeamTile('right')
+    t.width = '41%'
+    return t
+  }
 
   matchTile = (label, matches) => (
     <GridListTile style={styleMatchTile} key={label}>
@@ -285,7 +309,7 @@ class UpdateUser extends React.Component {
         {matches.map(match => (
           <GridListTile style={styleMatchTile} key={match.slug}>
             <GridList style={{lineHeight: '13px'}}>
-              <GridListTile style={styleTeamTile('left')} className={this.props.classes.styleTeamTile}>
+              <GridListTile style={this.homeTeamStyle()} className={this.props.classes.styleTeamTile}>
                 <Chip
                   avatar={<Avatar src={match.teamHome.defender.avatarUrl} />}
                   label={match.teamHome.defender.name}
@@ -314,7 +338,16 @@ class UpdateUser extends React.Component {
                 <Badge color="secondary" badgeContent={<small>{match.teamHome.defScore}</small>} style={stylePlayerScore('defender','home')}> </Badge>
                 <Badge color="secondary" badgeContent={<small>{match.teamHome.strScore}</small>} style={stylePlayerScore('striker','home')}> </Badge>
               </GridListTile>
-              <GridListTile style={styleTeamTile('right')} className={this.props.classes.styleTeamTileLast}>
+              <GridListTile style={styleMatchScore}>
+                <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
+                  <Button variant="fab" mini color="primary">
+                    {match.teamAway.score}
+                  </Button>
+                </Link>
+                <Badge color="secondary" badgeContent={<small>{match.teamAway.defScore}</small>} style={stylePlayerScore('defender','away')}> </Badge>
+                <Badge color="secondary" badgeContent={<small>{match.teamAway.strScore}</small>} style={stylePlayerScore('striker','away')}> </Badge>
+              </GridListTile>
+              <GridListTile style={this.awayTeamStyle()} className={this.props.classes.styleTeamTileLast}>
                 <Chip
                   avatar={<Avatar src={match.teamAway.defender.avatarUrl} />}
                   classes={{label: this.props.classes.chipsLabel}}
@@ -334,15 +367,6 @@ class UpdateUser extends React.Component {
                     styleMatchDifference
                   )
                 }
-              </GridListTile>
-              <GridListTile style={styleMatchScore}>
-                <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
-                  <Button variant="fab" mini color="primary">
-                    {match.teamAway.score}
-                  </Button>
-                </Link>
-                <Badge color="secondary" badgeContent={<small>{match.teamAway.defScore}</small>} style={stylePlayerScore('defender','away')}> </Badge>
-                <Badge color="secondary" badgeContent={<small>{match.teamAway.strScore}</small>} style={stylePlayerScore('striker','away')}> </Badge>
               </GridListTile>
             </GridList>
             <div className={this.props.classes.badgesList}>
