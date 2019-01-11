@@ -98,7 +98,6 @@ class IndexUser extends React.Component {
               style={{overflow: 'hidden', padding: '14px 0'}}
               divider
             >
-
                 <Typography
                   style={{
                     padding: '0px 6px',
