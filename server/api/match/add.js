@@ -91,6 +91,7 @@ const defaultStats = {
   match_goals_made_as_striker: 0,
   match_goals_conceded_as_defender: 0,
   last_winned: false,
+  last_match: new Date(),
   last_matches: []
 }
 
@@ -122,7 +123,8 @@ const calculateStats = (user, isDefender, winner, team, oppositeTeam, rankDiffer
     match_goals_conceded_as_defender: currentStats.match_goals_conceded_as_defender + (isDefender ? oppositeTeam.score : 0),
     match_crawl: currentStats.match_crawl + (winner && oppositeTeam.score === 0 ? 1 : 0),
     match_crawled: currentStats.match_crawled + (!winner && team.score === 0 ? 1 : 0),
-    last_winned: winner
+    last_winned: winner,
+    last_match: new Date()
   }
 }
 
