@@ -13,6 +13,9 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemText from '@material-ui/core/ListItemText'
+import FormGroup from '@material-ui/core/FormGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 
 import Table from '@material-ui/core/Table'
@@ -20,6 +23,8 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+
+import { withStyles } from '@material-ui/core/styles'
 
 import {
   AlienIcon,
@@ -47,6 +52,8 @@ import {
 } from '../../components/IconComponents'
 import lightBlue from '@material-ui/core/colors/lightBlue'
 
+let countInactive = 0
+
 const rowHeaderStyle = {
   height: 25
 }
@@ -59,20 +66,38 @@ const cellStyle = {
   minWidth: 46,
 }
 
+const styles = theme => ({
+
+  hideUser: {
+    display: 'none'
+  }
+
+})
+
 class IndexUser extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       users: props.users || [],
-      userDeleted: false
+      userDeleted: false,
+      hideInactives: true
     }
   }
 
   static async getInitialProps() {
     const users = await getUsersList()
-
     return {
       users: users
+    }
+  }
+
+  async componentWillMount () {
+    try {
+      this.props.users.map((user, index) => (
+        user.active = this.isActiveUser(user, 15)
+      ))
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -83,12 +108,41 @@ class IndexUser extends React.Component {
     this.setState({ users: localUserList, userDeleted: true })
   }
 
+  isActiveUser (user, days) {
+    const limit = days * (1000 * 60 * 60 * 24)
+    const today = new Date()
+    let lastMatch = user.stats.last_match
+    if(today.getTime() - Date.parse(lastMatch) < limit) {
+      return true
+    }
+    return false
+  }
+
+  handleShowInactive = () => {
+    this.setState(state => ({ 
+      hideInactives: !this.state.hideInactives 
+    }))
+    countInactive = 0
+  }
+
 // https://static.nexilia.it/bitchyf/2018/05/cristiano-malgioglio-danzando-800x500.jpg
 
   render() {
     return (
       <Layout>
         <h1 style={styleH1}>Ranking</h1>
+        <FormGroup row>
+          <FormControlLabel
+            control={
+              <Switch
+                value="checkedB"
+                color="primary"
+                onChange={this.handleShowInactive}
+              />
+            }
+            label="Show inactive users"
+          />
+        </FormGroup>
         <Divider />
         <List>
           {this.props.users && this.props.users.map((user, index) => (
@@ -97,8 +151,8 @@ class IndexUser extends React.Component {
               key={user.slug}
               style={{overflow: 'hidden', padding: '14px 0'}}
               divider
+              className={(!this.state.hideInactives || user.active) ? 'showUser' : this.props.classes.hideUser}
             >
-
                 <Typography
                   style={{
                     padding: '0px 6px',
@@ -106,7 +160,7 @@ class IndexUser extends React.Component {
                     minWidth: '36px',
                   }}
                 >
-                  {index + 1}
+                  {(!this.state.hideInactives || user.active) ? ++countInactive : index+1}
                 </Typography>
                 <ListItemAvatar>
                   <Avatar
@@ -149,7 +203,7 @@ class IndexUser extends React.Component {
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_played} duration={2.00}/></TableCell>
+                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.last_matches} duration={2.00}/></TableCell>
                       <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_win} duration={2.20}/></TableCell>
                       <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_made} duration={3.00}/></TableCell>
                       <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_conceded} duration={1.80}/></TableCell>
@@ -171,4 +225,4 @@ class IndexUser extends React.Component {
   }
 
 }
-export default IndexUser
+export default withStyles(styles)(IndexUser)
