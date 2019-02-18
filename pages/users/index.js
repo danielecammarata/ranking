@@ -92,6 +92,7 @@ class IndexUser extends React.Component {
   }
 
   async componentWillMount () {
+    countInactive = 0
     try {
       this.props.users.map((user, index) => (
         user.active = this.isActiveUser(user, 15)
@@ -203,7 +204,7 @@ class IndexUser extends React.Component {
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.last_matches} duration={2.00}/></TableCell>
+                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_played} duration={2.00}/></TableCell>
                       <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_win} duration={2.20}/></TableCell>
                       <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_made} duration={3.00}/></TableCell>
                       <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_conceded} duration={1.80}/></TableCell>
