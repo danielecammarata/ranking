@@ -206,8 +206,8 @@ class IndexUser extends React.Component {
                     <TableRow>
                       <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_played} duration={2.00}/></TableCell>
                       <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_win} duration={2.20}/></TableCell>
-                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_made} duration={3.00}/></TableCell>
-                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_conceded} duration={1.80}/></TableCell>
+                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_made_as_defender + user.stats.match_goals_made_as_striker} duration={3.00}/></TableCell>
+                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_conceded_as_defender} duration={1.80}/></TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
