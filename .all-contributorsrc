@@ -1,0 +1,23 @@
+{
+  "projectName": "ranking",
+  "projectOwner": "danielecammarata",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "giammarcovergara",
+      "name": "Giammarco Vergara",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/12064346?v=4",
+      "profile": "https://github.com/giammarcovergara",
+      "contributions": [
+        "design"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
