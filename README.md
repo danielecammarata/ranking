@@ -31,7 +31,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/all-contri
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-| [<img src="https://avatars1.githubusercontent.com/u/12064346?v=4" width="100px;" alt="Giammarco Vergara"/><br /><sub><b>Giammarco Vergara</b></sub>](https://github.com/giammarcovergara)<br />[🎨](#design-giammarcovergara "Design") |
+| [<img src="https://avatars1.githubusercontent.com/u/12064346?v=4" width="100px;" alt="Giammarco Vergara"/><br /><sub><b>Giammarco Vergara</b></sub>](https://github.com/giammarcovergara)<br />[🎨](#design-giammarcovergara "Design") [💻](https://github.com/danielecammarata/ranking/commits?author=giammarcovergara "Code") |
 | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
