@@ -1,8 +1,6 @@
 # Scoreza
 
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
-[![Pending Pull-Requests](http://githubbadges.herokuapp.com/boennemann/badges/pulls.svg?style=flat)](https://github.com/danielecammarata/ranking/pulls)
-[![Open Issues](http://githubbadges.herokuapp.com/boennemann/badges/issues.svg?style=flat)](https://github.com/danielecammarata/ranking/issues)
 [![codebeat badge](https://codebeat.co/badges/7de855fc-447e-4928-862b-cb4cedd67cb0)](https://codebeat.co/projects/github-com-danielecammarata-ranking-master)
 
 ### Technologies used:
