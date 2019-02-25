@@ -2,6 +2,7 @@
 
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 [![codebeat badge](https://codebeat.co/badges/7de855fc-447e-4928-862b-cb4cedd67cb0)](https://codebeat.co/projects/github-com-danielecammarata-ranking-master)
+[![GPL Licence](https://badges.frapsoft.com/os/gpl/gpl.svg?v=103)](https://opensource.org/licenses/GPL-3.0/)
 
 ### Technologies used:
 
