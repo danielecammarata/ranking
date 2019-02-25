@@ -27,6 +27,19 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "danielecammarata",
+      "name": "Daniele Cammarata",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/11610568?v=4",
+      "profile": "https://github.com/danielecammarata",
+      "contributions": [
+        "ideas",
+        "code",
+        "maintenance",
+        "review",
+        "question"
+      ]
     }
   ],
   "contributorsPerLine": 7
