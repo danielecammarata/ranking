@@ -13,19 +13,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@material-ui/core": "^1.4.1",
-    "@material-ui/icons": "^2.0.0",
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
     "arpad": "^1.0.2",
     "basic-auth": "^2.0.0",
     "dotenv": "^6.0.0",
     "downshift": "",
     "express": "^4.16.3",
-    "isomorphic-unfetch": "^2.1.0",
+    "isomorphic-unfetch": "^3.0.0",
     "lodash": "^4.17.10",
     "mongoose": "^5.2.5",
-    "next": "^6.1.1",
+    "next": "^8.0.3",
     "react": "^16.4.1",
-    "react-audio-player": "^0.10.0",
+    "react-audio-player": "^0.11.0",
     "react-countup": "^4.0.0-alpha.6",
     "react-dom": "^16.4.1",
     "react-jss": "^8.6.1",
@@ -33,7 +33,7 @@
     "uuid": "^3.0.0"
   },
   "devDependencies": {
-    "jest": "^23.2.0",
+    "jest": "^24.1.0",
     "nodemon": "^1.17.5"
   }
 }
