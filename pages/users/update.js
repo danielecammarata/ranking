@@ -6,7 +6,6 @@ import Card from '@material-ui/core/Card'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardMedia from '@material-ui/core/CardMedia'
@@ -21,7 +20,6 @@ import Popper from '@material-ui/core/Popper'
 import Fade from '@material-ui/core/Fade'
 import Paper from '@material-ui/core/Paper'
 import { SoccerFieldIcon, TrophyIcon } from '../../components/IconComponents'
-import ListIcon from '@material-ui/icons/List'
 import classnames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 import CountUp from 'react-countup'
@@ -38,7 +36,6 @@ import Button from '@material-ui/core/Button'
 
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
-import ListSubheader from '@material-ui/core/ListSubheader'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -54,8 +51,8 @@ import {
   styleTeamPlayer
 } from '../../lib/ListOfMatches.js'
 import { getUsersBySlug, updateUser } from '../../lib/api/users'
-import { styleForm, styleTextField, styleRaisedButton } from '../../lib/SharedStyles'
-import { formArea, formButton, formButtonWrapper, formText, formTextSmall, paperWrapper, popperWrapper, userAvatar, userFeature, userFeatureBar, userFeatureBarWrapper, userFeatureLabel, userFeatureTitle, userFeatureValue, userFirstChar } from '../../lib/userPage'
+import { styleForm } from '../../lib/SharedStyles'
+import { formArea, formButton, formButtonWrapper, formText, paperWrapper, popperWrapper, userAvatar, userFeature, userFeatureBar, userFeatureBarWrapper, userFeatureLabel, userFeatureTitle, userFeatureValue, userFirstChar } from '../../lib/userPage'
 import { Typography } from '@material-ui/core'
 import { getPlayerMatchesList } from '../../lib/api/match'
 
@@ -164,7 +161,6 @@ class UpdateUser extends React.Component {
       name: props.user.name,
       avatarUrl: props.user.avatarUrl,
       description: props.user.description,
-      slackID: props.user.slackID,
       role: props.user.role,
       expandend: false,
       anchorEl: null,
@@ -191,7 +187,7 @@ class UpdateUser extends React.Component {
   componentDidMount() {
     try {
       var that = this;
-      getPlayerMatchesList(this.props.user._id, 0, elementPerPage, true).then((rs) => {        
+      getPlayerMatchesList(this.props.user._id, 0, elementPerPage, true).then((rs) => {
         const matchesObj = that.prepareMatchData(rs.matches)
         const matchesFetchedCount = rs.matches.length
         const numMatches = rs.count
@@ -265,7 +261,6 @@ class UpdateUser extends React.Component {
       name: this.state.name,
       avatarUrl: this.state.avatarUrl,
       description: this.state.description,
-      slackID: this.state.slackID,
       role: this.state.role,
     })
 
@@ -302,7 +297,7 @@ class UpdateUser extends React.Component {
       style={styleMatchDifference}
     />
   )
-  
+
   homeTeamStyle = () => {
     var t = styleTeamTile('left')
     t.width = '41%'
@@ -398,7 +393,7 @@ class UpdateUser extends React.Component {
 
   render() {
     const matchesObj = this.state.matchesObj
-    const { name, avatarUrl, description, slackID, role, anchorEl, open, placement, expanded } = this.state
+    const { name, avatarUrl, description, role, anchorEl, open, placement, expanded } = this.state
     const { points, stats } = this.props.user
     const { classes } = this.props
     return (
@@ -473,15 +468,6 @@ class UpdateUser extends React.Component {
                                     onChange={this.handleChange('avatarUrl')}
                                     margin="normal"
                                     required
-                                  />
-                                  <TextField
-                                    className={this.props.classes.smallTextField}
-                                    style={formText}
-                                    id="slackID"
-                                    label="Account Slack (e.g. <@slackID>)"
-                                    value={slackID}
-                                    onChange={this.handleChange('slackID')}
-                                    margin="normal"
                                   />
                                   <FormLabel className={this.props.classes.radioLegend} component="legend">Main role</FormLabel>
                                   <RadioGroup
@@ -667,7 +653,7 @@ class UpdateUser extends React.Component {
           </GridListTile>
 
         </GridList>
-        
+
         {/* New grouped matches list */}
         <GridList style={{margin: '0 auto', maxWidth: '768px'}}>
           {Object.keys(matchesObj).map(matchKey => (
@@ -687,19 +673,6 @@ class UpdateUser extends React.Component {
       </Layout>
     )
   }
-}
-
-const StatsListItem = ({text}) => {
-  return (
-    <ListItemText
-      primaryTypographyProps={{
-        style: {
-          fontSize: 12
-        }
-      }}
-      primary={text}
-    />
-  )
 }
 
 export default withStyles(styles)(UpdateUser)
