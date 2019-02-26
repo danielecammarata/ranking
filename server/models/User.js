@@ -14,7 +14,6 @@ const mongoSchema = new Schema({
   points2: Number,
   avatarUrl: String,
   description: String,
-  slackID: String,
   role: String,
   active: Boolean,
   stats: {
@@ -55,7 +54,6 @@ class UserClass {
       'avatarUrl',
       'description',
       'role',
-      'slackID',
       'slug',
       'active'
     ]

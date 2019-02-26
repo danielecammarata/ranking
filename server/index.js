@@ -7,7 +7,7 @@ const auth = require('basic-auth')
 
 require('dotenv').config()
 
-const dev = process.env.v !== 'production'
+const dev = process.env !== 'production'
 const port = process.env.PORT || 8000
 const ROOT_URL = dev ? `http://localhost:${port}` : 'https://www.scoreza.it/'
 

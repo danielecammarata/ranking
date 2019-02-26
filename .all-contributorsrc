@@ -1,0 +1,46 @@
+{
+  "projectName": "ranking",
+  "projectOwner": "danielecammarata",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "giammarcovergara",
+      "name": "Giammarco Vergara",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/12064346?v=4",
+      "profile": "https://github.com/giammarcovergara",
+      "contributions": [
+        "design",
+        "code"
+      ]
+    },
+    {
+      "login": "Vision87",
+      "name": "Vision87",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/8588990?v=4",
+      "profile": "https://github.com/Vision87",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "danielecammarata",
+      "name": "Daniele Cammarata",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/11610568?v=4",
+      "profile": "https://github.com/danielecammarata",
+      "contributions": [
+        "ideas",
+        "code",
+        "maintenance",
+        "review",
+        "question"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
