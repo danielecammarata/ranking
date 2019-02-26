@@ -21,14 +21,6 @@ export const mainDrawerUser = (
         <ListItemText primary="Ranking"/>
       </ListItem>
     </Link>
-    <Link href="/bombers">
-      <ListItem button>
-        <ListItemIcon>
-          <SoccerIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Bombers"/>
-      </ListItem>
-    </Link>
     <Link href="/users/new">
       <ListItem button>
         <ListItemIcon>

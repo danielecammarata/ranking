@@ -5,7 +5,7 @@ import CountUp from 'react-countup'
 
 import Layout from '../../components/Layout.js'
 import { getUsersList, deleteUser } from '../../lib/api/users'
-import { styleH1, styleCard, styleCardContainer, styleCardContent, styleBigAvatar } from '../../lib/SharedStyles'
+import { styleH1 } from '../../lib/SharedStyles'
 
 import Avatar from '@material-ui/core/Avatar'
 
@@ -16,13 +16,16 @@ import ListItemText from '@material-ui/core/ListItemText'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
 
 import { withStyles } from '@material-ui/core/styles'
 
@@ -67,11 +70,26 @@ const cellStyle = {
 }
 
 const styles = theme => ({
-
   hideUser: {
     display: 'none'
-  }
-
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    width: '180px',
+  },
+  formLabel: {
+    paddingTop: '18px',
+    width:'100%',
+    [theme.breakpoints.up('sm')]: {
+      width: 'calc(100% - 200px)'
+    }
+  },
+  formSelect: {
+    maxWidth: '200px',
+    '& > div > div': {
+      padding: '8px 32px 8px 10px'
+    }
+  },
 })
 
 class IndexUser extends React.Component {
@@ -80,7 +98,9 @@ class IndexUser extends React.Component {
     this.state = {
       users: props.users || [],
       userDeleted: false,
-      hideInactives: true
+      hideInactives: true,
+      selectOpen: false,
+      sortingValue: 'points'
     }
   }
 
@@ -92,7 +112,7 @@ class IndexUser extends React.Component {
   }
 
   async componentWillMount () {
-    countInactive = 0
+    this.resetInactiveCounter()
     try {
       this.props.users.map((user, index) => (
         user.active = this.isActiveUser(user, 15)
@@ -109,8 +129,41 @@ class IndexUser extends React.Component {
     this.setState({ users: localUserList, userDeleted: true })
   }
 
+  handleChange = event => {
+    this.resetInactiveCounter()
+    this.setState({ [event.target.name]: event.target.value })
+    this.changeSorting(event.target.value)
+  }
+
+  changeSorting(newSorting) {
+    this.props.users.sort((a,b) =>{
+      a.goals = a.stats.match_goals_made_as_striker+a.stats.match_goals_made_as_defender
+      a.conceded = a.stats.match_goals_conceded_as_defender
+      a.played = a.stats.match_played
+      b.goals = b.stats.match_goals_made_as_striker+b.stats.match_goals_made_as_defender
+      b.conceded = b.stats.match_goals_conceded_as_defender
+      b.played = b.stats.match_played
+
+      return b[newSorting] - a[newSorting]
+    })
+  }
+
+  highlightTableCell(newSorting) {
+
+  }
+
+  handleClose = () => {
+    this.setState({ selectOpen: false });
+    this.resetInactiveCounter()    
+  }
+
+  handleOpen = () => {
+    this.setState({ selectOpen: true });
+    this.resetInactiveCounter()
+  }
+
   isActiveUser (user, days) {
-    const limit = days * (1000 * 60 * 60 * 24)
+    const limit = days * (1000 * 60 * 60 * 24) // convert to ms
     const today = new Date()
     let lastMatch = user.stats.last_match
     if(today.getTime() - Date.parse(lastMatch) < limit) {
@@ -123,6 +176,10 @@ class IndexUser extends React.Component {
     this.setState(state => ({ 
       hideInactives: !this.state.hideInactives 
     }))
+    this.resetInactiveCounter()
+  }
+
+  resetInactiveCounter() {
     countInactive = 0
   }
 
@@ -133,92 +190,114 @@ class IndexUser extends React.Component {
       <Layout>
         <h1 style={styleH1}>Ranking</h1>
         <FormGroup row>
-          <FormControlLabel
-            control={
-              <Switch
-                value="checkedB"
-                color="primary"
-                onChange={this.handleShowInactive}
+          <div className={this.props.classes.formLabel}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    value="checkedB"
+                    color="primary"
+                    onChange={this.handleShowInactive}
+                  />
+                }
+                label="Show inactive users"
               />
-            }
-            label="Show inactive users"
-          />
+            </div>
+            <FormControl className={this.props.classes.formControl}>
+              <InputLabel htmlFor="demo-controlled-open-select">Sort by</InputLabel>
+              <Select
+                open={this.state.selectOpen}
+                onClose={this.handleClose}
+                onOpen={this.handleOpen}
+                onChange={this.handleChange}
+                inputProps={{
+                  name: 'sortingValue',
+                  id: 'demo-controlled-open-select',
+                }}
+                value={this.state.sortingValue}
+                className={this.props.classes.formSelect}
+              >
+                <MenuItem value="points">Points</MenuItem>
+                <MenuItem value="goals">Goals</MenuItem>
+                <MenuItem value="conceded">Goals conceded</MenuItem>
+                <MenuItem value="played">Match Played</MenuItem>
+              </Select>
+            </FormControl>
         </FormGroup>
         <Divider />
         <List>
           {this.props.users && this.props.users.map((user, index) => (
             <Link as={`/users/${user.slug}`} href={`/users/update/?slug=${user.slug}`}>
-            <ListItem
-              key={user.slug}
-              style={{overflow: 'hidden', padding: '14px 0'}}
-              divider
-              className={(!this.state.hideInactives || user.active) ? 'showUser' : this.props.classes.hideUser}
-            >
-                <Typography
-                  style={{
-                    padding: '0px 6px',
-                    fontSize: 22,
-                    minWidth: '36px',
-                  }}
-                >
-                  {(!this.state.hideInactives || user.active) ? ++countInactive : index+1}
-                </Typography>
-                <ListItemAvatar>
-                  <Avatar
-                    alt={user.name}
-                    src={user.avatarUrl}
+              <ListItem
+                key={user.slug}
+                style={{overflow: 'hidden', padding: '14px 0'}}
+                divider
+                className={(!this.state.hideInactives || user.active) ? 'showUser' : this.props.classes.hideUser}
+              >
+                  <Typography
                     style={{
-                      height: 80,
-                      margin: '0px 10px',
-                      width: 80
+                      padding: '0px 6px',
+                      fontSize: 22,
+                      minWidth: '36px',
                     }}
-                  />
-                </ListItemAvatar>
-                <ListItemText
-                  style={{minWidth: '100px', padding: '0px 6px'}}
-                  primary={user.name}
-                  primaryTypographyProps={{
-                    style: {
-                      fontSize: 15,
-                      overflowX: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }
-                  }}
-                  secondary={<CountUp start={1200} end={user.points} duration={3}/>}
-                  secondaryTypographyProps={{
-                    style: {
-                      fontSize: 18,
-                      color: lightBlue[500]
-                    }
-                  }}
-                />
+                  >
+                    {(!this.state.hideInactives || user.active) ? ++countInactive : index+1}
+                  </Typography>
+                      <ListItemAvatar>
+                        <Avatar
+                          alt={user.name}
+                          src={user.avatarUrl}
+                          style={{
+                            height: 80,
+                            margin: '0px 10px',
+                            width: 80
+                          }}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        style={{minWidth: '100px', padding: '0px 6px'}}
+                        primary={user.name}
+                        primaryTypographyProps={{
+                          style: {
+                            fontSize: 15,
+                            overflowX: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }
+                        }}
+                        secondary={<CountUp start={1200} end={user[this.state.sortingValue]} duration={3}/>}
+                        secondaryTypographyProps={{
+                          style: {
+                            fontSize: 18,
+                            color: lightBlue[500]
+                          }
+                        }}
+                      />
 
-                <Table style={{ width: 150 }}>
-                  <TableHead>
-                    <TableRow style={rowHeaderStyle}>
-                      <TableCell style={cellStyle}>P</TableCell>
-                      <TableCell style={cellStyle}>W</TableCell>
-                      <TableCell style={cellStyle}>GM</TableCell>
-                      <TableCell style={cellStyle}>GC</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_played} duration={2.00}/></TableCell>
-                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_win} duration={2.20}/></TableCell>
-                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_made_as_defender + user.stats.match_goals_made_as_striker} duration={3.00}/></TableCell>
-                      <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_conceded_as_defender} duration={1.80}/></TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-                {/*
-                  THIS SHOULD BE USED FOR THE BADGES
-                <ListItemSecondaryAction>
-                  <PirateIcon />
-                  <RocketIcon />
-                </ListItemSecondaryAction> */}
-            </ListItem>
-              </Link>
+                  <Table style={{ width: 150 }}>
+                    <TableHead>
+                      <TableRow style={rowHeaderStyle}>
+                        <TableCell style={cellStyle}>Score</TableCell>
+                        <TableCell style={cellStyle}>MP</TableCell>
+                        <TableCell style={cellStyle}>GM</TableCell>
+                        <TableCell style={cellStyle}>GC</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell style={cellStyle}><CountUp start={0} end={user.points} duration={2.00}/></TableCell>
+                        <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_played} duration={2.20}/></TableCell>
+                        <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_made_as_defender + user.stats.match_goals_made_as_striker} duration={3.00}/></TableCell>
+                        <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_conceded_as_defender} duration={1.80}/></TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                  {/*
+                    THIS SHOULD BE USED FOR THE BADGES
+                  <ListItemSecondaryAction>
+                    <PirateIcon />
+                    <RocketIcon />
+                  </ListItemSecondaryAction> */}
+              </ListItem>
+            </Link>
           ))}
         </List>
       </Layout>
