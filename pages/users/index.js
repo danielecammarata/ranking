@@ -90,6 +90,14 @@ const styles = theme => ({
       padding: '8px 32px 8px 10px'
     }
   },
+  user: {
+    padding: '14px 0px',
+    '&[datachallenge="challenge"]': {
+      backgroundColor: '#eaeaea',
+      boxShadow: '1px 1px 4px #bbb',
+      padding: '14px 20px'
+    }
+  }
 })
 
 class IndexUser extends React.Component {
@@ -226,12 +234,16 @@ class IndexUser extends React.Component {
         <Divider />
         <List>
           {this.props.users && this.props.users.map((user, index) => (
-            <Link as={`/users/${user.slug}`} href={`/users/update/?slug=${user.slug}`}>
+            <Link 
+              as={`/users/${user.slug}`}
+              href={`/users/update/?slug=${user.slug}`}
+              >
               <ListItem
                 key={user.slug}
-                style={{overflow: 'hidden', padding: '14px 0'}}
+                style={{overflow: 'hidden'}}
                 divider
-                className={(!this.state.hideInactives || user.active) ? 'showUser' : this.props.classes.hideUser}
+                className={(!this.state.hideInactives || user.active) ? ('showUser ' + this.props.classes.user) : this.props.classes.hideUser}
+                dataChallenge={(user.description == 'challenge') ? 'challenge' : 'regular'}
               >
                   <Typography
                     style={{
