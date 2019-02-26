@@ -25,7 +25,7 @@ import Grid from '@material-ui/core/Grid'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
 import ListIcon from '@material-ui/icons/List'
-import { Divider, Typography } from '@material-ui/core'
+import { Divider, Typography, Fab } from '@material-ui/core'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 
@@ -66,6 +66,17 @@ const styles = theme => ({
     textAlign: 'center'
   }
 })
+
+const differenceTile = (hasWin, classes, difference, styleMatchDifference) =>
+  <Badge
+    color={hasWin ? 'primary' : 'secondary'}
+    classes={{
+      colorPrimary: classes.winBadge,
+      colorSecondary: classes.loseBadge
+    }}
+    badgeContent={<small>{hasWin ? difference : - difference}</small>}
+    style={styleMatchDifference}
+  />
 
 class Index extends React.Component {
   constructor(props) {
@@ -179,9 +190,9 @@ class Index extends React.Component {
               </GridListTile>
               <GridListTile style={styleMatchScore}>
                 <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
-                  <Button variant="fab" mini color="primary">
+                  <Fab size="medium" color="primary">
                     {match.teamHome.score}
-                  </Button>
+                  </Fab>
                 </Link>
                 <Badge color="secondary" badgeContent={<small>{match.teamHome.defScore}</small>} style={stylePlayerScore('defender','home')}> </Badge>
                 <Badge color="secondary" badgeContent={<small>{match.teamHome.strScore}</small>} style={stylePlayerScore('striker','home')}> </Badge>
@@ -209,9 +220,9 @@ class Index extends React.Component {
               </GridListTile>
               <GridListTile style={styleMatchScore}>
                 <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
-                  <Button variant="fab" mini color="primary">
+                  <Fab size="medium" color="primary">
                     {match.teamAway.score}
-                  </Button>
+                  </Fab>
                 </Link>
                 <Badge color="secondary" badgeContent={<small>{match.teamAway.defScore}</small>} style={stylePlayerScore('defender','away')}> </Badge>
                 <Badge color="secondary" badgeContent={<small>{match.teamAway.strScore}</small>} style={stylePlayerScore('striker','away')}> </Badge>
@@ -234,10 +245,10 @@ class Index extends React.Component {
       <Layout>
         <Grid container spacing={16}>
           <Grid container justify="center" alignItems="center" spacing={24}>
-            <Grid item xs={24} sm={6}>
+            <Grid item xs={8} sm={6}>
               <Link href="/users">
-                <Button
-                  variant="extendedFab"
+                <Fab
+                  variant="extended"
                   aria-label="Ranking"
                   style={{
                     width: 200
@@ -245,13 +256,13 @@ class Index extends React.Component {
                 >
                   <TrophyIcon style={{marginRight:'10px'}}/>
                   Ranking
-                </Button>
+                </Fab>
               </Link>
             </Grid>
-            <Grid item xs={24} sm={0}>
+            <Grid item xs={8} sm={4}>
               <Link href="/matches/fast">
-                <Button
-                  variant="extendedFab"
+                <Fab
+                  variant="extended"
                   aria-label="Ranking"
                   style={{
                     width: 200
@@ -259,7 +270,7 @@ class Index extends React.Component {
                 >
                   <SoccerFieldIcon style={{marginRight:'10px'}}/>
                   New Match
-                </Button>
+                </Fab>
               </Link>
             </Grid>
           </Grid>
@@ -278,7 +289,7 @@ class Index extends React.Component {
           type="button"
           variant="contained"
         >
-          Load more
+          Load more s
         </Button>
       </Layout>
     )
