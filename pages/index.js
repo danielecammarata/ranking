@@ -23,7 +23,7 @@ import GridListTile from '@material-ui/core/GridListTile'
 import { Divider, Typography, Fab } from '@material-ui/core'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
-import { convertDate } from '../components/modifiers'
+import { prepareMatchData } from '../components/modifiers'
 import LoadMore from '../components/elements/LoadMore'
 import TeamScore from '../components/elements/TeamScore'
 
@@ -92,7 +92,7 @@ class Index extends React.Component {
     try {
       const data = await getMatchesList(0, elementPerPage, true)
 
-      const matchesObj = this.prepareMatchData(data.matches)
+      const matchesObj = prepareMatchData(data.matches, this.state.matchesObj)
       const matchesFetchedCount = data.matches.length
       const numMatches = data.count
 
@@ -107,7 +107,7 @@ class Index extends React.Component {
       this.setState({ loadMoreActive: false })
       try {
         getMatchesList(this.state.matchesFetchedCount, elementPerPage).then((newMatches) => {
-          const matchesObj = this.prepareMatchData(newMatches.matches)
+          const matchesObj = prepareMatchData(newMatches.matches, this.state.matchesObj)
           const matchesFetchedCount = newMatches.matches.length + this.state.matchesFetchedCount
           this.setState({ matchesObj, matchesFetchedCount, loadMoreActive: this.state.numMatches > matchesFetchedCount})
         })
@@ -115,27 +115,6 @@ class Index extends React.Component {
         console.log(err)
       }
     }
-  }
-
-  /**
-   * Group match data by createdAt date
-   * @param {array} data - matches array
-   * @returns {object} grouped matches
-   */
-  prepareMatchData (data) {
-    const matches = this.state.matchesObj
-    data.forEach(item => {
-      const currDate = convertDate(item.createdAt)
-      if (currDate in matches) {
-        matches[currDate].matches.push(item)
-      } else {
-        matches[currDate] = {
-          matches: [item]
-        }
-      }
-    })
-
-    return matches
   }
 
   differenceTile = (hasWin, classes, difference, styleMatchDifference) => (

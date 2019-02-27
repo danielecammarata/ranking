@@ -1,38 +1,38 @@
 import React from 'react'
 import Router from 'next/router'
 import {
+  Avatar,
   Card,
   CardActions,
   CardContent,
   CardHeader,
-  CardMedia
+  CardMedia,
+  FormLabel,
+  Typography
 } from '@material-ui/core'
 
-import FormLabel from '@material-ui/core/FormLabel'
-import Avatar from '@material-ui/core/Avatar'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
 import IconButton from '@material-ui/core/IconButton'
 import Collapse from '@material-ui/core/Collapse'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Popper from '@material-ui/core/Popper'
 import Fade from '@material-ui/core/Fade'
+import Popper from '@material-ui/core/Popper'
 import Paper from '@material-ui/core/Paper'
-import classnames from 'classnames'
-import { withStyles } from '@material-ui/core/styles'
-import CountUp from 'react-countup'
-import BadgeIcon from '../../components/badge'
 import Chip from '@material-ui/core/Chip'
-import green from '@material-ui/core/colors/green'
-import red from '@material-ui/core/colors/red'
-
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
-
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
+
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import classnames from 'classnames'
+import { withStyles } from '@material-ui/core/styles'
+import CountUp from 'react-countup'
+import BadgeIcon from '../../components/badge'
+import green from '@material-ui/core/colors/green'
+import red from '@material-ui/core/colors/red'
 
 import Layout from '../../components/Layout'
 import MatchTeamPointsBadge from '../../components/MatchTeamPointsBadge'
@@ -40,7 +40,7 @@ import ActionsHeader from '../../components/blocks/ActionsHeader'
 import LoadMore from '../../components/elements/LoadMore'
 import PlayerRoleSelection from '../../components/elements/PlayerRoleSelection'
 import TeamScore from '../../components/elements/TeamScore'
-import { convertDate } from '../../components/modifiers'
+import { prepareMatchData } from '../../components/modifiers'
 import {
   styleMatchDifference,
   styleMatchTile,
@@ -65,7 +65,6 @@ import {
   userFeatureValue,
   userFirstChar
 } from '../../lib/userPage'
-import { Typography } from '@material-ui/core'
 import { getPlayerMatchesList } from '../../lib/api/match'
 
 const styles = theme => ({
@@ -200,7 +199,7 @@ class UpdateUser extends React.Component {
     try {
       var that = this;
       getPlayerMatchesList(this.props.user._id, 0, elementPerPage, true).then((rs) => {
-        const matchesObj = that.prepareMatchData(rs.matches)
+        const matchesObj = prepareMatchData(rs.matches, this.state.matchesObj)
         const matchesFetchedCount = rs.matches.length
         const numMatches = rs.count
         that.setState({ matchesObj, matchesFetchedCount, numMatches })
@@ -223,39 +222,20 @@ class UpdateUser extends React.Component {
     }, 300)
   }
 
-  /**
-   * Group match data by createdAt date
-   * @param {array} data - matches array
-   * @returns {object} grouped matches
-   */
-  prepareMatchData = (data) => {
-    const matches = this.state.matchesObj
-    data.forEach(item => {
-      const currDate = convertDate(item.createdAt)
-      if (currDate in matches) {
-        matches[currDate].matches.push(item)
-      } else {
-        matches[currDate] = {
-          matches: [item]
-        }
-      }
-    })
-
-    return matches
-  }
-
   loadMore = () => {
-    if(this.state.loadMoreActive === true) {
-      this.setState({ loadMoreActive: false })
-      try {
-        getPlayerMatchesList(this.props.user._id, this.state.matchesFetchedCount, elementPerPage).then((newMatches) => {
-          const matchesObj = this.prepareMatchData(newMatches.matches)
-          const matchesFetchedCount = newMatches.matches.length + this.state.matchesFetchedCount
-          this.setState({ matchesObj, matchesFetchedCount, loadMoreActive: this.state.numMatches > matchesFetchedCount})
-        })
-      } catch (err) {
-        console.error(err)
-      }
+    if (this.state.loadMoreActive !== true) {
+      return
+    }
+    this.setState({ loadMoreActive: false })
+    try {
+      getPlayerMatchesList(this.props.user._id, this.state.matchesFetchedCount, elementPerPage).then((newMatches) => {
+        const matchesObj = prepareMatchData(newMatches.matches, this.state.matchesObj)
+        const matchesFetchedCount = newMatches.matches.length + this.state.matchesFetchedCount
+        this.setState({ matchesObj, matchesFetchedCount, loadMoreActive: this.state.numMatches > matchesFetchedCount})
+        return newMatches
+      })
+    } catch (err) {
+      console.error(err)
     }
   }
 

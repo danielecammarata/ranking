@@ -17,7 +17,7 @@ import Chip from '@material-ui/core/Chip'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
 import { Divider, Typography } from '@material-ui/core';
-import { convertDate } from '../../components/modifiers'
+import { prepareMatchData } from '../../components/modifiers'
 import LoadMore from '../../components/elements/LoadMore'
 
 const elementPerPage = 3
@@ -45,7 +45,7 @@ class IndexMatch extends React.Component {
       if(this.state.matches.length <= 0){
         const data = await getMatchesList(0, elementPerPage)
 
-        const matchesObj = this.prepareMatchData(data)
+        const matchesObj = prepareMatchData(data, this.state.matchesObj)
 
         this.setState({ matches: data, matchesObj: matchesObj })
       }
@@ -60,34 +60,13 @@ class IndexMatch extends React.Component {
       try {
         getMatchesList(this.state.matches.length, elementPerPage).then((newMatches) => {
           const matches = this.state.matches.concat(newMatches)
-          const matchesObj =this.prepareMatchData(newMatches)
+          const matchesObj = prepareMatchData(newMatches, this.state.matchesObj)
           this.setState({loadMoreActive: (matches.length > this.state.matches.length + elementPerPage), matches: matches, matchesObj: matchesObj })
         })
       } catch (err) {
         console.log(err)
       }
     }
-  }
-
-  /**
-   * Group match data by createdAt date
-   * @param {array} data - matches array
-   * @returns {object} grouped matches
-   */
-  prepareMatchData (data) {
-    const matches = this.state.matchesObj
-    data.forEach(item => {
-      const currDate = convertDate(item.createdAt)
-      if (currDate in matches) {
-        matches[currDate].matches.push(item)
-      } else {
-        matches[currDate] = {
-          matches: [item]
-        }
-      }
-    })
-
-    return matches
   }
 
   matchTile = (label, matches) => (
