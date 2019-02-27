@@ -194,7 +194,7 @@ class UpdateUser extends React.Component {
         const matchesFetchedCount = rs.matches.length
         const numMatches = rs.count
         that.setState({ matchesObj, matchesFetchedCount, numMatches })
-        return newMatches
+        return matchesObj
       })
       .catch(reason => {
         throw new Error(reason)
