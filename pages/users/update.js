@@ -16,7 +16,6 @@ import Collapse from '@material-ui/core/Collapse'
 import Fade from '@material-ui/core/Fade'
 import Popper from '@material-ui/core/Popper'
 import Paper from '@material-ui/core/Paper'
-import Chip from '@material-ui/core/Chip'
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
@@ -30,23 +29,16 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import classnames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 import CountUp from 'react-countup'
-import BadgeIcon from '../../components/badge'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 
 import Layout from '../../components/Layout'
-import MatchTeamPointsBadge from '../../components/MatchTeamPointsBadge'
 import ActionsHeader from '../../components/blocks/ActionsHeader'
+import MatchesList from '../../components/blocks/MatchesList'
 import LoadMore from '../../components/elements/LoadMore'
 import PlayerRoleSelection from '../../components/elements/PlayerRoleSelection'
-import TeamScore from '../../components/elements/TeamScore'
 import { prepareMatchData } from '../../components/modifiers'
-import {
-  styleMatchDifference,
-  styleMatchTile,
-  styleTeamTile,
-  styleTeamPlayer
-} from '../../lib/ListOfMatches.js'
+import { styleMatchTile } from '../../lib/ListOfMatches.js'
 import { getUsersBySlug, updateUser } from '../../lib/api/users'
 import { styleForm } from '../../lib/SharedStyles'
 import {
@@ -280,69 +272,10 @@ class UpdateUser extends React.Component {
       <Divider />
       <GridList style={{margin: '0 auto', maxWidth: '100%'}}>
         {matches.map(match => (
-          <GridListTile style={styleMatchTile} key={match.slug}>
-            <GridList style={{lineHeight: '13px'}}>
-              <GridListTile style={styleTeamTile('left')} className={this.props.classes.styleTeamTile}>
-                <Chip
-                  avatar={<Avatar src={match.teamHome.defender.avatarUrl} />}
-                  label={match.teamHome.defender.name}
-                  style={styleTeamPlayer('left')}
-                />
-                <Chip
-                  avatar={<Avatar src={match.teamHome.striker.avatarUrl} />}
-                  label={match.teamHome.striker.name}
-                  style={styleTeamPlayer('left')}
-                />
-                <MatchTeamPointsBadge
-                  hasWin={match.teamHome.score > match.teamAway.score}
-                  classes={this.props.classes}
-                  difference={match.difference}
-                  styleMatchDifference={styleMatchDifference}
-                />
-              </GridListTile>
-              <TeamScore
-                matchId={match._id}
-                score={match.teamHome.score}
-                defScore={match.teamHome.defScore}
-                strScore={match.teamHome.strScore}
-                teamPlace="home"
-              />
-              <GridListTile style={styleTeamTile('right')} className={this.props.classes.styleTeamTileLast}>
-                <Chip
-                  avatar={<Avatar src={match.teamAway.defender.avatarUrl} />}
-                  classes={{label: this.props.classes.chipsLabel}}
-                  label={match.teamAway.defender.name}
-                  style={styleTeamPlayer('right')}
-                />
-                <Chip
-                  avatar={<Avatar src={match.teamAway.striker.avatarUrl} />}
-                  label={match.teamAway.striker.name}
-                  style={styleTeamPlayer('right')}
-                />
-                <MatchTeamPointsBadge
-                  hasWin={match.teamAway.score > match.teamHome.score}
-                  classes={this.props.classes}
-                  difference={match.difference}
-                  styleMatchDifference={styleMatchDifference}
-                />
-              </GridListTile>
-              <TeamScore
-                matchId={match._id}
-                score={match.teamAway.score}
-                defScore={match.teamAway.defScore}
-                strScore={match.teamAway.strScore}
-                teamPlace="away"
-              />
-            </GridList>
-            <div className={this.props.classes.badgesList}>
-              {match.badges.map((badge, index) => (
-                <BadgeIcon
-                  key={`badge-${index}`}
-                  type={badge}
-                />
-              ))}
-            </div>
-          </GridListTile>
+          <MatchesList
+            match={match}
+            classes={this.props.classes}
+          />
         ))}
       </GridList>
     </GridListTile>

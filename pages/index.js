@@ -5,18 +5,13 @@ import Link from 'next/link'
 import Layout from '../components/Layout.js'
 import { getMatchesList } from '../lib/api/match'
 import {
-  styleMatchDifference,
-  styleMatchTile,
-  styleTeamTile,
-  styleTeamPlayer
+  styleMatchTile
 } from '../lib/ListOfMatches.js'
 import { SoccerFieldIcon, TrophyIcon } from '../components/IconComponents'
 
 import { withStyles } from '@material-ui/core/styles'
 
-import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
-import Chip from '@material-ui/core/Chip'
 import Grid from '@material-ui/core/Grid'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
@@ -24,8 +19,9 @@ import { Divider, Typography, Fab } from '@material-ui/core'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 import { prepareMatchData } from '../components/modifiers'
+
 import LoadMore from '../components/elements/LoadMore'
-import TeamScore from '../components/elements/TeamScore'
+import MatchesList from '../components/blocks/MatchesList'
 
 const elementPerPage = 6
 
@@ -137,70 +133,10 @@ class Index extends React.Component {
       <Divider />
       <GridList style={{margin: '0 auto', maxWidth: '100%'}}>
         {matches.map(match => (
-          <GridListTile style={styleMatchTile} key={match.slug}>
-            <GridList style={{lineHeight: '13px'}}>
-              <GridListTile style={styleTeamTile('left')} className={this.props.classes.styleTeamTile}>
-                <Chip
-                  avatar={<Avatar src={match.teamHome.defender.avatarUrl} />}
-                  label={match.teamHome.defender.name}
-                  style={styleTeamPlayer('left')}
-                />
-                <Chip
-                  avatar={<Avatar src={match.teamHome.striker.avatarUrl} />}
-                  label={match.teamHome.striker.name}
-                  style={styleTeamPlayer('left')}
-                />
-                {
-                  this.differenceTile(
-                    (match.teamHome.score > match.teamAway.score),
-                    this.props.classes,
-                    match.difference,
-                    styleMatchDifference
-                  )
-                }
-              </GridListTile>
-              <TeamScore
-                matchId={match._id}
-                score={match.teamHome.score}
-                defScore={match.teamHome.defScore}
-                strScore={match.teamHome.strScore}
-                teamPlace="home"
-              />
-              <GridListTile style={styleTeamTile('right')} className={this.props.classes.styleTeamTileLast}>
-                <Chip
-                  avatar={<Avatar src={match.teamAway.defender.avatarUrl} />}
-                  classes={{label: this.props.classes.chipsLabel}}
-                  label={match.teamAway.defender.name}
-                  style={styleTeamPlayer('right')}
-                />
-                <Chip
-                  avatar={<Avatar src={match.teamAway.striker.avatarUrl} />}
-                  label={match.teamAway.striker.name}
-                  style={styleTeamPlayer('right')}
-                />
-                {
-                  this.differenceTile(
-                    (match.teamAway.score > match.teamHome.score),
-                    this.props.classes,
-                    match.difference,
-                    styleMatchDifference
-                  )
-                }
-              </GridListTile>
-              <TeamScore
-                matchId={match._id}
-                score={match.teamAway.score}
-                defScore={match.teamAway.defScore}
-                strScore={match.teamAway.strScore}
-                teamPlace="away"
-              />
-            </GridList>
-            <div className={this.props.classes.badgesList}>
-              {match.badges.map(badge => (
-                <BadgeIcon type={badge}/>
-              ))}
-            </div>
-          </GridListTile>
+          <MatchesList
+            match={match}
+            classes={this.props.classes}
+          />
         ))}
       </GridList>
     </GridListTile>
