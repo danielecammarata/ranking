@@ -1,18 +1,14 @@
 import React from 'react'
 import Router from 'next/router'
-import Link from 'next/link'
 import {
   Card,
-  Radio
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia
 } from '@material-ui/core'
 
-import RadioGroup from '@material-ui/core/RadioGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormLabel from '@material-ui/core/FormLabel'
-import CardHeader from '@material-ui/core/CardHeader'
-import CardMedia from '@material-ui/core/CardMedia'
-import CardContent from '@material-ui/core/CardContent'
-import CardActions from '@material-ui/core/CardActions'
 import Avatar from '@material-ui/core/Avatar'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import IconButton from '@material-ui/core/IconButton'
@@ -25,8 +21,6 @@ import classnames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 import CountUp from 'react-countup'
 import BadgeIcon from '../../components/badge'
-
-import Badge from '@material-ui/core/Badge'
 import Chip from '@material-ui/core/Chip'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
@@ -44,12 +38,12 @@ import Layout from '../../components/Layout'
 import MatchTeamPointsBadge from '../../components/MatchTeamPointsBadge'
 import ActionsHeader from '../../components/blocks/ActionsHeader'
 import LoadMore from '../../components/elements/LoadMore'
+import PlayerRoleSelection from '../../components/elements/PlayerRoleSelection'
+import TeamScore from '../../components/elements/TeamScore'
 import { convertDate } from '../../components/modifiers'
 import {
-  styleMatchScore,
   styleMatchDifference,
   styleMatchTile,
-  stylePlayerScore,
   styleTeamTile,
   styleTeamPlayer
 } from '../../lib/ListOfMatches.js'
@@ -71,7 +65,7 @@ import {
   userFeatureValue,
   userFirstChar
 } from '../../lib/userPage'
-import { Typography, Fab } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import { getPlayerMatchesList } from '../../lib/api/match'
 
 const styles = theme => ({
@@ -326,15 +320,13 @@ class UpdateUser extends React.Component {
                   styleMatchDifference={styleMatchDifference}
                 />
               </GridListTile>
-              <GridListTile style={styleMatchScore}>
-                <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
-                  <Fab size="medium" color="primary">
-                    {match.teamHome.score}
-                  </Fab>
-                </Link>
-                <Badge color="secondary" badgeContent={<small>{match.teamHome.defScore}</small>} style={stylePlayerScore('defender','home')}> </Badge>
-                <Badge color="secondary" badgeContent={<small>{match.teamHome.strScore}</small>} style={stylePlayerScore('striker','home')}> </Badge>
-              </GridListTile>
+              <TeamScore
+                matchId={match._id}
+                score={match.teamHome.score}
+                defScore={match.teamHome.defScore}
+                strScore={match.teamHome.strScore}
+                teamPlace="home"
+              />
               <GridListTile style={styleTeamTile('right')} className={this.props.classes.styleTeamTileLast}>
                 <Chip
                   avatar={<Avatar src={match.teamAway.defender.avatarUrl} />}
@@ -354,15 +346,13 @@ class UpdateUser extends React.Component {
                   styleMatchDifference={styleMatchDifference}
                 />
               </GridListTile>
-              <GridListTile style={styleMatchScore}>
-                <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
-                  <Fab size="medium" color="primary">
-                    {match.teamAway.score}
-                  </Fab>
-                </Link>
-                <Badge color="secondary" badgeContent={<small>{match.teamAway.defScore}</small>} style={stylePlayerScore('defender','away')}> </Badge>
-                <Badge color="secondary" badgeContent={<small>{match.teamAway.strScore}</small>} style={stylePlayerScore('striker','away')}> </Badge>
-              </GridListTile>
+              <TeamScore
+                matchId={match._id}
+                score={match.teamAway.score}
+                defScore={match.teamAway.defScore}
+                strScore={match.teamAway.strScore}
+                teamPlace="away"
+              />
             </GridList>
             <div className={this.props.classes.badgesList}>
               {match.badges.map((badge, index) => (
@@ -428,32 +418,11 @@ class UpdateUser extends React.Component {
                                     required
                                   />
                                   <FormLabel className={this.props.classes.radioLegend} component="legend">Main role</FormLabel>
-                                  <RadioGroup
-                                    aria-label="role"
-                                    className={this.props.classes.radioGroup}
-                                    name="role2"
-                                    value={this.state.role || 'jolly'}
-                                    onChange={this.handleChange('role')}
-                                  >
-                                    <FormControlLabel
-                                      className={this.props.classes.radioLabel}
-                                      value='defender'
-                                      control={<Radio color="primary" />}
-                                      label="Defender"
-                                    />
-                                    <FormControlLabel
-                                      className={this.props.classes.radioLabel}
-                                      value='striker'
-                                      control={<Radio color="primary" />}
-                                      label="Striker"
-                                    />
-                                    <FormControlLabel
-                                      className={this.props.classes.radioLabel}
-                                      value='jolly'
-                                      control={<Radio color="primary" />}
-                                      label="Jolly"
-                                    />
-                                  </RadioGroup>
+                                  <PlayerRoleSelection
+                                    classes={this.props.classes}
+                                    role={this.state.role}
+                                    handleChange={this.handleChange}
+                                  />
                                   <TextField
                                     style={formText}
                                     className={this.props.classes.userDescription}

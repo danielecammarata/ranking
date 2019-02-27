@@ -5,10 +5,8 @@ import Link from 'next/link'
 import Layout from '../components/Layout.js'
 import { getMatchesList } from '../lib/api/match'
 import {
-  styleMatchScore,
   styleMatchDifference,
   styleMatchTile,
-  stylePlayerScore,
   styleTeamTile,
   styleTeamPlayer
 } from '../lib/ListOfMatches.js'
@@ -27,6 +25,7 @@ import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 import { convertDate } from '../components/modifiers'
 import LoadMore from '../components/elements/LoadMore'
+import TeamScore from '../components/elements/TeamScore'
 
 const elementPerPage = 6
 
@@ -181,15 +180,13 @@ class Index extends React.Component {
                   )
                 }
               </GridListTile>
-              <GridListTile style={styleMatchScore}>
-                <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
-                  <Fab size="medium" color="primary">
-                    {match.teamHome.score}
-                  </Fab>
-                </Link>
-                <Badge color="secondary" badgeContent={<small>{match.teamHome.defScore}</small>} style={stylePlayerScore('defender','home')}> </Badge>
-                <Badge color="secondary" badgeContent={<small>{match.teamHome.strScore}</small>} style={stylePlayerScore('striker','home')}> </Badge>
-              </GridListTile>
+              <TeamScore
+                matchId={match._id}
+                score={match.teamHome.score}
+                defScore={match.teamHome.defScore}
+                strScore={match.teamHome.strScore}
+                teamPlace="home"
+              />
               <GridListTile style={styleTeamTile('right')} className={this.props.classes.styleTeamTileLast}>
                 <Chip
                   avatar={<Avatar src={match.teamAway.defender.avatarUrl} />}
@@ -211,15 +208,13 @@ class Index extends React.Component {
                   )
                 }
               </GridListTile>
-              <GridListTile style={styleMatchScore}>
-                <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
-                  <Fab size="medium" color="primary">
-                    {match.teamAway.score}
-                  </Fab>
-                </Link>
-                <Badge color="secondary" badgeContent={<small>{match.teamAway.defScore}</small>} style={stylePlayerScore('defender','away')}> </Badge>
-                <Badge color="secondary" badgeContent={<small>{match.teamAway.strScore}</small>} style={stylePlayerScore('striker','away')}> </Badge>
-              </GridListTile>
+              <TeamScore
+                matchId={match._id}
+                score={match.teamAway.score}
+                defScore={match.teamAway.defScore}
+                strScore={match.teamAway.strScore}
+                teamPlace="away"
+              />
             </GridList>
             <div className={this.props.classes.badgesList}>
               {match.badges.map(badge => (

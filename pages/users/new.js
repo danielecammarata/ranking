@@ -1,22 +1,17 @@
 import React from 'react'
 import Router from 'next/router'
 import TextField from '@material-ui/core/TextField'
-import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
 
 import Layout from '../../components/Layout.js'
+import PlayerRoleSelection from '../../components/elements/PlayerRoleSelection'
+
 import { addNewUser } from '../../lib/api/users.js'
-import { styleH1, styleForm, styleTextField, styleFormTitle, styleFormButton } from '../../lib/SharedStyles.js'
-import { formText } from '../../lib/userPage'
-import { newUser } from '../../lib/Layouts.js'
+import { styleTextField, styleFormButton } from '../../lib/SharedStyles.js'
 import { withStyles } from '@material-ui/core/styles'
 
-const styles = theme => ({
+const styles = () => ({
   radioLegend: {
     color: '#000',
     fontSize: '15px',
@@ -93,32 +88,11 @@ class AddUser extends React.Component {
             required
           />
           <FormLabel className={this.props.classes.radioLegend} component="legend">Main role</FormLabel>
-          <RadioGroup
-            aria-label="role"
-            className={this.props.classes.radioGroup}
-            name="role2"
-            value={this.state.role || 'jolly'}
-            onChange={this.handleChange('role')}
-          >
-            <FormControlLabel
-              className={this.props.classes.radioLabel}
-              value='defender'
-              control={<Radio color="primary" />}
-              label="Defender"
-            />
-            <FormControlLabel
-              className={this.props.classes.radioLabel}
-              value='striker'
-              control={<Radio color="primary" />}
-              label="Striker"
-            />
-            <FormControlLabel
-              className={this.props.classes.radioLabel}
-              value='jolly'
-              control={<Radio color="primary" />}
-              label="Jolly"
-            />
-          </RadioGroup>
+          <PlayerRoleSelection
+            classes={this.props.classes}
+            role={this.state.role}
+            handleChange={this.handleChange}
+          />
           <TextField
             className={this.props.classes.multilineText}
             id="description"
