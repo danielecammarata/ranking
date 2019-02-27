@@ -1,7 +1,13 @@
 import Link from 'next/link'
 import Layout from '../../components/Layout.js'
 import { getMatchesList } from '../../lib/api/match'
-import { styleLoadMoreButton,styleMatchInfo,styleMatchScore,styleMatchTile,stylePlayerScore,styleTeamTile,styleTeamPlayer } from '../../lib/ListOfMatches.js'
+import {
+  styleMatchScore,
+  styleMatchTile,
+  stylePlayerScore,
+  styleTeamTile,
+  styleTeamPlayer
+} from '../../lib/ListOfMatches.js'
 import { withStyles } from '@material-ui/core/styles'
 
 import Avatar from '@material-ui/core/Avatar'
@@ -10,8 +16,9 @@ import Button from '@material-ui/core/Button'
 import Chip from '@material-ui/core/Chip'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
-import GridListTileBar from '@material-ui/core/GridListTileBar'
-import { Paper, Divider, Typography } from '@material-ui/core';
+import { Divider, Typography } from '@material-ui/core';
+import { convertDate } from '../../components/modifiers'
+import LoadMore from '../../components/elements/LoadMore'
 
 const elementPerPage = 3
 
@@ -70,7 +77,7 @@ class IndexMatch extends React.Component {
   prepareMatchData (data) {
     const matches = this.state.matchesObj
     data.forEach(item => {
-      const currDate = this.convertDate(item.createdAt)
+      const currDate = convertDate(item.createdAt)
       if (currDate in matches) {
         matches[currDate].matches.push(item)
       } else {
@@ -81,12 +88,6 @@ class IndexMatch extends React.Component {
     })
 
     return matches
-  }
-
-  convertDate (inputFormat) {
-    function pad(s) { return (s < 10) ? '0' + s : s; }
-    var d = new Date(inputFormat)
-    return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/')
   }
 
   matchTile = (label, matches) => (
@@ -193,22 +194,16 @@ class IndexMatch extends React.Component {
           </GridList>
           <GridListTileBar
             style={styleMatchInfo}
-            title={this.convertDate(match.createdAt)}
+            title={convertDate(match.createdAt)}
           >
           </GridListTileBar>
         </GridListTile>
       ))}
     </GridList> */}
-    <Button
-        color="primary"
-        disabled={!this.state.loadMoreActive}
-        onClick={this.loadMore}
-        style={styleLoadMoreButton(this.state.loadMoreActive)}
-        type="button"
-        variant="contained"
-      >
-        Load more
-      </Button>
+    <LoadMore
+      loadMoreActive={this.state.loadMoreActive}
+      loadMore={this.loadMore}
+    />
   </Layout>
   }
 }

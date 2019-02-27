@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Layout from '../components/Layout.js'
 import { getMatchesList } from '../lib/api/match'
 import {
-  styleLoadMoreButton,
   styleMatchScore,
   styleMatchDifference,
   styleMatchTile,
@@ -19,15 +18,15 @@ import { withStyles } from '@material-ui/core/styles'
 
 import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
-import Button from '@material-ui/core/Button'
 import Chip from '@material-ui/core/Chip'
 import Grid from '@material-ui/core/Grid'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
-import ListIcon from '@material-ui/icons/List'
 import { Divider, Typography, Fab } from '@material-ui/core'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
+import { convertDate } from '../components/modifiers'
+import LoadMore from '../components/elements/LoadMore'
 
 const elementPerPage = 6
 
@@ -127,7 +126,7 @@ class Index extends React.Component {
   prepareMatchData (data) {
     const matches = this.state.matchesObj
     data.forEach(item => {
-      const currDate = this.convertDate(item.createdAt)
+      const currDate = convertDate(item.createdAt)
       if (currDate in matches) {
         matches[currDate].matches.push(item)
       } else {
@@ -138,12 +137,6 @@ class Index extends React.Component {
     })
 
     return matches
-  }
-
-  convertDate (inputFormat) {
-    function pad(s) { return (s < 10) ? '0' + s : s; }
-    var d = new Date(inputFormat)
-    return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/')
   }
 
   differenceTile = (hasWin, classes, difference, styleMatchDifference) => (
@@ -281,16 +274,10 @@ class Index extends React.Component {
             this.matchTile(matchKey,  matchesObj[matchKey].matches)
           ))}
         </GridList>
-        <Button
-          color="primary"
-          disabled={!this.state.loadMoreActive}
-          onClick={this.loadMore}
-          style={styleLoadMoreButton(this.state.loadMoreActive)}
-          type="button"
-          variant="contained"
-        >
-          Load more s
-        </Button>
+        <LoadMore
+          loadMoreActive={this.state.loadMoreActive}
+          loadMore={this.loadMore}
+        />
       </Layout>
     )
   }

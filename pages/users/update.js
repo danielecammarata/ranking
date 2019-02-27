@@ -1,9 +1,11 @@
 import React from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
-import Grid from '@material-ui/core/Grid'
-import Card from '@material-ui/core/Card'
-import Radio from '@material-ui/core/Radio'
+import {
+  Card,
+  Radio
+} from '@material-ui/core'
+
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormLabel from '@material-ui/core/FormLabel'
@@ -19,7 +21,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Popper from '@material-ui/core/Popper'
 import Fade from '@material-ui/core/Fade'
 import Paper from '@material-ui/core/Paper'
-import { SoccerFieldIcon, TrophyIcon } from '../../components/IconComponents'
 import classnames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 import CountUp from 'react-countup'
@@ -38,11 +39,13 @@ import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 
-import Layout from '../../components/Layout.js'
+import Layout from '../../components/Layout'
+import MatchTeamPointsBadge from '../../components/MatchTeamPointsBadge'
+import ActionsHeader from '../../components/blocks/ActionsHeader'
+import LoadMore from '../../components/elements/LoadMore'
+import { convertDate } from '../../components/modifiers'
 import {
-  styleLoadMoreButton,
   styleMatchScore,
   styleMatchDifference,
   styleMatchTile,
@@ -52,8 +55,23 @@ import {
 } from '../../lib/ListOfMatches.js'
 import { getUsersBySlug, updateUser } from '../../lib/api/users'
 import { styleForm } from '../../lib/SharedStyles'
-import { formArea, formButton, formButtonWrapper, formText, paperWrapper, popperWrapper, userAvatar, userFeature, userFeatureBar, userFeatureBarWrapper, userFeatureLabel, userFeatureTitle, userFeatureValue, userFirstChar } from '../../lib/userPage'
-import { Typography } from '@material-ui/core'
+import {
+  formArea,
+  formButton,
+  formButtonWrapper,
+  formText,
+  paperWrapper,
+  popperWrapper,
+  userAvatar,
+  userFeature,
+  userFeatureBar,
+  userFeatureBarWrapper,
+  userFeatureLabel,
+  userFeatureTitle,
+  userFeatureValue,
+  userFirstChar
+} from '../../lib/userPage'
+import { Typography, Fab } from '@material-ui/core'
 import { getPlayerMatchesList } from '../../lib/api/match'
 
 const styles = theme => ({
@@ -219,7 +237,7 @@ class UpdateUser extends React.Component {
   prepareMatchData = (data) => {
     const matches = this.state.matchesObj
     data.forEach(item => {
-      const currDate = this.convertDate(item.createdAt)
+      const currDate = convertDate(item.createdAt)
       if (currDate in matches) {
         matches[currDate].matches.push(item)
       } else {
@@ -242,21 +260,15 @@ class UpdateUser extends React.Component {
           this.setState({ matchesObj, matchesFetchedCount, loadMoreActive: this.state.numMatches > matchesFetchedCount})
         })
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     }
-  }
-
-  convertDate = (inputFormat) => {
-    function pad(s) { return (s < 10) ? '0' + s : s; }
-    var d = new Date(inputFormat)
-    return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/')
   }
 
   onSubmit = async (event) => {
     event.preventDefault()
 
-    const users = await updateUser({
+    await updateUser({
       slug: this.props.user.slug,
       name: this.state.name,
       avatarUrl: this.state.avatarUrl,
@@ -286,30 +298,6 @@ class UpdateUser extends React.Component {
     this.setState(state => ({ expanded: !state.expanded }))
   }
 
-  differenceTile = (hasWin, classes, difference, styleMatchDifference) => (
-    <Badge
-      color={hasWin ? 'primary' : 'secondary'}
-      classes={{
-        colorPrimary: classes.winBadge,
-        colorSecondary: classes.loseBadge
-      }}
-      badgeContent={<small>{hasWin ? difference : - difference}</small>}
-      style={styleMatchDifference}
-    />
-  )
-
-  homeTeamStyle = () => {
-    var t = styleTeamTile('left')
-    t.width = '41%'
-    return t
-  }
-
-  awayTeamStyle = () => {
-    var t = styleTeamTile('right')
-    t.width = '41%'
-    return t
-  }
-
   matchTile = (label, matches) => (
     <GridListTile style={styleMatchTile} key={label}>
       <Typography>
@@ -331,20 +319,18 @@ class UpdateUser extends React.Component {
                   label={match.teamHome.striker.name}
                   style={styleTeamPlayer('left')}
                 />
-                {
-                  this.differenceTile(
-                    (match.teamHome.score > match.teamAway.score),
-                    this.props.classes,
-                    match.difference,
-                    styleMatchDifference
-                  )
-                }
+                <MatchTeamPointsBadge
+                  hasWin={match.teamHome.score > match.teamAway.score}
+                  classes={this.props.classes}
+                  difference={match.difference}
+                  styleMatchDifference={styleMatchDifference}
+                />
               </GridListTile>
               <GridListTile style={styleMatchScore}>
                 <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
-                  <Button variant="fab" mini color="primary">
+                  <Fab size="medium" color="primary">
                     {match.teamHome.score}
-                  </Button>
+                  </Fab>
                 </Link>
                 <Badge color="secondary" badgeContent={<small>{match.teamHome.defScore}</small>} style={stylePlayerScore('defender','home')}> </Badge>
                 <Badge color="secondary" badgeContent={<small>{match.teamHome.strScore}</small>} style={stylePlayerScore('striker','home')}> </Badge>
@@ -361,28 +347,29 @@ class UpdateUser extends React.Component {
                   label={match.teamAway.striker.name}
                   style={styleTeamPlayer('right')}
                 />
-                {
-                  this.differenceTile(
-                    (match.teamAway.score > match.teamHome.score),
-                    this.props.classes,
-                    match.difference,
-                    styleMatchDifference
-                  )
-                }
+                <MatchTeamPointsBadge
+                  hasWin={match.teamAway.score > match.teamHome.score}
+                  classes={this.props.classes}
+                  difference={match.difference}
+                  styleMatchDifference={styleMatchDifference}
+                />
               </GridListTile>
               <GridListTile style={styleMatchScore}>
                 <Link as={`/match/${match._id}`} href={`/matches/detail/?slug=${match._id}`}>
-                  <Button variant="fab" mini color="primary">
+                  <Fab size="medium" color="primary">
                     {match.teamAway.score}
-                  </Button>
+                  </Fab>
                 </Link>
                 <Badge color="secondary" badgeContent={<small>{match.teamAway.defScore}</small>} style={stylePlayerScore('defender','away')}> </Badge>
                 <Badge color="secondary" badgeContent={<small>{match.teamAway.strScore}</small>} style={stylePlayerScore('striker','away')}> </Badge>
               </GridListTile>
             </GridList>
             <div className={this.props.classes.badgesList}>
-              {match.badges.map(badge => (
-                <BadgeIcon type={badge}/>
+              {match.badges.map((badge, index) => (
+                <BadgeIcon
+                  key={`badge-${index}`}
+                  type={badge}
+                />
               ))}
             </div>
           </GridListTile>
@@ -393,41 +380,12 @@ class UpdateUser extends React.Component {
 
   render() {
     const matchesObj = this.state.matchesObj
-    const { name, avatarUrl, description, role, anchorEl, open, placement, expanded } = this.state
+    const { name, avatarUrl, description, role, anchorEl, open, placement } = this.state
     const { points, stats } = this.props.user
     const { classes } = this.props
     return (
       <Layout>
-          <Grid container justify="center" alignItems="center" spacing={24} style={{marginBottom: '20px'}}>
-            <Grid item xs={24} sm={6}>
-              <Link href="/users">
-                <Button
-                  variant="extendedFab"
-                  aria-label="Ranking"
-                  style={{
-                    width: 200
-                  }}
-                >
-                  <TrophyIcon style={{marginRight: '10px'}}/>
-                  Ranking
-                </Button>
-              </Link>
-            </Grid>
-            <Grid item xs={24} sm={0}>
-              <Link href="/matches/fast">
-                <Button
-                  variant="extendedFab"
-                  aria-label="Ranking"
-                  style={{
-                    width: 200
-                  }}
-                >
-                  <SoccerFieldIcon style={{marginRight: '10px'}}/>
-                  New Match
-                </Button>
-              </Link>
-            </Grid>
-          </Grid>
+        <ActionsHeader />
         <Divider />
         <GridList cols={3}>
           <GridListTile style={userAvatar}>
@@ -660,16 +618,10 @@ class UpdateUser extends React.Component {
             this.matchTile(matchKey,  matchesObj[matchKey].matches)
           ))}
         </GridList>
-        <Button
-          color="primary"
-          disabled={!this.state.loadMoreActive}
-          onClick={this.loadMore}
-          style={styleLoadMoreButton(this.state.loadMoreActive)}
-          type="button"
-          variant="contained"
-        >
-          Load more
-        </Button>
+        <LoadMore
+          loadMoreActive={this.state.loadMoreActive}
+          loadMore={this.loadMore}
+        />
       </Layout>
     )
   }
