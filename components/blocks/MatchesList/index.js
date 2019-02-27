@@ -1,8 +1,10 @@
 import {
   Avatar,
   Chip,
+  Divider,
   GridList,
-  GridListTile
+  GridListTile,
+  Typography
 } from '@material-ui/core'
 import MatchTeamPointsBadge from '../../MatchTeamPointsBadge'
 import TeamScore from '../../elements/TeamScore'
@@ -33,7 +35,7 @@ const styleTeamPlayer = position => ({
   width: '100%'
 })
 
-const MatchesList = ({
+const MatchTile = ({
   match,
   classes
 }) =>
@@ -99,6 +101,26 @@ const MatchesList = ({
         />
       ))}
     </div>
+  </GridListTile>
+
+const MatchesList = ({
+  label,
+  matches,
+  classes
+}) =>
+  <GridListTile style={styleMatchTile} key={label}>
+    <Typography>
+      {label}
+    </Typography>
+    <Divider />
+    <GridList style={{margin: '0 auto', maxWidth: '100%'}}>
+      {matches.map(match => (
+        <MatchTile
+          match={match}
+          classes={classes}
+        />
+      ))}
+    </GridList>
   </GridListTile>
 
   export default MatchesList

@@ -1,12 +1,8 @@
 import withTitle from '../components/hoc/WithTitle'
-import BadgeIcon from '../components/badge'
 
 import Link from 'next/link'
 import Layout from '../components/Layout.js'
 import { getMatchesList } from '../lib/api/match'
-import {
-  styleMatchTile
-} from '../lib/ListOfMatches.js'
 import { SoccerFieldIcon, TrophyIcon } from '../components/IconComponents'
 
 import { withStyles } from '@material-ui/core/styles'
@@ -14,8 +10,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Badge from '@material-ui/core/Badge'
 import Grid from '@material-ui/core/Grid'
 import GridList from '@material-ui/core/GridList'
-import GridListTile from '@material-ui/core/GridListTile'
-import { Divider, Typography, Fab } from '@material-ui/core'
+import { Fab } from '@material-ui/core'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 import { prepareMatchData } from '../components/modifiers'
@@ -125,23 +120,6 @@ class Index extends React.Component {
     />
   )
 
-  matchTile = (label, matches) => (
-    <GridListTile style={styleMatchTile} key={label}>
-      <Typography>
-        {label}
-      </Typography>
-      <Divider />
-      <GridList style={{margin: '0 auto', maxWidth: '100%'}}>
-        {matches.map(match => (
-          <MatchesList
-            match={match}
-            classes={this.props.classes}
-          />
-        ))}
-      </GridList>
-    </GridListTile>
-  )
-
   render () {
     const { matchesObj } = this.state
     return (
@@ -180,9 +158,13 @@ class Index extends React.Component {
         </Grid>
         {/* New grouped matches list */}
         <GridList style={{margin: '0 auto', maxWidth: '768px'}}>
-          {Object.keys(matchesObj).map(matchKey => (
-            this.matchTile(matchKey,  matchesObj[matchKey].matches)
-          ))}
+          {Object.keys(matchesObj).map(matchKey =>
+            <MatchesList
+              label={matchKey}
+              matches={matchesObj[matchKey].matches}
+              classes={this.props.classes}
+            />
+          )}
         </GridList>
         <LoadMore
           loadMoreActive={this.state.loadMoreActive}

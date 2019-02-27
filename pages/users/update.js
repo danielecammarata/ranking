@@ -38,7 +38,6 @@ import MatchesList from '../../components/blocks/MatchesList'
 import LoadMore from '../../components/elements/LoadMore'
 import PlayerRoleSelection from '../../components/elements/PlayerRoleSelection'
 import { prepareMatchData } from '../../components/modifiers'
-import { styleMatchTile } from '../../lib/ListOfMatches.js'
 import { getUsersBySlug, updateUser } from '../../lib/api/users'
 import { styleForm } from '../../lib/SharedStyles'
 import {
@@ -195,6 +194,10 @@ class UpdateUser extends React.Component {
         const matchesFetchedCount = rs.matches.length
         const numMatches = rs.count
         that.setState({ matchesObj, matchesFetchedCount, numMatches })
+        return newMatches
+      })
+      .catch(reason => {
+        throw new Error(reason)
       })
     } catch (err) {
       console.log(err)
@@ -220,12 +223,16 @@ class UpdateUser extends React.Component {
     }
     this.setState({ loadMoreActive: false })
     try {
-      getPlayerMatchesList(this.props.user._id, this.state.matchesFetchedCount, elementPerPage).then((newMatches) => {
-        const matchesObj = prepareMatchData(newMatches.matches, this.state.matchesObj)
-        const matchesFetchedCount = newMatches.matches.length + this.state.matchesFetchedCount
-        this.setState({ matchesObj, matchesFetchedCount, loadMoreActive: this.state.numMatches > matchesFetchedCount})
-        return newMatches
-      })
+      getPlayerMatchesList(this.props.user._id, this.state.matchesFetchedCount, elementPerPage)
+        .then((newMatches) => {
+          const matchesObj = prepareMatchData(newMatches.matches, this.state.matchesObj)
+          const matchesFetchedCount = newMatches.matches.length + this.state.matchesFetchedCount
+          this.setState({ matchesObj, matchesFetchedCount, loadMoreActive: this.state.numMatches > matchesFetchedCount})
+          return newMatches
+        })
+        .catch(reason => {
+          throw new Error(reason)
+        })
     } catch (err) {
       console.error(err)
     }
@@ -263,23 +270,6 @@ class UpdateUser extends React.Component {
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }))
   }
-
-  matchTile = (label, matches) => (
-    <GridListTile style={styleMatchTile} key={label}>
-      <Typography>
-        {label}
-      </Typography>
-      <Divider />
-      <GridList style={{margin: '0 auto', maxWidth: '100%'}}>
-        {matches.map(match => (
-          <MatchesList
-            match={match}
-            classes={this.props.classes}
-          />
-        ))}
-      </GridList>
-    </GridListTile>
-  )
 
   render() {
     const matchesObj = this.state.matchesObj
@@ -496,9 +486,13 @@ class UpdateUser extends React.Component {
 
         {/* New grouped matches list */}
         <GridList style={{margin: '0 auto', maxWidth: '768px'}}>
-          {Object.keys(matchesObj).map(matchKey => (
-            this.matchTile(matchKey,  matchesObj[matchKey].matches)
-          ))}
+          {Object.keys(matchesObj).map(matchKey =>
+            <MatchesList
+              label={matchKey}
+              matches={matchesObj[matchKey].matches}
+              classes={this.props.classes}
+            />
+          )}
         </GridList>
         <LoadMore
           loadMoreActive={this.state.loadMoreActive}
