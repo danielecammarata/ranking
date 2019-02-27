@@ -1,22 +1,17 @@
-import withTitle from '../components/hoc/WithTitle'
-
-import Link from 'next/link'
-import Layout from '../components/Layout.js'
-import { getMatchesList } from '../lib/api/match'
-import { SoccerFieldIcon, TrophyIcon } from '../components/IconComponents'
-
-import { withStyles } from '@material-ui/core/styles'
-
-import Badge from '@material-ui/core/Badge'
 import Grid from '@material-ui/core/Grid'
 import GridList from '@material-ui/core/GridList'
-import { Fab } from '@material-ui/core'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
+import { withStyles } from '@material-ui/core/styles'
+
+import withTitle from '../components/hoc/WithTitle'
+import Layout from '../components/Layout.js'
+import LoadMore from '../components/elements/LoadMore'
+import ActionsHeader from '../components/blocks/ActionsHeader'
+import MatchesList from '../components/blocks/MatchesList'
 import { prepareMatchData } from '../components/modifiers'
 
-import LoadMore from '../components/elements/LoadMore'
-import MatchesList from '../components/blocks/MatchesList'
+import { getMatchesList } from '../lib/api/match'
 
 const elementPerPage = 6
 
@@ -56,17 +51,6 @@ const styles = theme => ({
   }
 })
 
-const differenceTile = (hasWin, classes, difference, styleMatchDifference) =>
-  <Badge
-    color={hasWin ? 'primary' : 'secondary'}
-    classes={{
-      colorPrimary: classes.winBadge,
-      colorSecondary: classes.loseBadge
-    }}
-    badgeContent={<small>{hasWin ? difference : - difference}</small>}
-    style={styleMatchDifference}
-  />
-
 class Index extends React.Component {
   constructor(props) {
     super(props)
@@ -89,72 +73,37 @@ class Index extends React.Component {
 
       this.setState({ matchesObj, matchesFetchedCount, numMatches })
     } catch (err) {
-      console.log(err)
+      throw new Error(err)
     }
   }
 
   loadMore () {
-    if(this.state.loadMoreActive === true) {
-      this.setState({ loadMoreActive: false })
-      try {
-        getMatchesList(this.state.matchesFetchedCount, elementPerPage).then((newMatches) => {
+    if (this.state.loadMoreActive !== true) {
+      return
+    }
+    this.setState({ loadMoreActive: false })
+    try {
+      getMatchesList(this.state.matchesFetchedCount, elementPerPage)
+        .then((newMatches) => {
           const matchesObj = prepareMatchData(newMatches.matches, this.state.matchesObj)
           const matchesFetchedCount = newMatches.matches.length + this.state.matchesFetchedCount
           this.setState({ matchesObj, matchesFetchedCount, loadMoreActive: this.state.numMatches > matchesFetchedCount})
+          return matchesObj
         })
-      } catch (err) {
-        console.log(err)
-      }
+        .catch(reason => {
+          throw new Error(reason)
+        })
+    } catch (err) {
+      throw new Error(err)
     }
   }
-
-  differenceTile = (hasWin, classes, difference, styleMatchDifference) => (
-    <Badge
-      color={hasWin ? 'primary' : 'secondary'}
-      classes={{
-        colorPrimary: classes.winBadge,
-        colorSecondary: classes.loseBadge
-      }}
-      badgeContent={<small>{hasWin ? difference : - difference}</small>}
-      style={styleMatchDifference}
-    />
-  )
 
   render () {
     const { matchesObj } = this.state
     return (
       <Layout>
         <Grid container spacing={16}>
-          <Grid container justify="center" alignItems="center" spacing={24}>
-            <Grid item xs={8} sm={6}>
-              <Link href="/users">
-                <Fab
-                  variant="extended"
-                  aria-label="Ranking"
-                  style={{
-                    width: 200
-                  }}
-                >
-                  <TrophyIcon style={{marginRight:'10px'}}/>
-                  Ranking
-                </Fab>
-              </Link>
-            </Grid>
-            <Grid item xs={8} sm={4}>
-              <Link href="/matches/fast">
-                <Fab
-                  variant="extended"
-                  aria-label="Ranking"
-                  style={{
-                    width: 200
-                  }}
-                >
-                  <SoccerFieldIcon style={{marginRight:'10px'}}/>
-                  New Match
-                </Fab>
-              </Link>
-            </Grid>
-          </Grid>
+          <ActionsHeader />
         </Grid>
         {/* New grouped matches list */}
         <GridList style={{margin: '0 auto', maxWidth: '768px'}}>
