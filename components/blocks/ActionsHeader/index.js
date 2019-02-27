@@ -9,9 +9,7 @@ const ActionsHeader = () =>
         <Fab
           variant="extended"
           aria-label="Ranking"
-          style={{
-            width: 200
-          }}
+          style={{width: 200}}
         >
           <TrophyIcon style={{marginRight: '10px'}}/>
           Ranking
@@ -22,10 +20,8 @@ const ActionsHeader = () =>
       <Link href="/matches/fast">
         <Fab
           variant="extended"
-          aria-label="Ranking"
-          style={{
-            width: 200
-          }}
+          aria-label="New Match"
+          style={{width: 200}}
         >
           <SoccerFieldIcon style={{marginRight: '10px'}}/>
           New Match
