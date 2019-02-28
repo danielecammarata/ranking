@@ -31,6 +31,7 @@ const styleTeamTile = position => ({
 const styleTeamPlayer = position => ({
   flexDirection: position === 'right' ? 'row-reverse' : 'initial',
   justifyContent: 'flex-start',
+  marginBottom: '5px',
   padding: '0 5px',
   width: '100%'
 })
