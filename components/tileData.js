@@ -4,11 +4,10 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import InfoIcon from '@material-ui/icons/Info'
-import NewMatchIcon from '@material-ui/icons/DirectionsRun'
 import NewUserIcon from '@material-ui/icons/PersonAdd'
 import ListIcon from '@material-ui/icons/List'
 import RulesIcon from '@material-ui/icons/DeveloperBoard'
-import { SoccerFieldIcon, SoccerIcon, TrophyIcon } from './IconComponents'
+import { SoccerFieldIcon, TrophyIcon } from './IconComponents'
 
 
 export const mainDrawerUser = (
@@ -34,7 +33,7 @@ export const mainDrawerUser = (
 
 export const mainDrawerMatch = (
   <div>
-    <Link href="/matches">
+    <Link href="/">
       <ListItem button>
         <ListItemIcon>
           <ListIcon/>
