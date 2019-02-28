@@ -1,15 +1,23 @@
 const express = require('express')
-
 const router = express.Router()
-
 const Match = require('../../models/Match')
-const User = require('../../models/User')
+
+const getMatchesResponse = async (res, withCount, matches) => {
+  if (withCount) {
+    await Match.countDocuments({}, (err, count) => {
+      res.json(
+        Object.assign({}, { matches }, { count: count })
+      )
+    })
+  } else {
+    res.json({ matches })
+  }
+}
 
 router.get('/:userID/:offset/:limit/:withCount', async (req, res) => {
   const { userID, offset = 0, limit = 2, withCount = false } = req.params
 
   try {
-    //await Match.find({ $or: [ { teamHome: { defender: userID } }, { teamHome: { striker: userID } }, { teamAway: { defender: userID } }, { teamAway: { striker: userID } } ] }, {})
     await Match.find({ $or: [{ "teamHome.defender": userID }, { "teamHome.striker": userID }, { "teamAway.defender": userID }, { "teamAway.striker": userID }]})
       .populate([
         {path: 'teamHome.defender', model: 'User'},
@@ -21,18 +29,10 @@ router.get('/:userID/:offset/:limit/:withCount', async (req, res) => {
       .skip(parseInt(offset))
       .limit(parseInt(limit))
       .exec(async (err, rs) => {
-        if (withCount) {
-          await Match.countDocuments({}, (err, count) => {
-            res.json(
-              Object.assign({}, { matches: rs }, { count: count })
-            )
-          })
-        } else {
-          res.json({ matches: rs })
-        }
+        await getMatchesResponse(res, withCount, rs)
       })
   } catch (err) {
-    res.json({ error: err.message || err.toString() });
+    res.json({ error: err.message || err.toString() })
   }
 })
 
@@ -51,15 +51,7 @@ router.get('/:offset/:limit/:withCount', async (req, res) => {
       .skip(parseInt(offset))
       .limit(parseInt(limit))
       .exec(async (err, rs) => {
-        if (withCount) {
-          await Match.countDocuments({}, (err, count) => {
-            res.json(
-              Object.assign({}, { matches: rs }, { count: count })
-            )
-          })
-        } else {
-          res.json({ matches: rs })
-        }
+        await getMatchesResponse(res, withCount, rs)
       })
   } catch (err) {
     res.json({ error: err.message || err.toString() });
