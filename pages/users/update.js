@@ -97,7 +97,7 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       float: 'left',
       marginTop: '18px',
-      width: 'calc(100% - 280px)',
+      width: 'calc(100% - 400px)',
     }
   },
   radioGroup: {
