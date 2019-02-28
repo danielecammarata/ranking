@@ -34,6 +34,12 @@ const PlayerRoleSelection = ({
       control={<Radio color="primary" />}
       label="Jolly"
     />
+    <FormControlLabel
+      className={classes.radioLabel}
+      value='challenge'
+      control={<Radio color="primary" />}
+      label="Challenge"
+    />
   </RadioGroup>
 
 export default PlayerRoleSelection

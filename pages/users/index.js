@@ -243,7 +243,7 @@ class IndexUser extends React.Component {
                 style={{overflow: 'hidden'}}
                 divider
                 className={(!this.state.hideInactives || user.active) ? ('showUser ' + this.props.classes.user) : this.props.classes.hideUser}
-                dataChallenge={(user.description == 'challenge') ? 'challenge' : 'regular'}
+                dataChallenge={(user.role == 'challenge') ? 'challenge' : 'regular'}
               >
                   <Typography
                     style={{
