@@ -476,81 +476,140 @@ class AddMatch extends React.Component {
 
         {this.state.matchView === matchViewState.TEAMS_COMPLETE &&
           <div>
-            <ExpansionPanel
-              expanded={this.state.expanded === 'panelMatchGoals'}
-              onChange={this.handleExpandChange('panelMatchGoals')}
-            >
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>Game Goals</ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Grid container justify="space-between">
-                  <Grid item xs={6} sm={6}>Home</Grid>
-                  <Grid item xs={6} sm={6}>Away</Grid>
-                  <MatchScoreButtons
-                    keyPrefix="homeScore"
-                    onScorePlayerSelection={(item) => this.onScoreSelection.bind(this, item, 'home')}
-                    onScorePlayerSelectionAddOne={this.onScoreSelectionAddOne.bind(this, this.state.homeScore, 'home')}
-                  />
-                  <MatchScoreButtons
-                    keyPrefix="awayScore"
-                    onScorePlayerSelection={(item) => this.onScoreSelection.bind(this, item, 'away')}
-                    onScorePlayerSelectionAddOne={this.onScoreSelectionAddOne.bind(this, this.state.awayScore, 'away')}
-                  />
-                </Grid>
-              </ExpansionPanelDetails>
-              <ExpansionPanelMatchActions
-                canSave={this.state.canSave}
-                onContinue={this.onContinue}
-                onSave={this.onSave}
-                onNew={this.onNew}
-              />
-            </ExpansionPanel>
+            <ExpansionPanelGameGoals
+              isExpanded={this.state.expanded === 'panelMatchGoals'}
+              onExpandChange={this.handleExpandChange('panelMatchGoals')}
+              onScoreHomeSelection={(item) => this.onScoreSelection.bind(this, item, 'home')}
+              onScoreHomeSelectionAddOne={this.onScoreSelectionAddOne.bind(this, this.state.homeScore, 'home')}
+              onScoreAwaySelection={(item) => this.onScoreSelection.bind(this, item, 'away')}
+              onScoreAwaySelectionAddOne={this.onScoreSelectionAddOne.bind(this, this.state.awayScore, 'away')}
+              canSave={this.state.canSave}
+              onContinue={this.onContinue}
+              onSave={this.onSave}
+              onNew={this.onNew}
+            />
+            <ExpansionPanelGoalsByRole
+              isExpanded={this.state.expanded === 'panelRoleGoals'}
+              onExpandChange={this.handleExpandChange('panelRoleGoals')}
 
-            <ExpansionPanel
-              expanded={this.state.expanded === 'panelRoleGoals'}
-              onChange={this.handleExpandChange('panelRoleGoals')}
-            >
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>Goals by role</ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Grid container justify="space-between">
-                  <Grid item xs={6} sm={6}>Home Defender</Grid>
-                  <Grid item xs={6} sm={6}>Home Striker</Grid>
-                  <MatchScoreButtons
-                    keyPrefix="homeScoreStr"
-                    onScorePlayerSelection={(item) => this.onScorePlayerSelection.bind(this, item, 'home', 'Defender')}
-                    onScorePlayerSelectionAddOne={this.onScorePlayerSelectionAddOne.bind(this, this.state.homeScoreDefender, 'home', 'Defender')}
-                  />
-                  <MatchScoreButtons
-                    keyPrefix="homeScoreStr"
-                    onScorePlayerSelection={(item) => this.onScorePlayerSelection.bind(this, item, 'home', 'Striker')}
-                    onScorePlayerSelectionAddOne={this.onScorePlayerSelectionAddOne.bind(this, this.state.homeScoreStriker, 'home', 'Striker')}
-                  />
-                  <Grid item xs={6} sm={6} style={{marginTop: '20px'}}>Away Defender</Grid>
-                  <Grid item xs={6} sm={6} style={{marginTop: '20px'}}>Away Striker</Grid>
-                  <MatchScoreButtons
-                    keyPrefix="awayScoreDef"
-                    onScorePlayerSelection={(item) => this.onScorePlayerSelection.bind(this, item, 'away', 'Defender')}
-                    onScorePlayerSelectionAddOne={this.onScorePlayerSelectionAddOne.bind(this, this.state.awayScoreDefender, 'away', 'Defender')}
-                  />
-                  <MatchScoreButtons
-                    keyPrefix="awayScoreStr"
-                    onScorePlayerSelection={(item) => this.onScorePlayerSelection.bind(this, item, 'away', 'Striker')}
-                    onScorePlayerSelectionAddOne={this.onScorePlayerSelectionAddOne.bind(this, this.state.awayScoreStriker, 'away', 'Striker')}
-                  />
-                </Grid>
-              </ExpansionPanelDetails>
-              <ExpansionPanelMatchActions
-                canSave={this.state.canSaveDetail}
-                onContinue={this.onContinue}
-                onSave={this.onSave}
-                onNew={this.onNew}
-              />
-            </ExpansionPanel>
+              onScoreHomeDefSelection={(item) => this.onScorePlayerSelection.bind(this, item, 'home', 'Defender')}
+              onScoreHomeDefSelectionAddOne={this.onScorePlayerSelectionAddOne.bind(this, this.state.homeScoreDefender, 'home', 'Defender')}
+              onScoreHomeStrSelection={(item) => this.onScorePlayerSelection.bind(this, item, 'home', 'Striker')}
+              onScoreHomeStrSelectionAddOne={this.onScorePlayerSelectionAddOne.bind(this, this.state.homeScoreStriker, 'home', 'Striker')}
+              onScoreAwayDefSelection={(item) => this.onScorePlayerSelection.bind(this, item, 'away', 'Defender')}
+              onScoreAwayDefSelectionAddOne={this.onScorePlayerSelectionAddOne.bind(this, this.state.awayScoreDefender, 'away', 'Defender')}
+              onScoreAwayStrSelection={(item) => this.onScorePlayerSelection.bind(this, item, 'away', 'Striker')}
+              onScoreAwayStrSelectionAddOne={this.onScorePlayerSelectionAddOne.bind(this, this.state.awayScoreStriker, 'away', 'Striker')}
+
+              canSave={this.state.canSave}
+              onContinue={this.onContinue}
+              onSave={this.onSave}
+              onNew={this.onNew}
+            />
           </div>
         }
       </Layout>
     )
   }
 }
+
+const ExpansionPanelGameGoals = ({
+  isExpanded,
+  onExpandChange,
+  onScoreHomeSelection,
+  onScoreHomeSelectionAddOne,
+  onScoreAwaySelection,
+  onScoreAwaySelectionAddOne,
+  canSave,
+  onContinue,
+  onSave,
+  onNew
+}) =>
+  <ExpansionPanel
+    expanded={isExpanded}
+    onChange={onExpandChange}
+  >
+    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>Game Goals</ExpansionPanelSummary>
+    <ExpansionPanelDetails>
+      <Grid container justify="space-between">
+        <Grid item xs={6} sm={6}>Home</Grid>
+        <Grid item xs={6} sm={6}>Away</Grid>
+        <MatchScoreButtons
+          keyPrefix="homeScore"
+          onScorePlayerSelection={onScoreHomeSelection}
+          onScorePlayerSelectionAddOne={onScoreHomeSelectionAddOne}
+        />
+        <MatchScoreButtons
+          keyPrefix="awayScore"
+          onScorePlayerSelection={onScoreAwaySelection}
+          onScorePlayerSelectionAddOne={onScoreAwaySelectionAddOne}
+        />
+      </Grid>
+    </ExpansionPanelDetails>
+    <ExpansionPanelMatchActions
+      canSave={canSave}
+      onContinue={onContinue}
+      onSave={onSave}
+      onNew={onNew}
+    />
+  </ExpansionPanel>
+
+const ExpansionPanelGoalsByRole = ({
+  isExpanded,
+  onExpandChange,
+  onScoreHomeDefSelection,
+  onScoreHomeDefSelectionAddOne,
+  onScoreHomeStrSelection,
+  onScoreHomeStrSelectionAddOne,
+  onScoreAwayDefSelection,
+  onScoreAwayDefSelectionAddOne,
+  onScoreAwayStrSelection,
+  onScoreAwayStrSelectionAddOne,
+  canSave,
+  onContinue,
+  onSave,
+  onNew
+}) =>
+  <ExpansionPanel
+    expanded={isExpanded}
+    onChange={onExpandChange}
+  >
+    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>Goals by role</ExpansionPanelSummary>
+    <ExpansionPanelDetails>
+      <Grid container justify="space-between">
+        <Grid item xs={6} sm={6}>Home Defender</Grid>
+        <Grid item xs={6} sm={6}>Home Striker</Grid>
+        <MatchScoreButtons
+          keyPrefix="homeScoreDef"
+          onScoreHomeDefSelection={onScoreHomeDefSelection}
+          onScoreHomeDefSelectionAddOne={onScoreHomeDefSelectionAddOne}
+        />
+        <MatchScoreButtons
+          keyPrefix="homeScoreStr"
+          onScoreHomeStrSelection={onScoreHomeStrSelection}
+          onScoreHomeStrSelectionAddOne={onScoreHomeStrSelectionAddOne}
+        />
+        <Grid item xs={6} sm={6} style={{marginTop: '20px'}}>Away Defender</Grid>
+        <Grid item xs={6} sm={6} style={{marginTop: '20px'}}>Away Striker</Grid>
+        <MatchScoreButtons
+          keyPrefix="awayScoreDef"
+          onScoreAwayDefSelection={onScoreAwayDefSelection}
+          onScoreAwayDefSelectionAddOne={onScoreAwayDefSelectionAddOne}
+        />
+        <MatchScoreButtons
+          keyPrefix="awayScoreStr"
+          onScoreAwayStrSelection={onScoreAwayStrSelection}
+          onScoreAwayStrSelectionAddOne={onScoreAwayStrSelectionAddOne}
+        />
+      </Grid>
+    </ExpansionPanelDetails>
+    <ExpansionPanelMatchActions
+      canSave={canSave}
+      onContinue={onContinue}
+      onSave={onSave}
+      onNew={onNew}
+    />
+  </ExpansionPanel>
 
 const ExpansionPanelMatchActions = ({
   canSave,
