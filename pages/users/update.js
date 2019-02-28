@@ -1,45 +1,46 @@
 import React from 'react'
 import Router from 'next/router'
+import classnames from 'classnames'
+import CountUp from 'react-countup'
 import {
   Avatar,
+  Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
   CardMedia,
+  Divider,
+  Fade,
   FormLabel,
+  GridList,
+  GridListTile,
+  IconButton,
+  Paper,
+  Popper,
+  TextField,
   Typography
 } from '@material-ui/core'
 
-import IconButton from '@material-ui/core/IconButton'
-import Collapse from '@material-ui/core/Collapse'
-import Fade from '@material-ui/core/Fade'
-import Popper from '@material-ui/core/Popper'
-import Paper from '@material-ui/core/Paper'
-import TextField from '@material-ui/core/TextField'
-import Divider from '@material-ui/core/Divider'
-import Button from '@material-ui/core/Button'
-import GridList from '@material-ui/core/GridList'
-import GridListTile from '@material-ui/core/GridListTile'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
+import { withStyles } from '@material-ui/core/styles'
 
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import classnames from 'classnames'
-import { withStyles } from '@material-ui/core/styles'
-import CountUp from 'react-countup'
+
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 
 import Layout from '../../components/Layout'
+
 import ActionsHeader from '../../components/blocks/ActionsHeader'
 import MatchesList from '../../components/blocks/MatchesList'
+
 import LoadMore from '../../components/elements/LoadMore'
 import PlayerRoleSelection from '../../components/elements/PlayerRoleSelection'
 import PlayerStatsCollapse from '../../components/elements/PlayerStatsCollapse'
+
 import { prepareMatchData } from '../../components/modifiers'
-import { getUsersBySlug, updateUser } from '../../lib/api/users'
+
 import { styleForm } from '../../lib/SharedStyles'
 import {
   formArea,
@@ -49,14 +50,10 @@ import {
   paperWrapper,
   popperWrapper,
   userAvatar,
-  userFeature,
-  userFeatureBar,
-  userFeatureBarWrapper,
-  userFeatureLabel,
-  userFeatureTitle,
-  userFeatureValue,
   userFirstChar
 } from '../../lib/userPage'
+
+import { getUsersBySlug, updateUser } from '../../lib/api/users'
 import { getPlayerMatchesList } from '../../lib/api/match'
 
 const styles = theme => ({
@@ -201,7 +198,7 @@ class UpdateUser extends React.Component {
         throw new Error(reason)
       })
     } catch (err) {
-      console.log(err)
+      throw new Error(err)
     }
   }
 
@@ -235,7 +232,7 @@ class UpdateUser extends React.Component {
           throw new Error(reason)
         })
     } catch (err) {
-      console.error(err)
+      throw new Error(err)
     }
   }
 
@@ -389,16 +386,12 @@ class UpdateUser extends React.Component {
                   points={points}
                 />
               </Card>
-
-
           </GridListTile>
-
         </GridList>
-
-        {/* New grouped matches list */}
         <GridList style={{margin: '0 auto', maxWidth: '768px'}}>
           {Object.keys(matchesObj).map(matchKey =>
             <MatchesList
+              key={matchKey}
               label={matchKey}
               matches={matchesObj[matchKey].matches}
               classes={this.props.classes}
