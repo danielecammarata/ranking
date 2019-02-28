@@ -264,11 +264,7 @@ class AddMatch extends React.Component {
   }
 
   onScoreSelectionAddOne = (score, team) => {
-    this.setState({ [`${team}Score`]: score+1 }, () =>{
-      const canSave = (this.state.homeScore > 5 && (this.state.homeScore - this.state.awayScore) > 1) ||
-                    (this.state.awayScore > 5 && (this.state.awayScore - this.state.homeScore) > 1)
-      this.setState({ canSave: canSave })
-    })
+    this.onScoreSelection(score + 1, team)
   }
 
   onScorePlayerSelection = (score, team, role) => {
@@ -313,22 +309,21 @@ class AddMatch extends React.Component {
     return scoreAndBadges
   }
 
+  getPlayerFromState = (playerRole) => {
+    return {
+      _id: this.state[playerRole]._id,
+      points: this.state[playerRole].points,
+      stats: this.state[playerRole].stats,
+      last_match: new Date()
+    }
+  }
+
   saveMatch = async () => {
     const scoreAndBadges = this.calculateScoreAndBadges()
     const match = {
       teamHome: {
-        defender: {
-          _id: this.state.homeDefender._id,
-          points: this.state.homeDefender.points,
-          stats: this.state.homeDefender.stats,
-          last_match: new Date()
-        },
-        striker: {
-          _id: this.state.homeStriker._id,
-          points: this.state.homeStriker.points,
-          stats: this.state.homeStriker.stats,
-          last_match: new Date()
-        },
+        defender: this.getPlayerFromState ('homeDefender'),
+        striker: this.getPlayerFromState ('homeStriker'),
         score: this.state.homeScore,
         defScore: scoreAndBadges.homeScoreDefender,
         strScore: scoreAndBadges.homeScoreStriker,
@@ -336,18 +331,8 @@ class AddMatch extends React.Component {
         strBadges: []
       },
       teamAway: {
-        defender: {
-          _id: this.state.awayDefender._id,
-          points: this.state.awayDefender.points,
-          stats: this.state.awayDefender.stats,
-          last_match: new Date()
-        },
-        striker: {
-          _id: this.state.awayStriker._id,
-          points: this.state.awayStriker.points,
-          stats: this.state.awayStriker.stats,
-          last_match: new Date()
-        },
+        defender: this.getPlayerFromState ('awayDefender'),
+        striker: this.getPlayerFromState ('awayStriker'),
         score: this.state.awayScore,
         defScore: scoreAndBadges.awayScoreDefender,
         strScore: scoreAndBadges.awayScoreStriker,
@@ -371,7 +356,6 @@ class AddMatch extends React.Component {
   }
 
   createAndStartAudio = (audioFile) => {
-    var self = this;
     const flush = new Audio(audioFile)
     flush.volume= 1.0
     flush.play()
@@ -479,6 +463,7 @@ class AddMatch extends React.Component {
           >
             {this.props.players.map((player, index) => (
               <PlayerChip
+                key={`playerChip${index}`}
                 index={index}
                 player={player}
                 onSelection={this.onPlayerSelect}
