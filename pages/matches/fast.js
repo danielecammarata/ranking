@@ -245,27 +245,23 @@ class AddMatch extends React.Component {
     }
   }
 
+  getTeamFromState = (scoreAndBadges, teamPlace) => {
+    return {
+      defender: this.getPlayerFromState (`${teamPlace}Defender`),
+      striker: this.getPlayerFromState (`${teamPlace}Striker`),
+      score: this.state[`${teamPlace}Score`],
+      defScore: scoreAndBadges[`${teamPlace}ScoreDefender`],
+      strScore: scoreAndBadges[`${teamPlace}ScoreStriker`],
+      defBadges: [],
+      strBadges: []
+    }
+  }
+
   saveMatch = async () => {
     const scoreAndBadges = this.calculateScoreAndBadges()
     const match = {
-      teamHome: {
-        defender: this.getPlayerFromState ('homeDefender'),
-        striker: this.getPlayerFromState ('homeStriker'),
-        score: this.state.homeScore,
-        defScore: scoreAndBadges.homeScoreDefender,
-        strScore: scoreAndBadges.homeScoreStriker,
-        defBadges: [],
-        strBadges: []
-      },
-      teamAway: {
-        defender: this.getPlayerFromState ('awayDefender'),
-        striker: this.getPlayerFromState ('awayStriker'),
-        score: this.state.awayScore,
-        defScore: scoreAndBadges.awayScoreDefender,
-        strScore: scoreAndBadges.awayScoreStriker,
-        defBadges: [],
-        strBadges: []
-      },
+      teamHome: this.getTeamFromState(scoreAndBadges, 'home'),
+      teamAway: this.getTeamFromState(scoreAndBadges, 'away'),
       badges: scoreAndBadges.badges
     }
     await addNewMatch(match)
