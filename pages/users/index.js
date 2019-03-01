@@ -1,58 +1,33 @@
 import Link from 'next/link'
-import Divider from '@material-ui/core/Divider'
-import Typography from '@material-ui/core/Typography'
 import CountUp from 'react-countup'
 
 import Layout from '../../components/Layout.js'
 import { getUsersList, deleteUser } from '../../lib/api/users'
 import { styleH1 } from '../../lib/SharedStyles'
 
-import Avatar from '@material-ui/core/Avatar'
-
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemText from '@material-ui/core/ListItemText'
-import FormGroup from '@material-ui/core/FormGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Switch from '@material-ui/core/Switch'
-
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
+import {
+  Avatar,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  InputLabel,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  MenuItem,
+  Select,
+  Switch,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography
+} from '@material-ui/core'
 
 import { withStyles } from '@material-ui/core/styles'
-
-import {
-  AlienIcon,
-  BombIcon,
-  BoneIcon,
-  CandycaneIcon,
-  CannabisIcon,
-  CatIcon,
-  ChessKingIcon,
-  DogIcon,
-  DuckIcon,
-  EmoticonPoopIcon,
-  FoodIcon,
-  GhostIcon,
-  NinjaIcon,
-  NukeIcon,
-  PigIcon,
-  PirateIcon,
-  RocketIcon,
-  SkullIcon,
-  SoccerFieldIcon,
-  SoccerIcon,
-  TrophyIcon,
-  WeatherSnowyIcon
-} from '../../components/IconComponents'
 import lightBlue from '@material-ui/core/colors/lightBlue'
 
 let countInactive = 0
@@ -92,13 +67,83 @@ const styles = theme => ({
   },
   user: {
     padding: '14px 0px',
-    '&[datachallenge="challenge"]': {
+    '&[data-challenge="challenge"]': {
       backgroundColor: '#eaeaea',
       boxShadow: '1px 1px 4px #bbb',
       padding: '14px 20px'
     }
   }
 })
+
+const RankingActionsHeader = ({
+  classes,
+  onShowInactive,
+  isSortOpen,
+  onSortOpen,
+  onSortClose,
+  onSortChange,
+  sortingValue
+}) =>
+  <FormGroup row>
+    <div className={classes.formLabel}>
+      <FormControlLabel
+        control={
+          <Switch
+            value="checkedB"
+            color="primary"
+            onChange={onShowInactive}
+          />
+        }
+        label="Show inactive users"
+      />
+    </div>
+    <FormControl className={classes.formControl}>
+      <InputLabel htmlFor="demo-controlled-open-select">Sort by</InputLabel>
+      <Select
+        open={isSortOpen}
+        onClose={onSortClose}
+        onOpen={onSortOpen}
+        onChange={onSortChange}
+        inputProps={{
+          name: 'sortingValue',
+          id: 'demo-controlled-open-select',
+        }}
+        value={sortingValue}
+        className={classes.formSelect}
+      >
+        <MenuItem value="points">Points</MenuItem>
+        <MenuItem value="goals">Goals</MenuItem>
+        <MenuItem value="conceded">Goals conceded</MenuItem>
+        <MenuItem value="played">Match Played</MenuItem>
+      </Select>
+    </FormControl>
+  </FormGroup>
+
+const PlayerStatsTable = ({
+  points,
+  matchPlayed,
+  goalsAsDefender,
+  goalsAsStriker,
+  goalsConceded
+}) =>
+  <Table style={{ width: 150 }}>
+    <TableHead>
+      <TableRow style={rowHeaderStyle}>
+        <TableCell style={cellStyle}>Score</TableCell>
+        <TableCell style={cellStyle}>MP</TableCell>
+        <TableCell style={cellStyle}>GM</TableCell>
+        <TableCell style={cellStyle}>GC</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      <TableRow>
+        <TableCell style={cellStyle}><CountUp start={0} end={points} duration={2.00}/></TableCell>
+        <TableCell style={cellStyle}><CountUp start={0} end={matchPlayed} duration={2.20}/></TableCell>
+        <TableCell style={cellStyle}><CountUp start={0} end={goalsAsDefender + goalsAsStriker} duration={3.00}/></TableCell>
+        <TableCell style={cellStyle}><CountUp start={0} end={goalsConceded} duration={1.80}/></TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
 
 class IndexUser extends React.Component {
   constructor(props) {
@@ -162,7 +207,7 @@ class IndexUser extends React.Component {
 
   handleClose = () => {
     this.setState({ selectOpen: false });
-    this.resetInactiveCounter()    
+    this.resetInactiveCounter()
   }
 
   handleOpen = () => {
@@ -181,8 +226,8 @@ class IndexUser extends React.Component {
   }
 
   handleShowInactive = () => {
-    this.setState(state => ({ 
-      hideInactives: !this.state.hideInactives 
+    this.setState(state => ({
+      hideInactives: !this.state.hideInactives
     }))
     this.resetInactiveCounter()
   }
@@ -191,123 +236,66 @@ class IndexUser extends React.Component {
     countInactive = 0
   }
 
-// https://static.nexilia.it/bitchyf/2018/05/cristiano-malgioglio-danzando-800x500.jpg
-
   render() {
     return (
       <Layout>
         <h1 style={styleH1}>Ranking</h1>
-        <FormGroup row>
-          <div className={this.props.classes.formLabel}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    value="checkedB"
-                    color="primary"
-                    onChange={this.handleShowInactive}
-                  />
-                }
-                label="Show inactive users"
-              />
-            </div>
-            <FormControl className={this.props.classes.formControl}>
-              <InputLabel htmlFor="demo-controlled-open-select">Sort by</InputLabel>
-              <Select
-                open={this.state.selectOpen}
-                onClose={this.handleClose}
-                onOpen={this.handleOpen}
-                onChange={this.handleChange}
-                inputProps={{
-                  name: 'sortingValue',
-                  id: 'demo-controlled-open-select',
-                }}
-                value={this.state.sortingValue}
-                className={this.props.classes.formSelect}
-              >
-                <MenuItem value="points">Points</MenuItem>
-                <MenuItem value="goals">Goals</MenuItem>
-                <MenuItem value="conceded">Goals conceded</MenuItem>
-                <MenuItem value="played">Match Played</MenuItem>
-              </Select>
-            </FormControl>
-        </FormGroup>
+        <RankingActionsHeader
+          classes={this.props.classes}
+          onShowInactive={this.handleShowInactive}
+          isSortOpen={this.state.selectOpen}
+          onSortOpen={this.handleOpen}
+          onSortClose={this.handleClose}
+          onSortChange={this.handleChange}
+          sortingValue={this.state.sortingValue}
+        />
         <Divider />
         <List>
           {this.props.users && this.props.users.map((user, index) => (
-            <Link 
+            <Link
+              key={`${user.slug}-${index}`}
               as={`/users/${user.slug}`}
               href={`/users/update/?slug=${user.slug}`}
-              >
+            >
               <ListItem
                 key={user.slug}
                 style={{overflow: 'hidden'}}
                 divider
                 className={(!this.state.hideInactives || user.active) ? ('showUser ' + this.props.classes.user) : this.props.classes.hideUser}
-                dataChallenge={(user.role == 'challenge') ? 'challenge' : 'regular'}
+                data-challenge={(user.role == 'challenge') ? 'challenge' : 'regular'}
               >
-                  <Typography
-                    style={{
-                      padding: '0px 6px',
-                      fontSize: 22,
-                      minWidth: '36px',
-                    }}
-                  >
-                    {(!this.state.hideInactives || user.active) ? ++countInactive : index+1}
-                  </Typography>
-                      <ListItemAvatar>
-                        <Avatar
-                          alt={user.name}
-                          src={user.avatarUrl}
-                          style={{
-                            height: 80,
-                            margin: '0px 10px',
-                            width: 80
-                          }}
-                        />
-                      </ListItemAvatar>
-                      <ListItemText
-                        style={{minWidth: '100px', padding: '0px 6px'}}
-                        primary={user.name}
-                        primaryTypographyProps={{
-                          style: {
-                            fontSize: 15,
-                            overflowX: 'hidden',
-                            textOverflow: 'ellipsis',
-                          }
-                        }}
-                        secondary={<CountUp start={1200} end={user[this.state.sortingValue]} duration={3}/>}
-                        secondaryTypographyProps={{
-                          style: {
-                            fontSize: 18,
-                            color: lightBlue[500]
-                          }
-                        }}
-                      />
-
-                  <Table style={{ width: 150 }}>
-                    <TableHead>
-                      <TableRow style={rowHeaderStyle}>
-                        <TableCell style={cellStyle}>Score</TableCell>
-                        <TableCell style={cellStyle}>MP</TableCell>
-                        <TableCell style={cellStyle}>GM</TableCell>
-                        <TableCell style={cellStyle}>GC</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell style={cellStyle}><CountUp start={0} end={user.points} duration={2.00}/></TableCell>
-                        <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_played} duration={2.20}/></TableCell>
-                        <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_made_as_defender + user.stats.match_goals_made_as_striker} duration={3.00}/></TableCell>
-                        <TableCell style={cellStyle}><CountUp start={0} end={user.stats.match_goals_conceded_as_defender} duration={1.80}/></TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                  {/*
-                    THIS SHOULD BE USED FOR THE BADGES
-                  <ListItemSecondaryAction>
-                    <PirateIcon />
-                    <RocketIcon />
-                  </ListItemSecondaryAction> */}
+                <Typography
+                  variant="h3"
+                  style={{ padding: '0px 6px', fontSize: 22, minWidth: '36px' }}
+                >
+                  {(!this.state.hideInactives || user.active) ? ++countInactive : index+1}
+                </Typography>
+                <ListItemAvatar>
+                  <Avatar
+                    alt={user.name}
+                    src={user.avatarUrl}
+                    style={{ height: 80, margin: '0px 10px', width: 80 }}
+                  />
+                </ListItemAvatar>
+                <ListItemText
+                  style={{minWidth: '100px', padding: '0px 6px'}}
+                  primary={user.name}
+                  primaryTypographyProps={{
+                    variant: "body1",
+                    style: { fontSize: 15, overflowX: 'hidden', textOverflow: 'ellipsis' }
+                  }}
+                  secondary={<CountUp start={1200} end={user[this.state.sortingValue]} duration={3}/>}
+                  secondaryTypographyProps={{
+                    style: { fontSize: 18, color: lightBlue[500] }
+                  }}
+                />
+                <PlayerStatsTable
+                  points={user.points}
+                  matchPlayed={user.stats.match_played}
+                  goalsAsDefender={user.stats.match_goals_made_as_defender}
+                  goalsAsStriker={user.stats.match_goals_made_as_striker}
+                  goalsConceded={user.stats.match_goals_conceded_as_defender}
+                />
               </ListItem>
             </Link>
           ))}
@@ -315,6 +303,6 @@ class IndexUser extends React.Component {
       </Layout>
     )
   }
-
 }
+
 export default withStyles(styles)(IndexUser)
