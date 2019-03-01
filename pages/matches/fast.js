@@ -1,27 +1,31 @@
-import Button from '@material-ui/core/Button'
-import GridList from '@material-ui/core/GridList'
-import GridListTile from '@material-ui/core/GridListTile'
 import React from 'react'
 import Router from 'next/router'
-import getRootUrl from '../../lib/api/getRootUrl'
-import Layout from '../../components/Layout.js'
-import AudioPlayer from '../../components/audioPlayer.js'
-import { addNewMatch } from '../../lib/api/match'
-import { getUsersList } from '../../lib/api/users'
+import {
+  Grid,
+  GridList,
+  GridListTile
+} from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
+import Layout from '../../components/Layout.js'
+import AudioPlayer from '../../components/audioPlayer.js'
+
+import getRootUrl from '../../lib/api/getRootUrl'
+import { addNewMatch } from '../../lib/api/match'
+import { getUsersList } from '../../lib/api/users'
+
 import {
-  styleMatchTile,
-  styleTeamTile,
-  styleTeamPlayer
+  styleMatchTile
 } from '../../lib/ListOfMatches.js'
 
-import Avatar from '@material-ui/core/Avatar'
-import Chip from '@material-ui/core/Chip'
-import Grid from '@material-ui/core/Grid'
-import { Typography, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, ExpansionPanelActions, Badge } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-
+import {
+  ExpansionPanelGameGoals,
+  ExpansionPanelGoalsByRole,
+  MatchScoreTile,
+  MatchStartButton,
+  PlayerChip,
+  Team
+} from '../../components/elements/AddMatch'
 
 const styles = theme => ({
   styleTeamTile: {
@@ -41,6 +45,7 @@ const styles = theme => ({
   },
 
   styleAwayTeam: {
+    extend: 'styleTeamTile',
     [theme.breakpoints.up('sm')]: {
       order: '2',
     }
@@ -85,84 +90,6 @@ const matchViewState = {
   TEAMS_COMPLETE: 'TEAMS_COMPLETE',
   SCORE_SELECTION: 'SCORE_SELECTION'
 }
-
-const MatchScoreButtons = ({
-  keyPrefix,
-  onScorePlayerSelection,
-  onScorePlayerSelectionAddOne
-}) =>
-  <Grid item xs={6} sm={6}>
-    {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(item =>
-      <Button
-        key={`${keyPrefix}${item}`}
-        variant="contained"
-        style={{width: 'calc(33% - 6px)', margin: '3px', minWidth: 'initial'}}
-        onClick={onScorePlayerSelection(item)}
-      >{item}</Button>
-    )}
-    <Button
-      style={{width: 'calc(100% - 9px)', margin: '3px'}}
-      variant="contained"
-      onClick={onScorePlayerSelectionAddOne}
-    >+1</Button>
-  </Grid>
-
-const MatchStartButton = ({
-  classes,
-  numSelectedPlayers,
-  onMatchStart
-}) =>
-  <GridListTile
-    className={classes.styleButtonGo}
-    style={{
-      height: 75,
-      paddingTop: 10,
-      width: 60,
-    }}
-    >
-    <Avatar
-      style={{
-        height: 55,
-        width: 55,
-        padding: 0,
-        backgroundColor: numSelectedPlayers === 4 ? 'green' : '#bdbdbd'
-      }}
-      onClick={onMatchStart}
-    >GO</Avatar>
-  </GridListTile>
-
-const MatchScoreTile = ({
-  classes,
-  score,
-  scoreDefender,
-  scoreStriker,
-  isHomeTeam = false
-}) =>
-  <GridListTile
-    className={classes.styleScoreWrapper}
-    style={{
-      height: 'auto',
-      overflow: 'visible',
-      padding: '10px 0px',
-      width: 60,
-    }}
-  >
-    <Avatar className={classes.styleScore}>{`${score}`}</Avatar>
-    <Badge color="secondary" badgeContent={<small>{scoreDefender}</small>}
-      className={classes.styleScorePlayer}
-      style={{
-        left: isHomeTeam && 11,
-        right: !isHomeTeam && 13,
-        top: 3,
-    }}/>
-    <Badge color="secondary" badgeContent={<small>{scoreStriker}</small>}
-      className={classes.styleScorePlayer}
-      style={{
-        left: isHomeTeam && 11,
-        right: !isHomeTeam && 13,
-        top: 45,
-    }}/>
-  </GridListTile>
 
 class AddMatch extends React.Component {
   constructor (props) {
@@ -401,20 +328,12 @@ class AddMatch extends React.Component {
         <GridList style={{margin: '0 auto', maxWidth: '500px'}}>
           <GridListTile style={styleMatchTile}>
             <GridList style={{lineHeight: '15px', overflow: 'hidden'}}>
-              <GridListTile style={styleTeamTile('left')} className={this.props.classes.styleTeamTile}>
-                <Chip
-                  avatar={<Avatar src={this.state.homeDefender.avatarUrl} />}
-                  label={this.state.homeDefender.name}
-                  style={styleTeamPlayer('left')}
-                />
-                <Chip
-                  avatar={<Avatar src={this.state.homeStriker.avatarUrl} />}
-                  label={this.state.homeStriker.name}
-                  style={styleTeamPlayer('left')}
-                />
-
-              </GridListTile>
-
+              <Team
+                classes={this.props.classes}
+                defender={this.state.homeDefender}
+                striker={this.state.homeStriker}
+                side="left"
+              />
               {this.state.matchView === matchViewState.PLAYER_SELECTION &&
                 <MatchStartButton
                   classes={this.props.classes}
@@ -431,20 +350,12 @@ class AddMatch extends React.Component {
                   isHomeTeam
                 />
               }
-
-              <GridListTile style={styleTeamTile('right')} className={this.props.classes.styleTeamTile + ' ' + this.props.classes.styleAwayTeam }>
-                <Chip
-                  avatar={<Avatar src={this.state.awayDefender.avatarUrl} />}
-                  label={this.state.awayDefender.name}
-                  style={styleTeamPlayer('right')}
-                />
-                <Chip
-                  avatar={<Avatar src={this.state.awayStriker.avatarUrl} />}
-                  label={this.state.awayStriker.name}
-                  style={styleTeamPlayer('right')}
-                />
-              </GridListTile>
-
+              <Team
+                classes={this.props.classes}
+                defender={this.state.awayDefender}
+                striker={this.state.awayStriker}
+                side="right"
+              />
               {this.state.matchView === matchViewState.TEAMS_COMPLETE &&
                 <MatchScoreTile
                   classes={this.props.classes}
@@ -456,7 +367,6 @@ class AddMatch extends React.Component {
             </GridList>
           </GridListTile>
         </GridList>
-
         {this.state.matchView === matchViewState.PLAYER_SELECTION &&
           <Grid
             style={{margin: '0 auto', maxWidth: '100%'}}
@@ -473,7 +383,6 @@ class AddMatch extends React.Component {
             ))}
           </Grid>
         }
-
         {this.state.matchView === matchViewState.TEAMS_COMPLETE &&
           <div>
             <ExpansionPanelGameGoals
@@ -491,7 +400,6 @@ class AddMatch extends React.Component {
             <ExpansionPanelGoalsByRole
               isExpanded={this.state.expanded === 'panelRoleGoals'}
               onExpandChange={this.handleExpandChange('panelRoleGoals')}
-
               onScoreHomeDefSelection={(item) => this.onScorePlayerSelection.bind(this, item, 'home', 'Defender')}
               onScoreHomeDefSelectionAddOne={this.onScorePlayerSelectionAddOne.bind(this, this.state.homeScoreDefender, 'home', 'Defender')}
               onScoreHomeStrSelection={(item) => this.onScorePlayerSelection.bind(this, item, 'home', 'Striker')}
@@ -500,7 +408,6 @@ class AddMatch extends React.Component {
               onScoreAwayDefSelectionAddOne={this.onScorePlayerSelectionAddOne.bind(this, this.state.awayScoreDefender, 'away', 'Defender')}
               onScoreAwayStrSelection={(item) => this.onScorePlayerSelection.bind(this, item, 'away', 'Striker')}
               onScoreAwayStrSelectionAddOne={this.onScorePlayerSelectionAddOne.bind(this, this.state.awayScoreStriker, 'away', 'Striker')}
-
               canSave={this.state.canSave}
               onContinue={this.onContinue}
               onSave={this.onSave}
@@ -509,190 +416,6 @@ class AddMatch extends React.Component {
           </div>
         }
       </Layout>
-    )
-  }
-}
-
-const ExpansionPanelGameGoals = ({
-  isExpanded,
-  onExpandChange,
-  onScoreHomeSelection,
-  onScoreHomeSelectionAddOne,
-  onScoreAwaySelection,
-  onScoreAwaySelectionAddOne,
-  canSave,
-  onContinue,
-  onSave,
-  onNew
-}) =>
-  <ExpansionPanel
-    expanded={isExpanded}
-    onChange={onExpandChange}
-  >
-    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>Game Goals</ExpansionPanelSummary>
-    <ExpansionPanelDetails>
-      <Grid container justify="space-between">
-        <Grid item xs={6} sm={6}>Home</Grid>
-        <Grid item xs={6} sm={6}>Away</Grid>
-        <MatchScoreButtons
-          keyPrefix="homeScore"
-          onScorePlayerSelection={onScoreHomeSelection}
-          onScorePlayerSelectionAddOne={onScoreHomeSelectionAddOne}
-        />
-        <MatchScoreButtons
-          keyPrefix="awayScore"
-          onScorePlayerSelection={onScoreAwaySelection}
-          onScorePlayerSelectionAddOne={onScoreAwaySelectionAddOne}
-        />
-      </Grid>
-    </ExpansionPanelDetails>
-    <ExpansionPanelMatchActions
-      canSave={canSave}
-      onContinue={onContinue}
-      onSave={onSave}
-      onNew={onNew}
-    />
-  </ExpansionPanel>
-
-const ExpansionPanelGoalsByRole = ({
-  isExpanded,
-  onExpandChange,
-  onScoreHomeDefSelection,
-  onScoreHomeDefSelectionAddOne,
-  onScoreHomeStrSelection,
-  onScoreHomeStrSelectionAddOne,
-  onScoreAwayDefSelection,
-  onScoreAwayDefSelectionAddOne,
-  onScoreAwayStrSelection,
-  onScoreAwayStrSelectionAddOne,
-  canSave,
-  onContinue,
-  onSave,
-  onNew
-}) =>
-  <ExpansionPanel
-    expanded={isExpanded}
-    onChange={onExpandChange}
-  >
-    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>Goals by role</ExpansionPanelSummary>
-    <ExpansionPanelDetails>
-      <Grid container justify="space-between">
-        <Grid item xs={6} sm={6}>Home Defender</Grid>
-        <Grid item xs={6} sm={6}>Home Striker</Grid>
-        <MatchScoreButtons
-          keyPrefix="homeScoreDef"
-          onScoreHomeDefSelection={onScoreHomeDefSelection}
-          onScoreHomeDefSelectionAddOne={onScoreHomeDefSelectionAddOne}
-        />
-        <MatchScoreButtons
-          keyPrefix="homeScoreStr"
-          onScoreHomeStrSelection={onScoreHomeStrSelection}
-          onScoreHomeStrSelectionAddOne={onScoreHomeStrSelectionAddOne}
-        />
-        <Grid item xs={6} sm={6} style={{marginTop: '20px'}}>Away Defender</Grid>
-        <Grid item xs={6} sm={6} style={{marginTop: '20px'}}>Away Striker</Grid>
-        <MatchScoreButtons
-          keyPrefix="awayScoreDef"
-          onScoreAwayDefSelection={onScoreAwayDefSelection}
-          onScoreAwayDefSelectionAddOne={onScoreAwayDefSelectionAddOne}
-        />
-        <MatchScoreButtons
-          keyPrefix="awayScoreStr"
-          onScoreAwayStrSelection={onScoreAwayStrSelection}
-          onScoreAwayStrSelectionAddOne={onScoreAwayStrSelectionAddOne}
-        />
-      </Grid>
-    </ExpansionPanelDetails>
-    <ExpansionPanelMatchActions
-      canSave={canSave}
-      onContinue={onContinue}
-      onSave={onSave}
-      onNew={onNew}
-    />
-  </ExpansionPanel>
-
-const ExpansionPanelMatchActions = ({
-  canSave,
-  onContinue,
-  onSave,
-  onNew
-}) => (
-  <ExpansionPanelActions>
-    <Button
-      size="small"
-      color="primary"
-      variant="contained"
-      disabled={!canSave}
-      onClick={onContinue}
-    >
-      Continue
-    </Button>
-    <Button
-      size="small"
-      color="primary"
-      variant="contained"
-      disabled={!canSave}
-      onClick={onSave}
-    >
-      Save
-    </Button>
-    <Button
-      size="small"
-      color="primary"
-      variant="contained"
-      disabled={!canSave}
-      onClick={onNew}
-    >
-      New
-    </Button>
-  </ExpansionPanelActions>
-)
-
-class PlayerChip extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      selected: false
-    }
-  }
-
-  onSelection = () => {
-    if (this.props.canSelect || this.props.selected) {
-      this.props.onSelection(this.props.player, this.props.index)
-    }
-  }
-
-  render() {
-    const { player } = this.props
-    const key = player.name.replace(/\s/g, '')
-    return (
-      <Button
-        color={this.props.selected ? 'primary' : 'default'}
-        key={key}
-        variant="extendedFab"
-        style={{
-          height: 25,
-          justifyContent: 'flex-start',
-          margin: '15px 5px 0',
-          minHeight: 25,
-          overflow: 'hidden',
-          padding: '0px 10px 0px 0px',
-          width: 'calc(33% - 10px)',
-        }}
-        onClick={this.onSelection}
-      >
-        <Avatar
-          src={player.avatarUrl}
-          style={{
-            height: 25,
-            width: 25,
-            marginRight: 5,
-          }}
-        />
-        <Typography style={{whiteSpace: 'nowrap', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 'calc(33vw - 52px)', textAlign: 'left'}}>
-          {player.name}
-        </Typography>
-      </Button>
     )
   }
 }
