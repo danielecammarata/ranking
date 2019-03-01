@@ -8,41 +8,22 @@ import { styleH1 } from '../../lib/SharedStyles'
 import {
   Avatar,
   Divider,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  InputLabel,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  MenuItem,
-  Select,
-  Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   Typography
 } from '@material-ui/core'
 
 import { withStyles } from '@material-ui/core/styles'
 import lightBlue from '@material-ui/core/colors/lightBlue'
 
+import {
+  PlayerStatsTable,
+  RankingActionsHeader
+} from '../../components/elements/Ranking'
+
 let countInactive = 0
-
-const rowHeaderStyle = {
-  height: 25
-}
-
-const cellStyle = {
-  border: '1px solid #C6C6C6',
-  padding: '0 10px',
-  textAlign: 'center',
-  whiteSpace: 'nowrap',
-  minWidth: 46,
-}
 
 const styles = theme => ({
   hideUser: {
@@ -74,76 +55,6 @@ const styles = theme => ({
     }
   }
 })
-
-const RankingActionsHeader = ({
-  classes,
-  onShowInactive,
-  isSortOpen,
-  onSortOpen,
-  onSortClose,
-  onSortChange,
-  sortingValue
-}) =>
-  <FormGroup row>
-    <div className={classes.formLabel}>
-      <FormControlLabel
-        control={
-          <Switch
-            value="checkedB"
-            color="primary"
-            onChange={onShowInactive}
-          />
-        }
-        label="Show inactive users"
-      />
-    </div>
-    <FormControl className={classes.formControl}>
-      <InputLabel htmlFor="demo-controlled-open-select">Sort by</InputLabel>
-      <Select
-        open={isSortOpen}
-        onClose={onSortClose}
-        onOpen={onSortOpen}
-        onChange={onSortChange}
-        inputProps={{
-          name: 'sortingValue',
-          id: 'demo-controlled-open-select',
-        }}
-        value={sortingValue}
-        className={classes.formSelect}
-      >
-        <MenuItem value="points">Points</MenuItem>
-        <MenuItem value="goals">Goals</MenuItem>
-        <MenuItem value="conceded">Goals conceded</MenuItem>
-        <MenuItem value="played">Match Played</MenuItem>
-      </Select>
-    </FormControl>
-  </FormGroup>
-
-const PlayerStatsTable = ({
-  points,
-  matchPlayed,
-  goalsAsDefender,
-  goalsAsStriker,
-  goalsConceded
-}) =>
-  <Table style={{ width: 150 }}>
-    <TableHead>
-      <TableRow style={rowHeaderStyle}>
-        <TableCell style={cellStyle}>Score</TableCell>
-        <TableCell style={cellStyle}>MP</TableCell>
-        <TableCell style={cellStyle}>GM</TableCell>
-        <TableCell style={cellStyle}>GC</TableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      <TableRow>
-        <TableCell style={cellStyle}><CountUp start={0} end={points} duration={2.00}/></TableCell>
-        <TableCell style={cellStyle}><CountUp start={0} end={matchPlayed} duration={2.20}/></TableCell>
-        <TableCell style={cellStyle}><CountUp start={0} end={goalsAsDefender + goalsAsStriker} duration={3.00}/></TableCell>
-        <TableCell style={cellStyle}><CountUp start={0} end={goalsConceded} duration={1.80}/></TableCell>
-      </TableRow>
-    </TableBody>
-  </Table>
 
 class IndexUser extends React.Component {
   constructor(props) {
@@ -199,10 +110,6 @@ class IndexUser extends React.Component {
 
       return b[newSorting] - a[newSorting]
     })
-  }
-
-  highlightTableCell(newSorting) {
-
   }
 
   handleClose = () => {
