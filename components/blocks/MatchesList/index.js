@@ -55,7 +55,6 @@ const MatchTile = ({
         />
         <MatchTeamPointsBadge
           hasWin={match.teamHome.score > match.teamAway.score}
-          classes={classes}
           difference={match.difference}
           styleMatchDifference={styleMatchDifference}
         />
@@ -81,9 +80,9 @@ const MatchTile = ({
         />
         <MatchTeamPointsBadge
           hasWin={match.teamAway.score > match.teamHome.score}
-          classes={classes}
           difference={match.difference}
           styleMatchDifference={styleMatchDifference}
+          isAway
         />
       </GridListTile>
       <TeamScore
@@ -117,6 +116,7 @@ const MatchesList = ({
     <GridList style={{margin: '0 auto', maxWidth: '100%'}}>
       {matches.map(match => (
         <MatchTile
+          key={match._id}
           match={match}
           classes={classes}
         />

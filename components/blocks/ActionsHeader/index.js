@@ -3,8 +3,8 @@ import { Fab, Grid } from '@material-ui/core'
 import { SoccerFieldIcon, TrophyIcon } from '../../IconComponents'
 
 const ActionsHeader = () =>
-  <Grid container justify="center" alignItems="center" spacing={24} style={{marginBottom: '20px'}}>
-    <Grid item xs={24} sm={6}>
+  <Grid container justify="center" alignItems="center" spacing={24}>
+    <Grid item xs={8} sm={4}>
       <Link href="/users">
         <Fab
           variant="extended"
@@ -16,7 +16,7 @@ const ActionsHeader = () =>
         </Fab>
       </Link>
     </Grid>
-    <Grid item xs={24} sm={0}>
+    <Grid item xs={8} sm={4}>
       <Link href="/matches/fast">
         <Fab
           variant="extended"

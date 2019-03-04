@@ -4,9 +4,9 @@ import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 import { withStyles } from '@material-ui/core/styles'
 
-import withTitle from '../components/hoc/WithTitle'
 import Layout from '../components/Layout.js'
 import LoadMore from '../components/elements/LoadMore'
+import HeadMeta from '../components/elements/HeadMeta'
 import ActionsHeader from '../components/blocks/ActionsHeader'
 import MatchesList from '../components/blocks/MatchesList'
 import { prepareMatchData } from '../components/modifiers'
@@ -20,18 +20,6 @@ const styles = theme => ({
     display: 'inline-block',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-  },
-  winBadge: {
-    backgroundColor: green[500],
-    fontSize: '13px',
-    fontWeight: '700',
-  },
-  loseBadge: {
-    backgroundColor: red[500],
-    colorPrimary: red[500],
-    fontSize: '13px',
-    fontWeight: '700',
-    left: '30px',
   },
   styleTeamTile: {
     width:'calc(100% - 60px) !important' ,
@@ -55,25 +43,23 @@ class Index extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      loadMoreActive: true,
-      matchesObj: {},
-      matchesFetchedCount: 0,
-      numMatches: 0
+      loadMoreActive: props.numMatches > props.matchesFetchedCount,
+      matchesObj: props.matchesObj,
+      matchesFetchedCount: props.matchesFetchedCount,
+      numMatches: props.numMatches
     }
-    this.loadMore = this.loadMore.bind(this);
+    this.loadMore = this.loadMore.bind(this)
   }
 
-  async componentDidMount () {
-    try {
-      const data = await getMatchesList(0, elementPerPage, true)
-
-      const matchesObj = prepareMatchData(data.matches, this.state.matchesObj)
-      const matchesFetchedCount = data.matches.length
-      const numMatches = data.count
-
-      this.setState({ matchesObj, matchesFetchedCount, numMatches })
-    } catch (err) {
-      throw new Error(err)
+  static async getInitialProps() {
+    const data = await getMatchesList(0, elementPerPage, true)
+    const matchesObj = prepareMatchData(data.matches, {})
+    const matchesFetchedCount = data.matches.length
+    const numMatches = data.count
+    return {
+      matchesObj,
+      matchesFetchedCount,
+      numMatches
     }
   }
 
@@ -102,6 +88,9 @@ class Index extends React.Component {
     const { matchesObj } = this.state
     return (
       <Layout>
+        <HeadMeta
+          title="Home | Scoreza"
+        />
         <Grid container spacing={16}>
           <ActionsHeader />
         </Grid>
@@ -109,6 +98,7 @@ class Index extends React.Component {
         <GridList style={{margin: '0 auto', maxWidth: '768px'}}>
           {Object.keys(matchesObj).map(matchKey =>
             <MatchesList
+              key={matchKey}
               label={matchKey}
               matches={matchesObj[matchKey].matches}
               classes={this.props.classes}
@@ -124,4 +114,4 @@ class Index extends React.Component {
   }
 }
 
-export default withTitle('Home | Scoreza')(withStyles(styles)(Index))
+export default withStyles(styles)(Index)
