@@ -10,6 +10,7 @@ import MatchesList from '../components/blocks/MatchesList'
 import { prepareMatchData } from '../components/modifiers'
 
 import { getMatchesList } from '../lib/api/match'
+import LoadingMessage from '../components/elements/LoadingMessage/index.js';
 
 const elementPerPage = 6
 

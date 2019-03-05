@@ -15,6 +15,7 @@ import getRootUrl from '../lib/api/getRootUrl'
 import Header from './Header'
 import Footer from './Footer'
 import MiniDrawer from './MiniDrawer'
+import LoadingMessage from './elements/LoadingMessage';
 
 const styles = {
   logo: {
@@ -65,27 +66,29 @@ class Layout extends React.Component {
     const {classes} = this.props
 
     return (
-      <MuiThemeProvider
-        theme={this.pageContext.theme}
-      >
-        <CssBaseline/>
-        <div>
-          <Head>
-            <link rel="shortcut icon" href={`${getRootUrl()}/scoreza.png`} type="image/png"/>
-          </Head>
-          <Header handler={this.offCanvasHandler}/>
-          <MiniDrawer
-            toggleDrawer={this.offCanvasHandler}
-            open={this.state.isOffCanvasOpen}
-          />
-          <div style={{fontSize: '15px', paddingTop: '64px'}}>
-            <main className={classes.main}>
-              {this.props.children}
-            </main>
+      <LoadingMessage>
+        <MuiThemeProvider
+          theme={this.pageContext.theme}
+        >
+          <CssBaseline/>
+          <div>
+            <Head>
+              <link rel="shortcut icon" href={`${getRootUrl()}/scoreza.png`} type="image/png"/>
+            </Head>
+            <Header handler={this.offCanvasHandler}/>
+            <MiniDrawer
+              toggleDrawer={this.offCanvasHandler}
+              open={this.state.isOffCanvasOpen}
+            />
+            <div style={{fontSize: '15px', paddingTop: '64px'}}>
+              <main className={classes.main}>
+                {this.props.children}
+              </main>
+            </div>
+            <Footer/>
           </div>
-          <Footer/>
-        </div>
-      </MuiThemeProvider>
+        </MuiThemeProvider>
+      </LoadingMessage>
     )
   }
 }

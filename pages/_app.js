@@ -1,5 +1,17 @@
-import App, {Container} from 'next/app'
 import React from 'react'
+import App, {Container} from 'next/app'
+import Router from 'next/router'
+
+Router.events.on('routeChangeStart', url => {
+  console.log(`Loading: ${url}`)
+  // NProgress.start()
+})
+Router.events.on('routeChangeComplete', () => {
+  console.log('done')
+})
+Router.events.on('routeChangeError', () => {
+  console.log('error')
+})
 
 export default class MyApp extends App {
   static async getInitialProps ({ Component, router, ctx }) {

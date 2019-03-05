@@ -6,6 +6,30 @@ import getContext from '../lib/context'
 import getRootUrl from '../lib/api/getRootUrl'
 
 class MyDocument extends Document {
+  static async getInitialProps (ctx) {
+    const initialProps = await Document.getInitialProps(ctx)
+    const pageContext = getContext()
+    const page = ctx.renderPage(Component => props => (
+      <JssProvider
+        registry={pageContext.sheetsRegistry}
+        generateClassName={pageContext.generateClassName}
+      >
+        <Component pageContext={pageContext} {...initialProps} {...props} />
+      </JssProvider>
+    ))
+
+    return {
+      ...page,
+      pageContext,
+      styles: (
+        <style
+          id="jss-server-side"
+          dangerouslySetInnerHTML={{ __html: pageContext.sheetsRegistry.toString() }}
+        />
+      ),
+    }
+  }
+
   render() {
     return (
       <html
@@ -82,27 +106,27 @@ class MyDocument extends Document {
   }
 }
 
-MyDocument.getInitialProps = (ctx) => {
-  const pageContext = getContext()
-  const page = ctx.renderPage(Component => props => (
-    <JssProvider
-      registry={pageContext.sheetsRegistry}
-      generateClassName={pageContext.generateClassName}
-    >
-      <Component pageContext={pageContext} {...props} />
-    </JssProvider>
-  ))
+// MyDocument.getInitialProps = (ctx) => {
+//   const pageContext = getContext()
+//   const page = ctx.renderPage(Component => props => (
+//     <JssProvider
+//       registry={pageContext.sheetsRegistry}
+//       generateClassName={pageContext.generateClassName}
+//     >
+//       <Component pageContext={pageContext} {...props} />
+//     </JssProvider>
+//   ))
 
-  return {
-    ...page,
-    pageContext,
-    styles: (
-      <style
-        id="jss-server-side"
-        dangerouslySetInnerHTML={{ __html: pageContext.sheetsRegistry.toString() }}
-      />
-    ),
-  }
-}
+//   return {
+//     ...page,
+//     pageContext,
+//     styles: (
+//       <style
+//         id="jss-server-side"
+//         dangerouslySetInnerHTML={{ __html: pageContext.sheetsRegistry.toString() }}
+//       />
+//     ),
+//   }
+// }
 
 export default MyDocument
