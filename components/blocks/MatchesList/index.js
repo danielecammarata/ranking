@@ -1,6 +1,4 @@
 import {
-  Avatar,
-  Chip,
   Divider,
   GridList,
   GridListTile,
@@ -8,6 +6,7 @@ import {
 } from '@material-ui/core'
 import MatchTeamPointsBadge from '../../MatchTeamPointsBadge'
 import TeamScore from '../../elements/TeamScore'
+import PlayerChip from '../../elements/PlayerChip'
 import BadgeIcon from '../../badge'
 
 const styleMatchTile = {
@@ -43,15 +42,15 @@ const MatchTile = ({
   <GridListTile style={styleMatchTile} key={match.slug}>
     <GridList style={{lineHeight: '13px'}}>
       <GridListTile style={styleTeamTile('left')} className={classes.styleTeamTile}>
-        <Chip
-          avatar={<Avatar src={match.teamHome.defender.avatarUrl} />}
-          label={match.teamHome.defender.name}
-          style={styleTeamPlayer('left')}
+        <PlayerChip
+          avatarUrl={match.teamHome.defender.avatarUrl}
+          name={match.teamHome.defender.name}
+          playerSide="left"
         />
-        <Chip
-          avatar={<Avatar src={match.teamHome.striker.avatarUrl} />}
-          label={match.teamHome.striker.name}
-          style={styleTeamPlayer('left')}
+        <PlayerChip
+          avatarUrl={match.teamHome.striker.avatarUrl}
+          name={match.teamHome.striker.name}
+          playerSide="left"
         />
         <MatchTeamPointsBadge
           hasWin={match.teamHome.score > match.teamAway.score}
@@ -67,16 +66,15 @@ const MatchTile = ({
         teamPlace="home"
       />
       <GridListTile style={styleTeamTile('right')} className={classes.styleTeamTileLast}>
-        <Chip
-          avatar={<Avatar src={match.teamAway.defender.avatarUrl} />}
-          classes={{label: classes.chipsLabel}}
-          label={match.teamAway.defender.name}
-          style={styleTeamPlayer('right')}
+        <PlayerChip
+          avatarUrl={match.teamAway.defender.avatarUrl}
+          name={match.teamAway.defender.name}
+          playerSide="right"
         />
-        <Chip
-          avatar={<Avatar src={match.teamAway.striker.avatarUrl} />}
-          label={match.teamAway.striker.name}
-          style={styleTeamPlayer('right')}
+        <PlayerChip
+          avatarUrl={match.teamAway.striker.avatarUrl}
+          name={match.teamAway.striker.name}
+          playerSide="right"
         />
         <MatchTeamPointsBadge
           hasWin={match.teamAway.score > match.teamHome.score}

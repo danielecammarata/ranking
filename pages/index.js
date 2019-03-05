@@ -1,7 +1,5 @@
 import Grid from '@material-ui/core/Grid'
 import GridList from '@material-ui/core/GridList'
-import green from '@material-ui/core/colors/green'
-import red from '@material-ui/core/colors/red'
 import { withStyles } from '@material-ui/core/styles'
 
 import Layout from '../components/Layout.js'
