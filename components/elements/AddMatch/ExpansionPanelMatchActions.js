@@ -2,42 +2,45 @@ import {
   Button,
   ExpansionPanelActions
 } from '@material-ui/core'
+import { useScore } from '../../hooks/useScore';
 
 const ExpansionPanelMatchActions = ({
-  canSave,
   onContinue,
   onSave,
   onNew
-}) => (
-  <ExpansionPanelActions>
-    <Button
-      size="small"
-      color="primary"
-      variant="contained"
-      disabled={!canSave}
-      onClick={onContinue}
-    >
-      Continue
-    </Button>
-    <Button
-      size="small"
-      color="primary"
-      variant="contained"
-      disabled={!canSave}
-      onClick={onSave}
-    >
-      Save
-    </Button>
-    <Button
-      size="small"
-      color="primary"
-      variant="contained"
-      disabled={!canSave}
-      onClick={onNew}
-    >
-      New
-    </Button>
-  </ExpansionPanelActions>
-)
+}) => {
+  const [state] = useScore()
+  return (
+    <ExpansionPanelActions>
+      <Button
+        size="small"
+        color="primary"
+        variant="contained"
+        disabled={!state.scoreReady}
+        onClick={onContinue}
+      >
+        Continue
+      </Button>
+      <Button
+        size="small"
+        color="primary"
+        variant="contained"
+        disabled={!state.scoreReady}
+        onClick={onSave}
+      >
+        Save
+      </Button>
+      <Button
+        size="small"
+        color="primary"
+        variant="contained"
+        disabled={!state.scoreReady}
+        onClick={onNew}
+      >
+        New
+      </Button>
+    </ExpansionPanelActions>
+  )
+}
 
 export default ExpansionPanelMatchActions
