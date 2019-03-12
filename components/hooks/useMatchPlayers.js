@@ -1,5 +1,5 @@
 import React, { useReducer, useContext } from 'react'
-
+import { audioActions } from './useAudio'
 import getRootUrl from '../../lib/api/getRootUrl'
 
 const defaultPlayer = {
@@ -86,6 +86,11 @@ const reducer = (state, action) => {
       if (state.arrSelectedPlayersId.indexOf(action.player._id) > -1) {
         return removePlayer(action, state)
       } else if (state.arrSelectedPlayersId.length < 4) {
+        if (state.selectedPlayers === 3) {
+          audioActions.matchReady()
+        } else {
+          audioActions.playerSelect()
+        }
         return addPlayer(action, state)
       }
       return state
@@ -93,6 +98,7 @@ const reducer = (state, action) => {
       if (state.arrSelectedPlayersId.length < 4) {
         return state
       }
+      audioActions.matchGo()
       return Object.assign({}, state, {matchView: matchViewState.TEAMS_COMPLETE})
     default:
       throw new Error()
