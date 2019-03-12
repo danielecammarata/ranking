@@ -171,12 +171,12 @@ class AdminMatches extends React.Component {
                     <TableCell>
                       <PlayerChip
                         avatarUrl={match.teamAway.defender.avatarUrl}
-                        name={match.teamHome.defender.name}
+                        name={match.teamAway.defender.name}
                         playerSide="left"
                       />
                       <PlayerChip
                         avatarUrl={match.teamAway.striker.avatarUrl}
-                        name={match.teamHome.striker.name}
+                        name={match.teamAway.striker.name}
                         playerSide="left"
                       />
                     </TableCell>
