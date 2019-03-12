@@ -39,9 +39,40 @@ const initialState = {
   }
 }
 
-const scoreReady = (homeScore, awayScore) =>
-  (homeScore > 5 && (homeScore - awayScore) > 1) ||
-  (awayScore > 5 && (awayScore - homeScore) > 1)
+const scoreReady = (teamAScore, teamBScore) =>
+  (teamAScore > 5 && (teamAScore - teamBScore) > 1) ||
+  (teamBScore > 5 && (teamBScore - teamAScore) > 1)
+
+const getOtherRole = (team, role) =>
+  role.toLowerCase() === 'def' ? `${team}StrScore` : `${team}DefScore`
+
+const getOtherTeamScore = (team) =>
+  team === 'home' ? 'awayScore' : 'homeScore'
+
+const setScore = ({
+    state, team, score
+  }) =>
+    Object.assign({},
+      state,
+      {
+        [`${team}Score`]: score,
+        [`${team}DefScore`]: Math.floor(score / 2),
+        [`${team}StrScore`]: Math.ceil(score / 2),
+        scoreReady: scoreReady(score, state[getOtherTeamScore(team)])
+      }
+    )
+
+const setRoleScore = ({
+  state, team, role, score
+}) =>
+  Object.assign({},
+    state,
+    {
+      [`${team}Score`]: state[getOtherRole(team, role)] + score,
+      [`${team}${role}Score`]: score,
+      scoreReady: scoreReady(state[getOtherRole(team, role)] + score, state[getOtherTeamScore(team)])
+    }
+  )
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -56,118 +87,29 @@ const reducer = (state, action) => {
         Object.assign({}, initialState, {panelExpanded: actions.PANEL_ROLE_GOALS_SELECT}) :
         state
     case actions.SET_HOME_SCORE:
-      return Object.assign({},
-        state,
-        {
-          homeScore: action.score,
-          homeDefScore: Math.floor(action.score / 2),
-          homeStrScore: Math.ceil(action.score / 2),
-          scoreReady: scoreReady(action.score, state.awayScore)
-        }
-      )
+      return setScore({ state, team: 'home', score: action.score })
     case actions.SET_AWAY_SCORE:
-      return Object.assign({},
-        state,
-        {
-          awayScore: action.score,
-          awayDefScore: Math.floor(action.score / 2),
-          awayStrScore: Math.ceil(action.score / 2),
-          scoreReady: scoreReady(state.homeScore, action.score)
-        }
-      )
+      return setScore({ state, team: 'away', score: action.score })
     case actions.INCREMENT_HOME_SCORE:
-      return Object.assign({},
-        state,
-        {
-          homeScore: state.homeScore + 1,
-          homeDefScore: Math.floor((state.homeScore + 1) / 2),
-          homeStrScore: Math.ceil((state.homeScore + 1) / 2),
-          scoreReady: scoreReady(state.homeScore + 1, action.score)
-        }
-      )
+      return setScore({ state, team: 'home', score: state.homeScore + 1 })
     case actions.INCREMENT_AWAY_SCORE:
-      return Object.assign({},
-        state,
-        {
-          awayScore: state.awayScore + 1,
-          awayDefScore: Math.floor((state.awayScore + 1) / 2),
-          awayStrScore: Math.ceil((state.awayScore + 1) / 2),
-          scoreReady: scoreReady(state.homeScore, state.awayScore + 1)
-        }
-      )
+      return setScore({ state, team: 'away', score: state.awayScore + 1 })
     case actions.SET_HOME_DEFENDER_SCORE:
-      return Object.assign({},
-        state,
-        {
-          homeDefScore: action.score,
-          homeScore: state.homeStrScore + action.score,
-          scoreReady: scoreReady(state.homeStrScore + action.score, state.awayScore)
-        }
-      )
+      return setRoleScore({ state, team: 'home', role: 'Def', score: action.score })
     case actions.SET_HOME_STRIKER_SCORE:
-      return Object.assign({},
-        state,
-        {
-          homeStrScore: action.score,
-          homeScore: state.homeDefScore + action.score,
-          scoreReady: scoreReady(state.homeDefScore + action.score, state.awayScore)
-        }
-      )
+      return setRoleScore({ state, team: 'home', role: 'Str', score: action.score })
     case actions.SET_AWAY_DEFENDER_SCORE:
-      return Object.assign({},
-        state,
-        {
-          awayDefScore: action.score,
-          awayScore: state.awayStrScore + action.score,
-          scoreReady: scoreReady(state.homeScore, state.awayStrScore + action.score)
-        }
-      )
+      return setRoleScore({ state, team: 'away', role: 'Def', score: action.score })
     case actions.SET_AWAY_STRIKER_SCORE:
-      return Object.assign({},
-        state,
-        {
-          awayStrScore: action.score,
-          awayScore: state.awayDefScore + action.score,
-          scoreReady: scoreReady(state.homeScore, state.awayDefScore + action.score)
-        }
-      )
-
+      return setRoleScore({ state, team: 'away', role: 'Str', score: action.score })
     case actions.INCREMENT_HOME_DEFENDER_SCORE:
-      return Object.assign({},
-        state,
-        {
-          homeDefScore: state.homeDefScore + 1,
-          homeScore: state.homeStrScore + state.homeDefScore + 1,
-          scoreReady: scoreReady(state.homeStrScore + state.homeDefScore + 1, state.awayScore)
-        }
-      )
+      return setRoleScore({ state, team: 'home', role: 'Def', score: state.homeDefScore + 1 })
     case actions.INCREMENT_HOME_STRIKER_SCORE:
-      return Object.assign({},
-        state,
-        {
-          homeStrScore: state.homeStrScore + 1,
-          homeScore: state.homeStrScore + state.homeDefScore + 1,
-          scoreReady: scoreReady(state.homeStrScore + state.homeDefScore + 1, state.awayScore)
-        }
-      )
+      return setRoleScore({ state, team: 'home', role: 'Str', score: state.homeStrScore + 1 })
     case actions.INCREMENT_AWAY_DEFENDER_SCORE:
-      return Object.assign({},
-        state,
-        {
-          awayDefScore: state.awayDefScore + 1,
-          awayScore: state.awayDefScore + state.awayStrScore + 1,
-          scoreReady: scoreReady(state.homeScore, state.awayDefScore + state.awayStrScore + 1)
-        }
-      )
+      return setRoleScore({ state, team: 'away', role: 'Def', score: state.awayDefScore + 1 })
     case actions.INCREMENT_AWAY_STRIKER_SCORE:
-      return Object.assign({},
-        state,
-        {
-          awayStrScore: state.awayStrScore + 1,
-          awayScore: state.awayDefScore + state.awayStrScore + 1,
-          scoreReady: scoreReady(state.homeScore, state.awayDefScore + state.awayStrScore + 1)
-        }
-      )
+      return setRoleScore({ state, team: 'away', role: 'Str', score: state.awayStrScore + 1 })
     default:
       throw new Error()
   }
@@ -190,6 +132,11 @@ const useScore = () => {
 }
 
 export {
+  // helper functions
+  initialState,
+  reducer,
+  scoreReady,
+  // hook functions
   ScoreProvider,
   actions,
   useScore

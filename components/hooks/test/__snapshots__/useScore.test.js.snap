@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useScore hook ScoreProvider should render the score provider 1`] = `"none"`;
+
+exports[`useScore hook should use the score context 1`] = `
+<div>
+  0
+</div>
+`;

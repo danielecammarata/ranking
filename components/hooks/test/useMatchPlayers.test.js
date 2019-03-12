@@ -1,4 +1,4 @@
-const { initialState, addPlayer, removePlayer } = require('./useMatchPlayers')
+const { initialState, addPlayer, removePlayer } = require('../useMatchPlayers')
 
 describe('useMatchPlayers hook', () => {
   // it('should return the first player available', () => {
