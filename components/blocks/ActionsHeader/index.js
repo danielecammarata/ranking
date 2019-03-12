@@ -17,7 +17,7 @@ const ActionsHeader = () =>
       </Link>
     </Grid>
     <Grid item xs={8} sm={4}>
-      <Link href="/matches/fast">
+      <Link href="/matches/add">
         <Fab
           variant="extended"
           aria-label="New Match"

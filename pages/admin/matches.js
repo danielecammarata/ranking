@@ -55,7 +55,7 @@ class AdminMatches extends React.Component {
   }
 
   static async getInitialProps() {
-    const matches = await getMatchesList(0, 250)
+    const matches = await getMatchesList(0, 10)
     return {
       matches: matches.matches
     }

@@ -3,6 +3,7 @@ import {
   Chip,
   GridListTile
 } from '@material-ui/core'
+import { useMatchPlayers } from '../../hooks/useMatchPlayers'
 
 const styleTeamPlayer = position => ({
   flexDirection: position=='right'? 'row-reverse' : 'initial',
@@ -19,28 +20,32 @@ const styleTeamTile = position => ({
 
 const Team = ({
   classes,
-  defender,
-  striker,
-  side
-}) =>
-  <GridListTile
-    style={styleTeamTile(side)}
-    className={
-      side === 'left' ?
-        classes.styleTeamTile :
-        classes.styleTeamTile + ' ' + classes.styleAwayTeam
-    }
-  >
-    <Chip
-      avatar={<Avatar src={defender.avatarUrl} />}
-      label={defender.name}
-      style={styleTeamPlayer(side)}
-    />
-    <Chip
-      avatar={<Avatar src={striker.avatarUrl} />}
-      label={striker.name}
-      style={styleTeamPlayer(side)}
-    />
-  </GridListTile>
+  side // left home || right away
+}) => {
+  const [players] = useMatchPlayers()
+  const defender = side === 'left' ? players.homeDefender : players.awayDefender
+  const striker = side === 'left' ? players.homeStriker : players.awayStriker
 
+  return (
+    <GridListTile
+      style={styleTeamTile(side)}
+      className={
+        side === 'left' ?
+          classes.styleTeamTile :
+          classes.styleTeamTile + ' ' + classes.styleAwayTeam
+      }
+    >
+      <Chip
+        avatar={<Avatar src={defender.avatarUrl} />}
+        label={defender.name}
+        style={styleTeamPlayer(side)}
+      />
+      <Chip
+        avatar={<Avatar src={striker.avatarUrl} />}
+        label={striker.name}
+        style={styleTeamPlayer(side)}
+      />
+    </GridListTile>
+  )
+}
 export default Team

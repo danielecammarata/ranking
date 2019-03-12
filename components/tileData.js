@@ -41,7 +41,7 @@ export const mainDrawerMatch = (
         <ListItemText primary="Matches list"/>
       </ListItem>
     </Link>
-    <Link href="/matches/fast">
+    <Link href="/matches/add">
       <ListItem button>
         <ListItemIcon>
           <SoccerFieldIcon/>
