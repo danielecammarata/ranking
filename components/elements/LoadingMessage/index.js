@@ -21,7 +21,7 @@ const LoadingMessage = ({
     return (
       <div
         style={{
-          backgroundImage: 'url(/img/scoreza_loading.gif)',
+          backgroundImage: 'url(/img/scoreza_loading_500px.gif)',
           height: '150px',
           width: '150px',
           backgroundRepeat: 'no-repeat',

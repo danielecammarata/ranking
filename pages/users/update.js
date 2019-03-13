@@ -149,6 +149,12 @@ const styles = theme => ({
   },
   badgesList: {
     textAlign: 'center'
+  },
+  badgeCappotto: {
+    height: '50px',
+    marginTop: '-50px',
+    position: 'relative',
+    textAlign: 'center'
   }
 })
 
@@ -277,7 +283,11 @@ class UpdateUser extends React.Component {
     return (
       <Layout>
         <ActionsHeader />
-        <Divider />
+        <Divider
+          style={{
+            marginTop: '25px'
+          }}
+        />
         <GridList cols={3}>
           <GridListTile style={userAvatar}>
               <Card className={classes.card}>
