@@ -91,14 +91,16 @@ const MatchTile = ({
         teamPlace="away"
       />
     </GridList>
-    <div className={classes.badgesList}>
-      {match.badges.map((badge, index) => (
-        <BadgeIcon
-          key={`badge-${index}`}
-          type={badge}
-        />
-      ))}
-    </div>
+    {match.badges.length > 0 &&
+      <div className={classes.badgeCappotto}>
+        {match.badges.map((badge, index) => (
+          <BadgeIcon
+            key={`badge-${index}`}
+            type={badge}
+          />
+        ))}
+      </div>
+    }
   </GridListTile>
 
 const MatchesList = ({

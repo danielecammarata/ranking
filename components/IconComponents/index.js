@@ -1,4 +1,5 @@
 export { default as AlienIcon } from './AlienIcon'
+export { default as BestPlayerIcon } from './BestPlayerIcon'
 export { default as BombIcon } from './BombIcon'
 export { default as BoneIcon } from './BoneIcon'
 export { default as CandycaneIcon } from './CandycaneIcon'

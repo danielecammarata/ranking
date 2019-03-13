@@ -1,20 +1,14 @@
-import Button from '@material-ui/core/Button'
 import GridList from '@material-ui/core/GridList'
-import GridListTile from '@material-ui/core/GridListTile'
 import React from 'react'
 import Router from 'next/router'
 import getRootUrl from '../../lib/api/getRootUrl'
 import Layout from '../../components/Layout.js'
 import MatchPlayerHeader from '../../components/MatchPlayerHeader'
 import MatchPlayerSelection from '../../components/MatchPlayerSelection'
-import PinnedSubheaderList from '../../components/PinnedSubheaderList'
 import BadgeIcon from '../../components/badge'
 import { addNewMatch } from '../../lib/api/match'
-import { getUsersList } from '../../lib/api/users'
 
 import { getMatchBySlug } from '../../lib/api/match'
-
-import { styleForm } from '../../lib/SharedStyles'
 
 const defaultPlayer = {
   _id: 'default',
@@ -210,9 +204,16 @@ class DetailMatch extends React.Component {
             player={this.state.homeStriker}
             selectionHandler={this.showPlayersSelect('homeStriker')}
           />
-          
-          {this.state.badges.map(badge => (
-            <BadgeIcon type={badge}/>
+
+          {this.state.badges.map((badge, index) => (
+            <BadgeIcon
+              type={badge}
+              key={`badge-${index}`}
+              style={{
+                marginTop: '-45px',
+                position: 'relative'
+              }}
+            />
           ))}
 
           <MatchPlayerHeader

@@ -189,7 +189,7 @@ class IndexUser extends React.Component {
                   primary={user.name}
                   primaryTypographyProps={{
                     variant: "h3",
-                    style: { fontSize: 15, overflowX: 'hidden', textOverflow: 'ellipsis' }
+                    style: { fontSize: 15, overflow: 'hidden', textOverflow: 'ellipsis' }
                   }}
                   secondary={<CountUp start={1200} end={user[this.state.sortingValue]} duration={3}/>}
                   secondaryTypographyProps={{
