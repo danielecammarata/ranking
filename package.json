@@ -17,7 +17,7 @@
     "@material-ui/icons": "^3.0.2",
     "arpad": "^1.0.2",
     "basic-auth": "^2.0.0",
-    "dotenv": "^6.0.0",
+    "dotenv": "^7.0.0",
     "downshift": "",
     "express": "^4.16.3",
     "isomorphic-unfetch": "^3.0.0",
