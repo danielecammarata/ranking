@@ -24,7 +24,8 @@ router.post('/', (req, res) => {
     slug,
     createdAt,
     difference: rank.difference,
-    difference2: rank.difference2
+    difference2: rank.difference2,
+    badges: rank.hasCappotto ? ['cappotto'] : []
   }
 
   const newMatch = new Match(matchData)
