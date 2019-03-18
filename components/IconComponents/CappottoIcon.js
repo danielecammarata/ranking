@@ -13,8 +13,8 @@ const CappottoIcon = props => (
           y2="-48.35"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#6a3a00" />
-          <stop offset="0.39" stop-color="#e9c793" />
+          <stop offset="0" stopColor="#6a3a00" />
+          <stop offset="0.39" stopColor="#e9c793" />
         </linearGradient>
       </defs>
       <title>cappotto</title>
