@@ -4,27 +4,20 @@ import classnames from 'classnames'
 import CountUp from 'react-countup'
 import {
   Avatar,
-  Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
   CardMedia,
   Divider,
-  Fade,
-  FormLabel,
   GridList,
   GridListTile,
   IconButton,
-  Paper,
-  Popper,
-  TextField,
   Typography
 } from '@material-ui/core'
 
 import { withStyles } from '@material-ui/core/styles'
 
-import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import green from '@material-ui/core/colors/green'
@@ -36,25 +29,18 @@ import ActionsHeader from '../../components/blocks/ActionsHeader'
 import MatchesList from '../../components/blocks/MatchesList'
 
 import LoadMore from '../../components/elements/LoadMore'
-import PlayerRoleSelection from '../../components/elements/PlayerRoleSelection'
 import PlayerStatsCollapse from '../../components/elements/PlayerStatsCollapse'
 
 import { prepareMatchData } from '../../components/modifiers'
 
-import { styleForm } from '../../lib/SharedStyles'
 import {
-  formArea,
-  formButton,
-  formButtonWrapper,
-  formText,
-  paperWrapper,
-  popperWrapper,
   userAvatar,
   userFirstChar
 } from '../../lib/userPage'
 
 import { getUsersBySlug, updateUser } from '../../lib/api/users'
 import { getPlayerMatchesList } from '../../lib/api/match'
+import PlayerHeaderAction from '../../components/blocks/PlayerUpdate/PlayerHeaderAction';
 
 const styles = theme => ({
   cardTitle: {
@@ -283,10 +269,7 @@ class UpdateUser extends React.Component {
     return (
       <Layout>
         <ActionsHeader />
-        <Divider
-          style={{
-            marginTop: '25px'
-          }}
+        <Divider style={{ marginTop: '25px' }}
         />
         <GridList cols={3}>
           <GridListTile style={userAvatar}>
@@ -298,68 +281,19 @@ class UpdateUser extends React.Component {
                     </Avatar>
                   }
                   action={
-                    <IconButton style={{position: 'relative'}}>
-                      <MoreVertIcon onClick={this.handleEdit('bottom-end')} />
-                      <Popper open={open} anchorEl={anchorEl} placement={placement} style={popperWrapper} transition>
-                        {({ TransitionProps }) => (
-                          <Fade {...TransitionProps} timeout={350}>
-                            <Paper style={paperWrapper}>
-                              <form
-                                autoComplete="off"
-                                style={styleForm}
-                                onSubmit={this.onSubmit}
-                              >
-                                <div style={formArea}>
-                                  <TextField
-                                    style={formText}
-                                    id="name"
-                                    label="Name"
-                                    value={name}
-                                    onChange={this.handleChange('name')}
-                                    margin="normal"
-                                    required
-                                  />
-                                  <TextField
-                                    style={formText}
-                                    id="avatarUrl"
-                                    label="Avatar URL"
-                                    value={avatarUrl}
-                                    onChange={this.handleChange('avatarUrl')}
-                                    margin="normal"
-                                    required
-                                  />
-                                  <FormLabel className={this.props.classes.radioLegend} component="legend">Main role</FormLabel>
-                                  <PlayerRoleSelection
-                                    classes={this.props.classes}
-                                    role={this.state.role}
-                                    handleChange={this.handleChange}
-                                  />
-                                  <TextField
-                                    style={formText}
-                                    className={this.props.classes.userDescription}
-                                    id="description"
-                                    label="Description"
-                                    value={description}
-                                    multiline
-                                    onChange={this.handleChange('description')}
-                                    margin="normal"
-                                  />
-                                </div>
-                                <div style={formButtonWrapper}>
-                                  <Button
-                                    style={formButton}
-                                    variant="contained"
-                                    type="submit"
-                                  >
-                                    EDIT
-                                  </Button>
-                                </div>
-                              </form>
-                            </Paper>
-                          </Fade>
-                        )}
-                      </Popper>
-                    </IconButton>
+                    <PlayerHeaderAction
+                      classes={this.props.classes}
+                      anchorEl={anchorEl}
+                      open={open}
+                      placement={placement}
+                      name={name}
+                      avatarUrl={avatarUrl}
+                      role={this.state.role}
+                      description={description}
+                      handleEdit={this.handleEdit}
+                      handleChange={this.handleChange}
+                      onSubmit={this.onSubmit}
+                    />
                   }
                   title={<h3 className={classes.cardTitle}>{name}</h3>}
                   subheader={<span className={classes.cardSubheader}><CountUp start={1200} end={points} duration={2.1}/></span>}
