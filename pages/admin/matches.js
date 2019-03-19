@@ -18,6 +18,8 @@ import sendRequest from '../../lib/api/sendRequest'
 
 import { convertDate } from '../../components/modifiers'
 import PlayerChip from '../../components/elements/PlayerChip'
+import { AdminHeader } from '../../components/blocks/Admin'
+import { TablePagination } from '@material-ui/core';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -35,6 +37,9 @@ const styles = theme => ({
     margin: theme.spacing.unit * 3,
     overflowX: 'scroll',
   },
+  grow: {
+    flexGrow: 1,
+  },
   table: {
     minWidth: 700,
   },
@@ -50,15 +55,30 @@ class AdminMatches extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      matches: props.matches
+      matches: props.matches,
+      count: props.count,
+      rowsPerPage: 10,
+      page: 0,
     }
   }
 
   static async getInitialProps() {
     const matches = await getMatchesList(0, 10)
     return {
-      matches: matches.matches
+      matches: matches.matches,
+      count: matches.count
     }
+  }
+
+  handleChangePage = async (event, page) => {
+    const start = this.state.rowsPerPage * (page - 1)
+    const matches = await getMatchesList(start, this.state.rowsPerPage)
+    this.setState({ page: page - 1, matches: matches.matches })
+  }
+
+  handleChangeRowsPerPage = async event => {
+    this.setState({ rowsPerPage: event.target.value })
+    await this.handleChangePage('', 1)
   }
 
   // modifyAndUpdateMatches = async (endPoint, matchId) => {
@@ -115,13 +135,15 @@ class AdminMatches extends React.Component {
     const { classes } = this.props
     return (
       <div>
-        <p>Matches List</p>
-        <Button
-          onClick={this.matchRank}
-        >
-          match calc
-        </Button>
-        <h5>Users</h5>
+        <AdminHeader>
+          <div className={classes.grow} />
+          <Button
+            onClick={this.matchRank}
+            variant="contained" color="secondary"
+          >
+            Total Recalculation
+          </Button>
+        </AdminHeader>
         <Paper
           className={classes.root}
         >
@@ -187,6 +209,15 @@ class AdminMatches extends React.Component {
             }
           </TableBody>
         </Table>
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 50]}
+            component="div"
+            count={this.state.count}
+            rowsPerPage={this.state.rowsPerPage}
+            page={this.state.page}
+            onChangePage={this.handleChangePage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          />
         </Paper>
       </div>
     )
