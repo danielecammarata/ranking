@@ -19,7 +19,7 @@
     "basic-auth": "^2.0.0",
     "dotenv": "^7.0.0",
     "downshift": "",
-    "express": "^4.16.3",
+    "express": "^4.17.0",
     "isomorphic-unfetch": "^3.0.0",
     "jss": "^9.8.7",
     "lodash": "^4.17.10",
