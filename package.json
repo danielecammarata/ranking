@@ -4,10 +4,12 @@
   "description": "",
   "main": "server/index.js",
   "scripts": {
+    "commit": "git-cz",
     "dev": "nodemon server/index.js --watch server",
     "build": "next build",
     "start": "NODE_ENV=production node --optimize_for_size --max_old_space_size=460 server/index.js",
     "test": "jest --coverage",
+    "contributors:add": "all-contributors add",
     "heroku-postbuild": "next build"
   },
   "author": "",
@@ -35,12 +37,20 @@
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
+    "all-contributors-cli": "^6.7.0",
     "babel-jest": "^24.1.0",
+    "commitizen": "^3.1.1",
+    "cz-conventional-changelog": "^2.1.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.10.0",
     "jest": "^24.1.0",
     "nodemon": "^1.17.5",
     "react-addons-test-utils": "^15.6.2",
     "react-test-renderer": "^16.8.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
