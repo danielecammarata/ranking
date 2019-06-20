@@ -58,5 +58,12 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier-standard",
+      "git add",
+      "jest --bail --findRelatedTests"
+    ]
   }
 }
