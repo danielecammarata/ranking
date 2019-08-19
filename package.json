@@ -31,7 +31,7 @@
     "react-dom": "^16.8.3",
     "react-jss": "^8.6.1",
     "react-props": "^0.0.3",
-    "uuid": "^3.0.0"
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
