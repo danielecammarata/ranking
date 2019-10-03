@@ -41,6 +41,6 @@
     "jest": "^24.1.0",
     "nodemon": "^1.17.5",
     "react-addons-test-utils": "^15.6.2",
-    "react-test-renderer": "^16.8.4"
+    "react-test-renderer": "^16.10.2"
   }
 }
