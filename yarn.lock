@@ -2706,10 +2706,10 @@ dotenv@^7.0.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-7.0.0.tgz#a2be3cd52736673206e8a85fb5210eea29628e7c"
   integrity sha512-M3NhsLbV1i6HuGzBUH8vXrtxOk+tWmzWKDMbAVSUp3Zsjm7ywFeuwrUXhmhQyRK1q5B5GGy7hcXPbj3bnfZg2g==
 
-downshift@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.3.4.tgz#959be157e48be2ec2bbc50f184303647fc719026"
-  integrity sha512-3bM11S3p78p/moyJqDPc1j357dm/C+dN+54HKuc526k5etNXvnXyxsb+Ufd2yLL6qK4QZA62DysAgtMCIsKCNA==
+downshift@^3.3.6:
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.3.6.tgz#52261cf470ceddc43d4cbdc47adaa3cd0760234c"
+  integrity sha512-MFglJVofioDhxefW65zzTRg7Kx9VYrFs1IRfogFifixiin5YM02UTG+Y2f901nuc0o+pWkHJCvpHQvn8k9eX1w==
   dependencies:
     "@babel/runtime" "^7.4.5"
     "@reach/auto-id" "^0.2.0"
