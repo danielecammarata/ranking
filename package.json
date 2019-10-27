@@ -21,7 +21,7 @@
     "arpad": "^1.0.2",
     "basic-auth": "^2.0.0",
     "dotenv": "^7.0.0",
-    "downshift": "^3.3.4",
+    "downshift": "^3.3.7",
     "express": "^4.16.3",
     "isomorphic-unfetch": "^3.0.0",
     "jss": "^9.8.7",
