@@ -24,7 +24,7 @@
     "downshift": "^3.3.4",
     "express": "^4.16.3",
     "isomorphic-unfetch": "^3.0.0",
-    "jss": "^9.8.7",
+    "jss": "^10.0.2",
     "lodash": "^4.17.10",
     "mongoose": "^5.7.3",
     "next": "^8.0.3",
