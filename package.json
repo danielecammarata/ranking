@@ -33,7 +33,7 @@
     "react-countup": "^4.0.0-alpha.6",
     "react-dom": "^16.8.3",
     "react-hot-loader": "^4.12.15",
-    "react-jss": "^8.6.1",
+    "react-jss": "^10.0.4",
     "react-props": "^0.0.3",
     "uuid": "^3.0.0"
   },
