@@ -6167,10 +6167,10 @@ react-addons-test-utils@^15.6.2:
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-15.6.2.tgz#c12b6efdc2247c10da7b8770d185080a7b047156"
   integrity sha1-wStu/cIkfBDae4dw0YUICnsEcVY=
 
-react-audio-player@^0.11.1:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/react-audio-player/-/react-audio-player-0.11.1.tgz#b91d0a612ca2c56cf037e34e9b3626be5326a373"
-  integrity sha512-B8j1qqi7B3IhwRNftcU7DAPMnomVrGXKtPQnXNaJxwBrYA47S/Z6CZqB8Vh/ojdnbH1bAGA2SADqa/oswyoInQ==
+react-audio-player@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/react-audio-player/-/react-audio-player-0.12.0.tgz#7975aa5fa07841f262041d01f47c2090931b6a34"
+  integrity sha512-8+N0GoRRBEN9gSBs4Be+R3IxyPuS0BP9x+GYgNSrugv28pzVf5ptFHBh+lUHO9/xeNZvE6RJd6ser4YJaDgfrA==
   dependencies:
     prop-types "^15.7.2"
 
