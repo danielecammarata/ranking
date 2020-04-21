@@ -40,7 +40,7 @@
   "devDependencies": {
     "@babel/core": "^7.3.4",
     "babel-jest": "^24.1.0",
-    "enzyme": "^3.9.0",
+    "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.10.0",
     "jest": "^24.1.0",
     "nodemon": "^1.17.5",
